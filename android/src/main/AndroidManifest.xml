@@ -9,7 +9,7 @@
             android:name="tv.vizbee.api.RemoteActivity"
             android:launchMode="singleTop"
             android:noHistory="false"
-            android:theme="@style/RemoteActivityTheme">
+            android:theme="@style/Theme.Vizbee.Custom">
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
