@@ -21,4 +21,20 @@ public class VizbeeCastButtonViewManager extends SimpleViewManager<VizbeeCastBut
     protected VizbeeCastButtonView createViewInstance(ThemedReactContext reactContext) {
         return new VizbeeCastButtonView(reactContext);
     }
+
+    @Override
+    public void onDropViewInstance(CastButtonView buttonView) {
+        super.onDropViewInstance(buttonView);
+    }
+
+    @Override
+    @Nullable
+    public Map getExportedViewConstants() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("ScaleNone", "0");
+        map.put("ScaleToFill", "1");
+        map.put("ScaleAspectFit", "2");
+        map.put("ScaleAspectFill", "3");
+        return map;
+    }
 }
