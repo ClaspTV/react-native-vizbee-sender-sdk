@@ -10,8 +10,8 @@ class VizbeeManager {
         this.sub_id = 0
     }
 
-    SmartPrompt() {
-        VizbeeManagerNative.SmartHelp();
+    smartPrompt() {
+        VizbeeManagerNative.smartHelp();
     }
 
     // // Start the smart play

@@ -35,7 +35,7 @@ public class VizbeeSenderManager extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void SmartHelp() {
+  public void smartHelp() {
     Log.d(TAG, "SmartHelp");
 
     Activity activity = this.reactContext.getCurrentActivity();
