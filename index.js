@@ -1,10 +1,11 @@
 
-// import VizbeeCastButton from './VizbeeButton';
+import {requireNativeComponent} from 'react-native';
 import VizbeeManager from './VizbeeManager';
-// import VizbeeVideoMetadata from './VizbeeVideoMetadata';
+
+const VizbeeCastButton = requireNativeComponent('VizbeeCastButtonView');
 
 module.exports = {
-    // VizbeeCastButton,
+    VizbeeCastButton,
     VizbeeManager
     // VizbeeVideoMetadata
 }
