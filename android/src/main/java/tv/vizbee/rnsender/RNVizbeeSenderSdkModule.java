@@ -1,10 +1,22 @@
 
 package tv.vizbee.rnsender;
 
+import android.app.Activity;
+import android.util.Log;
+
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Callback;
+
+import tv.vizbee.api.VizbeeContext;
+import tv.vizbee.api.session.SessionState;
+import tv.vizbee.api.session.SessionStateListener;
+import tv.vizbee.api.session.VizbeeScreen;
+import tv.vizbee.api.session.VizbeeSession;
+import tv.vizbee.api.session.VizbeeSessionManager;
+import tv.vizbee.utils.ICommandCallback;
+import tv.vizbee.utils.VizbeeError;
 
 public class RNVizbeeSenderSdkModule extends ReactContextBaseJavaModule {
 
