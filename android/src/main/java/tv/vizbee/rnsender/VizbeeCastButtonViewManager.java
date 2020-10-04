@@ -8,7 +8,7 @@ import java.util.HashMap;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 
-public class VizbeeCastButtonViewManager extends SimpleViewManager<CastButtonView> {
+public class VizbeeCastButtonViewManager extends SimpleViewManager<VizbeeCastButtonView> {
 
     private static final String REACT_CLASS = "VizbeeCastButtonView";
 
