@@ -20,7 +20,7 @@ import tv.vizbee.utils.VizbeeError;
 
 public class VizbeeSenderManager extends ReactContextBaseJavaModule {
 
-  private static final String TAG = RNVizbeeSenderSdkModule.class.getName();
+  private static final String TAG = VizbeeSenderManager.class.getName();
   
   private final ReactApplicationContext reactContext;
 
