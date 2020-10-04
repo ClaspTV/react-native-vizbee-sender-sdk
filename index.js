@@ -1,6 +1,10 @@
 
-import { NativeModules } from 'react-native';
+// import VizbeeCastButton from './VizbeeButton';
+import VizbeeManager from './VizbeeManager';
+// import VizbeeVideoMetadata from './VizbeeVideoMetadata';
 
-const { RNVizbeeSenderSdk } = NativeModules;
-
-export default RNVizbeeSenderSdk;
+module.exports = {
+    // VizbeeCastButton,
+    VizbeeManager
+    // VizbeeVideoMetadata
+}

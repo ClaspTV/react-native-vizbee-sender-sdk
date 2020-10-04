@@ -18,20 +18,20 @@ import tv.vizbee.api.session.VizbeeSessionManager;
 import tv.vizbee.utils.ICommandCallback;
 import tv.vizbee.utils.VizbeeError;
 
-public class RNVizbeeSenderSdkModule extends ReactContextBaseJavaModule {
+public class VizbeeSenderManager extends ReactContextBaseJavaModule {
 
   private static final String TAG = RNVizbeeSenderSdkModule.class.getName();
   
   private final ReactApplicationContext reactContext;
 
-  public RNVizbeeSenderSdkModule(ReactApplicationContext reactContext) {
+  public VizbeeSenderManager(ReactApplicationContext reactContext) {
     super(reactContext);
     this.reactContext = reactContext;
   }
 
   @Override
   public String getName() {
-    return "RNVizbeeSenderSdk";
+    return "VizbeeSenderManager";
   }
 
   @ReactMethod
