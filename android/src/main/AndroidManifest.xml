@@ -1,0 +1,27 @@
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="tv.vizbee.rnsender">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <application android:label="@string/app_name">
+        <activity
+            android:name="tv.vizbee.api.RemoteActivity"
+            android:launchMode="singleTop"
+            android:noHistory="false"
+            android:theme="@style/RemoteActivityTheme">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:host="video"
+                    android:scheme="@string/vizbee_app_id" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
+  
