@@ -23,7 +23,7 @@ public class VizbeeCastButtonViewManager extends SimpleViewManager<VizbeeCastBut
     }
 
     @Override
-    public void onDropViewInstance(CastButtonView buttonView) {
+    public void onDropViewInstance(VizbeeCastButtonView buttonView) {
         super.onDropViewInstance(buttonView);
     }
 
