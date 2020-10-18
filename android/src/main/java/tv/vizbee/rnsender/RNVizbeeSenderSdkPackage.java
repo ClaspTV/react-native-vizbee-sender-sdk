@@ -14,7 +14,7 @@ import com.facebook.react.bridge.JavaScriptModule;
 public class RNVizbeeSenderSdkPackage implements ReactPackage {
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
-      return Arrays.<NativeModule>asList(new VizbeeSenderManager(reactContext));
+      return Arrays.<NativeModule>asList(new VizbeeNativeManager(reactContext));
     }
 
     // Deprecated from RN 0.47
