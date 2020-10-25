@@ -2,9 +2,15 @@
 # react-native-vizbee-sender-sdk
 ![Vizbee](https://static.claspws.tv/images/common/logos/vizbee_logo_tagline.png)
 
+## Overview
+
+Vizbee enables streaming apps to deliver consistent and seamless cross-device experiences. This repository provides the React Native SDK for enabling Vizbee's cross-device experiences. You need a [Vizbee account](https://console.vizbee.tv) in order to use this SDK.
+
 ## Getting started
 
-`$ npm install react-native-vizbee-sender-sdk --save`
+`$ yarn add react-native-vizbee-sender-sdk`
+
+This command will add the Vizbee SDK to your repository and also perform 'automatic linking'.
 
 ### Mostly automatic installation
 
