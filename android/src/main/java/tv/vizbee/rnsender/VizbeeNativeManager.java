@@ -13,6 +13,7 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 import tv.vizbee.api.VizbeeContext;
@@ -88,13 +89,86 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
     // Session APIs
     //----------------
 
+    // TODO: Remove
+    // 
+    // @ReactMethod
+    // public void triggerSessionStateEvent() {
+
+    //     VizbeeSessionManager sessionManager = VizbeeContext.getInstance().getSessionManager();
+    //     if (null != sessionManager) {
+    //         this.notifySessionState(sessionManager.getSessionState());
+    //     }
+    // }
+
     @ReactMethod
-    public void triggerSessionStateEvent() {
+    public void getSessionState(final Promise promise) {
+
+        getReactApplicationContext().runOnUiQueueThread(new Runnable() {
+            
+            @Override
+            public void run() {
+
+                VizbeeSessionManager sessionManager = VizbeeContext.getInstance().getSessionManager();
+                if (null == sessionManager) {
+                    promise.resolve(null);
+                    return;
+                }
+
+                promise.resolve(VizbeeNativeManager.this.getSessionStateString(sessionManager.getSessionState()));
+            }
+        });
+    }
+
+    @ReactMethod
+    public void getSessionConnectedDevice(final Promise promise) {
+        
+        getReactApplicationContext().runOnUiQueueThread(new Runnable() {
+
+            @Override
+            public void run() {
+                promise.resolve(VizbeeNativeManager.this.getSessionConnectedDeviceMap());
+            }
+        });
+    }
+
+    private String getSessionStateString(int state) {
+
+        switch (state) {
+            case SessionState.NO_DEVICES_AVAILABLE:
+                return "NO_DEVICES_AVAILABLE";
+            case SessionState.NOT_CONNECTED:
+                return "NOT_CONNECTED";
+            case SessionState.CONNECTING:
+                return "CONNECTING";
+            case SessionState.CONNECTED:
+                return "CONNECTED";
+            default:
+                return "UNKNOWN";
+        }
+    }
+
+    private WritableMap getSessionConnectedDeviceMap() {
 
         VizbeeSessionManager sessionManager = VizbeeContext.getInstance().getSessionManager();
-        if (null != sessionManager) {
-            this.notifySessionState(sessionManager.getSessionState());
+        if (null == sessionManager) {
+            return null;
         }
+
+        VizbeeSession currentSession = sessionManager.getCurrentSession();
+        if (null == currentSession) {
+            return null;
+        }
+
+        VizbeeScreen screen = currentSession.getVizbeeScreen();
+        if (null == screen) {
+          return null;
+        }
+
+        WritableMap map = Arguments.createMap();
+        map.putString("deviceType", screen.getScreenType().getTypeName());
+        map.putString("deviceFriendlyName", screen.getScreenInfo().getFriendlyName());
+        map.putString("deviceModel", screen.getScreenInfo().getModel());
+        return map;
     }
 
     //----------------
@@ -102,6 +176,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
     //----------------
 
     private SessionStateListener sessionStateListener;
+    private SessionState lastUpdatedState = 0; // UNKNOWN
 
     private void addSessionStateListener() {
 
@@ -137,41 +212,22 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
 
     private void notifySessionState(int newState) {
 
-        String state = "UNKNOWN";
-        String additionalInfo = "";
+        if (newState == lastUpdatedState) {
+            Log.w(LOG_TAG, "Ignoring duplicate state update");
+            return;
+        }
+        lastUpdatedState = newState;
+        
+        String state = this.getSessionStateString(newState);
+        WritableMap stateMap = Arguments.createMap();
+        stateMap.putString("state", state);
 
-        switch (newState) {
-            case SessionState.NO_DEVICES_AVAILABLE:
-                state = "NO_DEVICES_AVAILABLE";
-                break;
-            case SessionState.NOT_CONNECTED:
-                state = "NOT_CONNECTED";
-                break;
-            case SessionState.CONNECTING:
-                state = "CONNECTING";
-                break;
-
-            case SessionState.CONNECTED:
-                
-                state = "CONNECTED";
-
-                VizbeeSessionManager sessionManager = VizbeeContext.getInstance().getSessionManager();
-                if (null != sessionManager) {
-                    VizbeeSession currentSession = sessionManager.getCurrentSession();
-                    VizbeeScreen currentScreen = currentSession.getVizbeeScreen();
-                    String friendlyName = currentScreen.getScreenInfo().getFriendlyName();
-                    String model = currentScreen.getScreenInfo().getModel();
-                    additionalInfo = friendlyName + "(" + model + ")";
-                }
-                break;
+        WritableMap deviceMap = this.getSessionConnectedDeviceMap();
+        if (null != deviceMap) {
+            stateMap.merge(deviceMap);
         }
 
-        Log.d(LOG_TAG, "Session status: " + state + " additional information: " + additionalInfo);
-
-        WritableMap map = Arguments.createMap();
-        map.putString("state", state);
-        map.putString("additionaInfo", additionalInfo);
-        this.sendEvent("VZB_SESSION_STATE", map);
+        this.sendEvent("VZB_SESSION_STATE", stateMap);
     }
 
     @Override
@@ -189,7 +245,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
     }
 
     //----------------
-    // Private
+    // Bridge Events
     //----------------
 
     private void sendEvent(String eventName, @Nullable WritableMap params) {

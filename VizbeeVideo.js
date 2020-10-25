@@ -7,11 +7,11 @@ export default class VizbeeVideo {
         // metadata
         this.title = "";
         this.subtitle = "";
-        this.imageURL = "";
+        this.imageUrl = "";
         this.isLive = false;
 
         // streamInfo
-        this.streamURL = null;
+        this.streamUrl = null;
         this.tracks = {};
         this.startPositionInSeconds = 0;
 

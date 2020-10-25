@@ -26,8 +26,12 @@ class VizbeeManager {
     // Session APIs
     //------------------
 
-    triggerSessionStateEvent() {
-        VizbeeNativeManager.triggerSessionStateEvent();
+    async getSessionState() {
+        return VizbeeNativeManager.getSessionState();
+    }
+
+    async getSessionConnectedDevice() {
+        return VizbeeNativeManager.getSessionConnectedDevice();
     }
 
     //------------------
@@ -36,7 +40,7 @@ class VizbeeManager {
 
     addListener(eventName, callback, context) {
         this.subs[this.sub_id] = VizbeeNativeEmitter.addListener(eventName, function (map) {
-            callback.apply(context || null, map)
+            callback.call(context || null, map)
         })
         return this.sub_id++
     }
