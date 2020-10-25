@@ -1,5 +1,6 @@
 
 # react-native-vizbee-sender-sdk
+![Vizbee](https://static.claspws.tv/images/common/logos/vizbee_logo_tagline.png)
 
 ## Getting started
 
