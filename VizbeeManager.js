@@ -11,11 +11,15 @@ class VizbeeManager {
     }
 
     //------------------
-    // Smart APIs
+    // Flow APIs
     //------------------
 
     smartPrompt() {
         VizbeeNativeManager.smartPrompt();
+    }
+
+    smartCast() {
+        VizbeeNativeManager.smartCast();
     }
 
     smartPlay(vizbeeVideo, didPlayOnTVCallback, doPlayOnPhoneCallback) {
@@ -32,6 +36,26 @@ class VizbeeManager {
 
     async getSessionConnectedDevice() {
         return VizbeeNativeManager.getSessionConnectedDevice();
+    }
+
+    //------------------
+    // Video APIs
+    //------------------
+
+    play() {
+        VizbeeNativeManager.play();
+    }
+
+    pause() {
+        VizbeeNativeManager.pause();
+    }
+
+    seek(position) {
+        VizbeeNativeManager.seek(position);
+    }
+
+    stop() {
+        VizbeeNativeManager.stop();
     }
 
     //------------------

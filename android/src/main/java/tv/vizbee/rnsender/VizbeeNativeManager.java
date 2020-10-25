@@ -22,6 +22,8 @@ import tv.vizbee.api.session.SessionStateListener;
 import tv.vizbee.api.session.VizbeeSessionManager;
 import tv.vizbee.api.session.VizbeeScreen;
 import tv.vizbee.api.session.VizbeeSession;
+import tv.vizbee.api.session.VideoClient;
+import tv.vizbee.api.session.VideoStatus;
 
 public class VizbeeNativeManager extends ReactContextBaseJavaModule implements LifecycleEventListener {
 
@@ -42,7 +44,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
     }
 
     //----------------
-    // Smart APIs
+    // Flow APIs
     //----------------
 
     @ReactMethod
@@ -58,6 +60,23 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
 
         // Renamed old smartHelp API to new smartPrompt
         VizbeeContext.getInstance().smartHelp(activity);
+    }
+
+    @ReactMethod
+    public void smartCast() {
+
+        Log.v(LOG_TAG, "Invoking smartCast");
+
+        Activity activity = this.reactContext.getCurrentActivity();
+        if (activity == null) {
+            Log.e(LOG_TAG, "SmartCast - null activity");
+            return;
+        }
+
+         VizbeeSessionManager sessionManager = VizbeeContext.getInstance().getSessionManager();
+        if (null != sessionManager) {
+            sessionManager.onCastIconClicked(activity);
+        }
     }
 
     @ReactMethod
@@ -89,17 +108,6 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
     // Session APIs
     //----------------
 
-    // TODO: Remove
-    // 
-    // @ReactMethod
-    // public void triggerSessionStateEvent() {
-
-    //     VizbeeSessionManager sessionManager = VizbeeContext.getInstance().getSessionManager();
-    //     if (null != sessionManager) {
-    //         this.notifySessionState(sessionManager.getSessionState());
-    //     }
-    // }
-
     @ReactMethod
     public void getSessionState(final Promise promise) {
 
@@ -129,6 +137,135 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
                 promise.resolve(VizbeeNativeManager.this.getSessionConnectedDeviceMap());
             }
         });
+    }
+
+    //----------------
+    // Video APIs
+    //----------------
+
+    @ReactMethod
+    public void play() {
+
+        VideoClient videoClient = getSessionVideoClient();
+        if (null != videoClient) {
+            videoClient.play();
+        } else {
+            Log.w(LOG_TAG, "Play ignored because videoClient is null");
+        }
+    }
+
+    @ReactMethod
+    public void pause() {
+        
+        VideoClient videoClient = getSessionVideoClient();
+        if (null != videoClient) {
+            videoClient.pause();
+        } else {
+            Log.w(LOG_TAG, "Pause ignored because videoClient is null");
+        }
+    }
+
+    @ReactMethod
+    public void seek(long position) {
+        
+        VideoClient videoClient = getSessionVideoClient();
+        if (null != videoClient) {
+            videoClient.seek(position);
+        } else {
+            Log.w(LOG_TAG, "Seek ignored because videoClient is null");
+        }
+    }
+
+    @ReactMethod
+    public void stop() {
+        VideoClient videoClient = getSessionVideoClient();
+        if (null != videoClient) {
+            videoClient.stop();
+        } else {
+            Log.w(LOG_TAG, "Stop ignored because videoClient is null");
+        }
+    }
+
+    //----------------
+    // App & session lifecycle
+    //----------------
+
+    @Override
+    public void onHostResume() {
+        this.addSessionStateListener();
+    }
+
+    @Override
+    public void onHostPause() {
+        this.removeSessionStateListener();
+    }
+
+    @Override
+    public void onHostDestroy() {
+    }
+
+    private SessionStateListener sessionStateListener;
+    private int lastUpdatedState = 0; // UNKNOWN
+
+    private void addSessionStateListener() {
+
+        // sanity
+        this.removeSessionStateListener();
+
+        VizbeeSessionManager sessionManager = VizbeeContext.getInstance().getSessionManager();
+        if (null != sessionManager) {
+
+            this.sessionStateListener = new SessionStateListener() {
+                
+                @Override
+                public void onSessionStateChanged(int newState) {
+                    
+                    // handle videoClient
+                    if (newState == SessionState.CONNECTED) {
+
+                    } else {
+
+                    }
+
+                    VizbeeNativeManager.this.notifySessionStatus(newState);
+                }
+            };
+            sessionManager.addSessionStateListener(this.sessionStateListener);
+
+            // force first update
+            this.notifySessionStatus(sessionManager.getSessionState());
+        }
+    }
+
+    private void removeSessionStateListener() {
+
+        VizbeeSessionManager sessionManager = VizbeeContext.getInstance().getSessionManager();
+        if (null != sessionManager) {
+            if (null != this.sessionStateListener) {
+                sessionManager.removeSessionStateListener(this.sessionStateListener);
+            }
+        }
+        this.sessionStateListener = null;
+    }
+
+    private void notifySessionStatus(int newState) {
+
+        if (newState == lastUpdatedState) {
+            Log.w(LOG_TAG, "Ignoring duplicate state update");
+            return;
+        }
+        lastUpdatedState = newState;
+
+        String state = this.getSessionStateString(newState);
+        WritableMap stateMap = Arguments.createMap();
+        stateMap.putString("connectionState", state);
+
+        WritableMap deviceMap = this.getSessionConnectedDeviceMap();
+        if (null != deviceMap) {
+            stateMap.merge(deviceMap);
+        }
+
+        this.sendEvent("VZB_SESSION_STATUS", stateMap);
     }
 
     private String getSessionStateString(int state) {
@@ -165,87 +302,104 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
         }
 
         WritableMap map = Arguments.createMap();
-        map.putString("deviceType", screen.getScreenType().getTypeName());
-        map.putString("deviceFriendlyName", screen.getScreenInfo().getFriendlyName());
-        map.putString("deviceModel", screen.getScreenInfo().getModel());
+        map.putString("connectedDeviceType", screen.getScreenType().getTypeName());
+        map.putString("connectedDeviceFriendlyName", screen.getScreenInfo().getFriendlyName());
+        map.putString("connectedDeviceModel", screen.getScreenInfo().getModel());
         return map;
     }
 
     //----------------
-    // App lifecycle
+    // Video client listener
     //----------------
 
-    private SessionStateListener sessionStateListener;
-    private SessionState lastUpdatedState = 0; // UNKNOWN
+     private VideoClient.VideoStatusListener videoStatusListener;
 
-    private void addSessionStateListener() {
+    private VideoClient getSessionVideoClient() {
+
+        VizbeeSessionManager sessionManager = VizbeeContext.getInstance().getSessionManager();
+        if (null == sessionManager) {
+            return null;
+        }
+
+        VizbeeSession currentSession = sessionManager.getCurrentSession();
+        if (null == currentSession) {
+            return null;
+        }
+
+        VideoClient videoClient = currentSession.getVideoClient();
+        return videoClient;
+    }
+
+    private void addVideoStatusListener() {
 
         // sanity
-        this.removeSessionStateListener();
+        this.removeVideoStatusListener();
 
-        VizbeeSessionManager sessionManager = VizbeeContext.getInstance().getSessionManager();
-        if (null != sessionManager) {
+        VideoClient videoClient = getSessionVideoClient();
+        if (null != videoClient) {
 
-            this.sessionStateListener = new SessionStateListener() {
+            this.videoStatusListener = new VideoClient.VideoStatusListener() {
                 
                 @Override
-                public void onSessionStateChanged(int newState) {
-                    VizbeeNativeManager.this.notifySessionState(newState);
+                public void onVideoStatusUpdated(VideoStatus status) {
+                    VizbeeNativeManager.this.notifyMediaStatus(status);
                 }
             };
-            sessionManager.addSessionStateListener(this.sessionStateListener);
+            videoClient.addVideoStatusListener(this.videoStatusListener);
 
-            this.notifySessionState(sessionManager.getSessionState());
+            // force first update
+            this.notifyMediaStatus(videoClient.getVideoStatus());
         }
     }
 
-    private void removeSessionStateListener() {
+    private void removeVideoStatusListener() {
 
-        VizbeeSessionManager sessionManager = VizbeeContext.getInstance().getSessionManager();
-        if (null != sessionManager) {
-            if (null != this.sessionStateListener) {
-                sessionManager.removeSessionStateListener(this.sessionStateListener);
+        VideoClient videoClient = getSessionVideoClient();
+        if (null != videoClient) {
+            if (null != this.videoStatusListener) {
+                videoClient.removeVideoStatusListener(this.videoStatusListener);
             }
         }
-        this.sessionStateListener = null;
+        this.videoStatusListener = null;
     }
 
-    private void notifySessionState(int newState) {
+     private void notifyMediaStatus(VideoStatus videoStatus) {
 
-        if (newState == lastUpdatedState) {
-            Log.w(LOG_TAG, "Ignoring duplicate state update");
-            return;
-        }
-        lastUpdatedState = newState;
+        WritableMap videoStatusMap = this.getVideoStatusMap(videoStatus);
+        this.sendEvent("VZB_MEDIA_STATUS", videoStatusMap);
+    }
+
+    private WritableMap getVideoStatusMap(VideoStatus videoStatus) {
+
+        WritableMap videoStatusMap = Arguments.createMap();
+        videoStatusMap.putString("guid", videoStatus.getGuid());
+        videoStatusMap.putInt("position", (int) videoStatus.getStreamPosition());
+        videoStatusMap.putInt("duration", (int) videoStatus.getStreamDuration());
+        videoStatusMap.putBoolean("isLive", videoStatus.isStreamLive());
+        videoStatusMap.putString("playerState", this.getPlayerStateString(videoStatus.getPlayerState()));
+        videoStatusMap.putBoolean("isAdPlaying", videoStatus.isAdPlaying());
         
-        String state = this.getSessionStateString(newState);
-        WritableMap stateMap = Arguments.createMap();
-        stateMap.putString("state", state);
+        return videoStatusMap;
+    }
 
-        WritableMap deviceMap = this.getSessionConnectedDeviceMap();
-        if (null != deviceMap) {
-            stateMap.merge(deviceMap);
+    private String getPlayerStateString(int state) {
+
+        switch (state) {
+            case VideoStatus.PLAYER_STATE_IDLE:
+                return "IDLE";
+            case VideoStatus.PLAYER_STATE_PLAYING:
+                return "PLAYING";
+            case VideoStatus.PLAYER_STATE_PAUSED:
+                return "PAUSED";
+            case VideoStatus.PLAYER_STATE_BUFFERING:
+                return "BUFFERING";
+            default:
+                return "UNKNOWN";
         }
-
-        this.sendEvent("VZB_SESSION_STATE", stateMap);
-    }
-
-    @Override
-    public void onHostResume() {
-        this.addSessionStateListener();
-    }
-
-    @Override
-    public void onHostPause() {
-        this.removeSessionStateListener();
-    }
-
-    @Override
-    public void onHostDestroy() {
     }
 
     //----------------
-    // Bridge Events
+    // Bridge events
     //----------------
 
     private void sendEvent(String eventName, @Nullable WritableMap params) {
