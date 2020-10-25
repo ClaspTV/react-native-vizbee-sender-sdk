@@ -341,10 +341,10 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
         // sanity
         this.removeVideoStatusListener();
 
+        Log.v(LOG_TAG, "TRYING to add video status listener");
         VideoClient videoClient = getSessionVideoClient();
         if (null != videoClient) {
 
-            Log.i(LOG_TAG, "Adding video status listener");
             this.videoStatusListener = new VideoClient.VideoStatusListener() {
                 
                 @Override
@@ -353,19 +353,24 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
                 }
             };
             videoClient.addVideoStatusListener(this.videoStatusListener);
+            Log.i(LOG_TAG, "SUCCESS adding video status listener");
 
             // force first update
             this.notifyMediaStatus(videoClient.getVideoStatus());
+        } else {
+
+            Log.w(LOG_TAG, "FAILED to add video status listener");
         }
     }
 
     private void removeVideoStatusListener() {
 
+        Log.v(LOG_TAG, "TRYING to remove video status listener");
         VideoClient videoClient = getSessionVideoClient();
         if (null != videoClient) {
             if (null != this.videoStatusListener) {
 
-                Log.i(LOG_TAG, "Removing video status listener");
+                Log.i(LOG_TAG, "SUCCESS removing video status listener");
                 videoClient.removeVideoStatusListener(this.videoStatusListener);
             }
         }
