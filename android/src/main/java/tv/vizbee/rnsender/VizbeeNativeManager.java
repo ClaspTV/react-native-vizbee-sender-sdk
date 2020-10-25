@@ -222,9 +222,9 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
                     
                     // handle videoClient
                     if (newState == SessionState.CONNECTED) {
-
+                        VizbeeNativeManager.this.addVideoStatusListener();
                     } else {
-
+                        VizbeeNativeManager.this.removeVideoStatusListener();
                     }
 
                     VizbeeNativeManager.this.notifySessionStatus(newState);
