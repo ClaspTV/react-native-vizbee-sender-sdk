@@ -215,6 +215,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
         VizbeeSessionManager sessionManager = VizbeeContext.getInstance().getSessionManager();
         if (null != sessionManager) {
 
+            Log.i(LOG_TAG, "Adding session state listener");
             this.sessionStateListener = new SessionStateListener() {
                 
                 @Override
@@ -242,6 +243,8 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
         VizbeeSessionManager sessionManager = VizbeeContext.getInstance().getSessionManager();
         if (null != sessionManager) {
             if (null != this.sessionStateListener) {
+
+                Log.i(LOG_TAG, "Removing session state listener");
                 sessionManager.removeSessionStateListener(this.sessionStateListener);
             }
         }
@@ -338,6 +341,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
         VideoClient videoClient = getSessionVideoClient();
         if (null != videoClient) {
 
+            Log.i(LOG_TAG, "Adding video status listener");
             this.videoStatusListener = new VideoClient.VideoStatusListener() {
                 
                 @Override
@@ -357,6 +361,8 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
         VideoClient videoClient = getSessionVideoClient();
         if (null != videoClient) {
             if (null != this.videoStatusListener) {
+
+                Log.i(LOG_TAG, "Removing video status listener");
                 videoClient.removeVideoStatusListener(this.videoStatusListener);
             }
         }
@@ -365,6 +371,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
 
      private void notifyMediaStatus(VideoStatus videoStatus) {
 
+        Log.v(LOG_TAG, "Sending media status " + videoStatus.toString());
         WritableMap videoStatusMap = this.getVideoStatusMap(videoStatus);
         this.sendEvent("VZB_MEDIA_STATUS", videoStatusMap);
     }
