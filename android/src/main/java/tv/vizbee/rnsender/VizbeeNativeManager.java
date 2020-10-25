@@ -192,16 +192,19 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
 
     @Override
     public void onHostResume() {
+        Log.v(LOG_TAG, "onHostResume");
         this.addSessionStateListener();
     }
 
     @Override
     public void onHostPause() {
-        this.removeSessionStateListener();
+        Log.v(LOG_TAG, "onHostPause");
     }
 
     @Override
     public void onHostDestroy() {
+        Log.v(LOG_TAG, "onHostDestroy");
+        this.removeSessionStateListener();
     }
 
     private SessionStateListener sessionStateListener;
