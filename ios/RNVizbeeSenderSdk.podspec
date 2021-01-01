@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
   s.description  = <<-DESC
                   RNVizbeeSenderSdk
                    DESC
-  s.homepage     = ""
+  s.homepage     = "https://vizbee.tv"
   s.license      = "MIT"
   # s.license      = { :type => "MIT", :file => "FILE_LICENSE" }
   s.author             = { "author" => "author@domain.cn" }
