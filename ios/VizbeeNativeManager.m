@@ -4,10 +4,26 @@
 
 @implementation VizbeeNativeManager
 
+{
+  BOOL _hasListeners;
+}
+
 RCT_EXPORT_MODULE()
 
 -(dispatch_queue_t) methodQueue {
     return dispatch_get_main_queue();
+}
+
+// Will be called when this module's first listener is added.
+- (void)startObserving
+{
+  _hasListeners = YES;
+}
+
+// Will be called when this module's last listener is removed, or on dealloc.
+- (void)stopObserving
+{
+  _hasListeners = NO;
 }
 
 //----------------
