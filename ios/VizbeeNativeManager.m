@@ -14,6 +14,10 @@ RCT_EXPORT_MODULE()
     return dispatch_get_main_queue();
 }
 
+-(NSArray<NSString*>*) supportedEvents {
+        return @[@"CancelEvent", @"OKEvent"];
+}
+
 // Will be called when this module's first listener is added.
 - (void)startObserving
 {
