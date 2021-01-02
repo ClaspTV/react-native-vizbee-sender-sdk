@@ -4,7 +4,9 @@
 #import <React/RCTBridgeModule.h>
 #endif
 
-@interface VizbeeNativeManager : NSObject <RCTBridgeModule>
+#import <React/RCTEventEmitter.h>
+
+@interface VizbeeNativeManager : RCTEventEmitter <RCTBridgeModule>
 
 @end
   
