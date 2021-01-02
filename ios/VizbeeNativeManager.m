@@ -33,13 +33,11 @@ RCT_EXPORT_METHOD(smartPlay:(NSDictionary*) vizbeeVideoMap
 // Session APIs
 //----------------
 
-RCT_EXPORT_METHOD(getSessionState:(RCTPromiseResolveBlock)resolver
-                         rejecter:(RCTPromiseRejectBlock)rejecter) {
+RCT_REMAP_METHOD(getSessionState, getSessionStateWithResolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
     RCTLogInfo(@"Invoking getSessionState");
 }
 
-RCT_EXPORT_METHOD(getSessionConnectedDevice:(RCTPromiseResolveBlock)resolver
-                                   rejecter:(RCTPromiseRejectBlock)rejecter) {
+RCT_REMAP_METHOD(getSessionConnectedDevice, getSessionConnectedDeviceWithResolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
     RCTLogInfo(@"Invoking getSessionConnectedDevice");
 }
 
@@ -55,7 +53,7 @@ RCT_EXPORT_METHOD(pause) {
     RCTLogInfo(@"Invoking pause");
 }
 
-RCT_EXPORT_METHOD(seek) {
+RCT_EXPORT_METHOD(seek:(double) position) {
     RCTLogInfo(@"Invoking seek");
 }
 
