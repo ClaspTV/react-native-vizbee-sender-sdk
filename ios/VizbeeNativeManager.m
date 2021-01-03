@@ -1,5 +1,6 @@
 
 #import "VizbeeNativeManager.h"
+#import "VizbeeVideo.h"
 #import <VizbeeKit/VizbeeKit.h>
 #import <React/RCTLog.h>
 
@@ -50,7 +51,19 @@ RCT_EXPORT_METHOD(smartPrompt) {
 }
 
 RCT_EXPORT_METHOD(smartCast) {
+    
     RCTLogInfo(@"Invoking smartCast");
+
+    UIViewController* vc = [self currentTopViewController];
+    if (nil == vc) {
+        RCTLogError(@"SmartCast - nil viewcontroller");
+        return;
+    }
+
+    VZBSessionManager* sessionManager = [Vizbee getSessionManager];
+    if (nil != sessionManager) {
+        [sessionManager onCastIconTapped:vc];
+    }
 }
 
 RCT_EXPORT_METHOD(smartPlay:(NSDictionary*) vizbeeVideoMap
@@ -113,6 +126,19 @@ RCT_EXPORT_METHOD(seek:(double) position) {
 
 RCT_EXPORT_METHOD(stop) {
     RCTLogInfo(@"Invoking stop");
+}
+
+//----------------
+// Helpers
+//----------------
+
+- (UIViewController *)currentTopViewController {
+    
+    UIViewController *topVC = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
+    while (topVC.presentedViewController) {
+        topVC = topVC.presentedViewController;
+    }
+    return topVC;
 }
 
 @end
