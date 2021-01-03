@@ -1,20 +1,19 @@
+require 'json'
 
 Pod::Spec.new do |s|
   s.name         = "RNVizbeeSenderSdk"
-  s.version      = "1.0.0"
-  s.summary      = "RNVizbeeSenderSdk"
+  s.version      = package['version']
+  s.summary      = package['description']
   s.description  = <<-DESC
                   RNVizbeeSenderSdk
                    DESC
+  s.author        = { "Vizbee" => "info@vizbee.tv" }
   s.homepage     = "https://vizbee.tv"
   s.license      = "MIT"
-  # s.license      = { :type => "MIT", :file => "FILE_LICENSE" }
-  s.author             = { "author" => "author@domain.cn" }
-  s.platform     = :ios, "7.0"
+  s.platform     = :ios, "8.0"
+  s.requires_arc = true
   s.source       = { :git => "https://github.com/author/RNVizbeeSenderSdk.git", :tag => "master" }
   s.source_files  = "ios/**/*.{h,m}"
-  s.requires_arc = true
-
 
   s.dependency "React"
   s.dependency 'VizbeeKit' , '~> 5.9.2'
