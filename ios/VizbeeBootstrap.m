@@ -4,7 +4,6 @@
 //
 
 #import "VizbeeBootstrap.h"
-#import <VizbeeKit/VizbeeKit.h>
 #import "VizbeeAppAdapter.h"
 
 @implementation VizbeeBootstrap
@@ -29,7 +28,7 @@
     // always use production
     options.isProduction = YES;
     VizbeeAppAdapter* vizbeeAppAdapter = [[VizbeeAppAdapter alloc] init];
-    [Vizbee startWithAppID:appId appAdapterDelegate:vizbeeAppAdapter andVizbeeOptions:vizbeeOptions];
+    [Vizbee startWithAppID:vizbeeAppId appAdapterDelegate:vizbeeAppAdapter andVizbeeOptions:options];
 }
 
 @end

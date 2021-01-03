@@ -3,6 +3,7 @@
 //  RNVizbeeSenderSdk
 //
 
+#import <VizbeeKit/VizbeeKit.h>
 #import <Foundation/Foundation.h>
 
 @interface VizbeeBootstrap : NSObject
