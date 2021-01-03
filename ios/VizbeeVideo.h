@@ -18,7 +18,7 @@
 @property (nonatomic, copy) NSString* title;
 
 /** subTitle of the video */
-@property (nonatomic, copy) NSString* subTitle;
+@property (nonatomic, copy) NSString* subtitle;
 
 /** Image URL */
 @property (nonatomic, copy) NSString* imageUrl;
@@ -41,5 +41,7 @@
 //----------------------------------
 
 @property (nonatomic, copy) NSDictionary* customProperties;
+
+-(instancetype) init:(NSDictionary*) vizbeeVideo;
 
 @end
