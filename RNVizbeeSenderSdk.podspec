@@ -1,6 +1,8 @@
 require 'json'
 
 Pod::Spec.new do |s|
+  package = JSON.parse(File.read(File.join(__dir__, 'package.json')))
+  
   s.name         = "RNVizbeeSenderSdk"
   s.version      = package['version']
   s.summary      = package['description']
