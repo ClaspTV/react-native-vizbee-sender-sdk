@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		360B02A42574436700B13A87 /* VizbeeCastButtonViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 360B02A32574436700B13A87 /* VizbeeCastButtonViewManager.m */; };
 		360B02A82574494300B13A87 /* VizbeeBootstrap.m in Sources */ = {isa = PBXBuildFile; fileRef = 360B02A72574494300B13A87 /* VizbeeBootstrap.m */; };
-		360C99DA25A164020024FE68 /* VizbeeTestModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 360C99D925A164020024FE68 /* VizbeeTestModule.m */; };
 		36247D96257EF0850090041C /* VizbeeAppAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 36247D95257EF0850090041C /* VizbeeAppAdapter.m */; };
 		36247D99257EF3650090041C /* VizbeeVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = 36247D98257EF3650090041C /* VizbeeVideo.m */; };
 		B3E7B58A1CC2AC0600A0062D /* VizbeeNativeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* VizbeeNativeManager.m */; };
@@ -32,8 +31,6 @@
 		360B02A32574436700B13A87 /* VizbeeCastButtonViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VizbeeCastButtonViewManager.m; sourceTree = "<group>"; };
 		360B02A62574494300B13A87 /* VizbeeBootstrap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VizbeeBootstrap.h; sourceTree = "<group>"; };
 		360B02A72574494300B13A87 /* VizbeeBootstrap.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VizbeeBootstrap.m; sourceTree = "<group>"; };
-		360C99D825A164020024FE68 /* VizbeeTestModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VizbeeTestModule.h; sourceTree = "<group>"; };
-		360C99D925A164020024FE68 /* VizbeeTestModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VizbeeTestModule.m; sourceTree = "<group>"; };
 		36247D94257EF0850090041C /* VizbeeAppAdapter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VizbeeAppAdapter.h; sourceTree = "<group>"; };
 		36247D95257EF0850090041C /* VizbeeAppAdapter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VizbeeAppAdapter.m; sourceTree = "<group>"; };
 		36247D97257EF3650090041C /* VizbeeVideo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VizbeeVideo.h; sourceTree = "<group>"; };
@@ -64,8 +61,6 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
-				360C99D825A164020024FE68 /* VizbeeTestModule.h */,
-				360C99D925A164020024FE68 /* VizbeeTestModule.m */,
 				36247D97257EF3650090041C /* VizbeeVideo.h */,
 				36247D98257EF3650090041C /* VizbeeVideo.m */,
 				36247D94257EF0850090041C /* VizbeeAppAdapter.h */,
@@ -138,7 +133,6 @@
 			files = (
 				36247D96257EF0850090041C /* VizbeeAppAdapter.m in Sources */,
 				360B02A42574436700B13A87 /* VizbeeCastButtonViewManager.m in Sources */,
-				360C99DA25A164020024FE68 /* VizbeeTestModule.m in Sources */,
 				B3E7B58A1CC2AC0600A0062D /* VizbeeNativeManager.m in Sources */,
 				36247D99257EF3650090041C /* VizbeeVideo.m in Sources */,
 				360B02A82574494300B13A87 /* VizbeeBootstrap.m in Sources */,
