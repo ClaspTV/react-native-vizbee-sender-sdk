@@ -43,8 +43,8 @@ RCT_EXPORT_METHOD(smartCast) {
 }
 
 RCT_EXPORT_METHOD(smartPlay:(NSDictionary*) vizbeeVideoMap
-        didPlayOnTVCallback:(RCTResponseSenderBlock)callback
-         doPlayOnTVCallback:(RCTResponseSenderBlock)callback
+        didPlayOnTVCallback:(RCTResponseSenderBlock) didPlayOnTVCallback
+      doPlayOnPhoneCallback:(RCTResponseSenderBlock) doPlayOnPhoneCallback
         ) {
     RCTLogInfo(@"Invoking smartPlay");
 }
