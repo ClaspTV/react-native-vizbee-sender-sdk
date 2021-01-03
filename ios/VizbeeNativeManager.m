@@ -1,5 +1,6 @@
 
 #import "VizbeeNativeManager.h"
+#import <VizbeeKit/VizbeeKit.h>
 #import <React/RCTLog.h>
 
 @implementation VizbeeNativeManager
@@ -35,7 +36,17 @@ RCT_EXPORT_MODULE(VizbeeNativeManager)
 //----------------
 
 RCT_EXPORT_METHOD(smartPrompt) {
+
     RCTLogInfo(@"Invoking smartPrompt");
+
+   UIViewController* vc = [self currentTopViewController];
+   if (nil == vc) {
+       RCTLogError(@"SmartPrompt - nil viewcontroller");
+       return;
+   }
+
+    // Renamed old smartHelp API to new smartPrompt
+    [Vizbee smartHelp:vc];
 }
 
 RCT_EXPORT_METHOD(smartCast) {

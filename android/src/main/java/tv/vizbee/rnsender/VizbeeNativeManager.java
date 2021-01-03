@@ -54,7 +54,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
 
         Activity activity = this.reactContext.getCurrentActivity();
         if (activity == null) {
-            Log.e(LOG_TAG, "SmartPlay - null activity");
+            Log.e(LOG_TAG, "SmartPrompt - null activity");
             return;
         }
 
