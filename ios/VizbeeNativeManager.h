@@ -5,8 +5,9 @@
 #endif
 
 #import <React/RCTEventEmitter.h>
+#import <VizbeeKit/VZBSessionManager.h>
 
-@interface VizbeeNativeManager : RCTEventEmitter <RCTBridgeModule>
+@interface VizbeeNativeManager : RCTEventEmitter <RCTBridgeModule, VZBSessionStateDelegate, VZBVideoStatusUpdateDelegate>
 
 @end
   
