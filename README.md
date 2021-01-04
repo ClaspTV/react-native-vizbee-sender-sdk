@@ -4,9 +4,9 @@
 
 ## Overview
 
-Vizbee enables streaming apps to deliver seamless cross-device experiences. This repository provides the React Native SDK for enabling Vizbee's cross-device experiences. You need a [Vizbee account](https://console.vizbee.tv) in order to use this SDK.
+Vizbee enables streaming apps to deliver great cross-device experiences. This repository provides the React Native SDK for enabling Vizbee's cross-device experiences. You need a [Vizbee account](https://console.vizbee.tv) in order to use this SDK.
 
-## Getting started
+## Build setup
 
 See [build setup instructions](https://gist.github.com/vizbee/48815c9cf8f752507b470ef99c6cc090) for RN Vizbee Sender SDK.
 
