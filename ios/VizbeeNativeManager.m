@@ -37,13 +37,16 @@ RCT_EXPORT_MODULE(VizbeeNativeManager)
 -(void) initNotifications {
     
     [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(onApplicationWillResignActive:)
+                                               name:UIApplicationWillResignActiveNotification
+                                             object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(onApplicationDidBecomeActive:)
                                                  name:UIApplicationDidBecomeActiveNotification
                                                object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onApplicationWillResignActive:)
-                                                 name:UIApplicationWillResignActiveNotification
-                                               object:nil];
+    // force first update
+    [self onApplicationDidBecomeActive:nil];
+    
 }
 
 -(void) uninitNotifications {
@@ -63,28 +66,30 @@ RCT_EXPORT_MODULE(VizbeeNativeManager)
 }
 
 -(NSArray<NSString*>*) supportedEvents {
-    return @[@"VZB_SESSION_STATUS", @"OKEvent"];
+    return @[@"VZB_SESSION_STATUS", @"VZB_MEDIA_STATUS"];
 }
 
 // will be called when this module's first listener is added.
 - (void)startObserving {
+    RCTLogInfo(@"RNVZBSDK: start observing invoked");
     self.hasListeners = YES;
 }
 
 // will be called when this module's last listener is removed, or on dealloc.
 - (void)stopObserving {
+    RCTLogInfo(@"RNVZBSDK: stop observing invoked");
     self.hasListeners = NO;
 }
 
 -(void)sendEvent:(NSString*) name
         withBody:(NSDictionary*) body {
     
-    NSLog(@"RNVZBSDK: Sending event %@ with body %@", name, body);
+    RCTLogInfo(@"RNVZBSDK: Sending event %@ with body %@", name, body);
     
     if (self.hasListeners) {
         [self sendEventWithName:name body:body];
     } else {
-        NSLog(@"RNVZBSDK: Filtered event because there are no listeners!");
+        RCTLogInfo(@"RNVZBSDK: Filtered event because there are no listeners!");
     }
 }
 
@@ -140,7 +145,7 @@ RCT_EXPORT_METHOD(smartPlay:(NSDictionary*) vizbeeVideoMap
             
         VizbeeVideo* vizbeeVideo = [[VizbeeVideo alloc] init:vizbeeVideoMap];
         BOOL didPlayOnTV = [Vizbee smartPlay:vizbeeVideo
-                                     atPosition:(1000 * vizbeeVideo.startPositionInSeconds)
+                                     atPosition:vizbeeVideo.startPositionInSeconds
                        presentingViewController:vc];
                               
         if (didPlayOnTV) {
@@ -166,10 +171,28 @@ RCT_EXPORT_METHOD(smartPlay:(NSDictionary*) vizbeeVideoMap
 
 RCT_REMAP_METHOD(getSessionState, getSessionStateWithResolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
     RCTLogInfo(@"Invoking getSessionState");
+  
+    VZBSessionManager* sessionManager = [Vizbee getSessionManager];
+    if (nil == sessionManager) {
+          reject(@"No session manager", @"Session manager is nil", nil);
+          return;
+    }
+
+    resolve([self getSessionStateString:[sessionManager getSessionState]]);
 }
 
 RCT_REMAP_METHOD(getSessionConnectedDevice, getSessionConnectedDeviceWithResolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
     RCTLogInfo(@"Invoking getSessionConnectedDevice");
+  
+    VZBSessionManager* sessionManager = [Vizbee getSessionManager];
+    if (nil == sessionManager) {
+          reject(@"No session manager", @"Session manager is nil", nil);
+          return;
+    }
+  
+    NSDictionary* map = [self getSessionConnectedDeviceMap];
+    RCTLogInfo(@"getSessionConnectedDevice %@", map);
+    resolve(map);
 }
 
 //----------------
@@ -177,19 +200,43 @@ RCT_REMAP_METHOD(getSessionConnectedDevice, getSessionConnectedDeviceWithResolve
 //----------------
 
 RCT_EXPORT_METHOD(play) {
-    RCTLogInfo(@"Invoking play");
+
+    VZBVideoClient* videoClient = [self getSessionVideoClient];
+    if (nil != videoClient) {
+        [videoClient play];
+    } else {
+        RCTLogWarn(@"Play ignored because videoClient is null");
+    }
 }
 
 RCT_EXPORT_METHOD(pause) {
-    RCTLogInfo(@"Invoking pause");
+  
+    VZBVideoClient* videoClient = [self getSessionVideoClient];
+    if (nil != videoClient) {
+        [videoClient pause];
+    } else {
+        RCTLogWarn(@"Pause ignored because videoClient is null");
+    }
 }
 
 RCT_EXPORT_METHOD(seek:(double) position) {
-    RCTLogInfo(@"Invoking seek");
+  
+    VZBVideoClient* videoClient = [self getSessionVideoClient];
+    if (nil != videoClient) {
+        [videoClient seek:position];
+    } else {
+        RCTLogWarn(@"Seek ignored because videoClient is null");
+    }
 }
 
 RCT_EXPORT_METHOD(stop) {
-    RCTLogInfo(@"Invoking stop");
+  
+    VZBVideoClient* videoClient = [self getSessionVideoClient];
+    if (nil != videoClient) {
+        [videoClient stop];
+    } else {
+        RCTLogWarn(@"Stop ignored because videoClient is null");
+    }
 }
 
 //----------------
@@ -197,10 +244,12 @@ RCT_EXPORT_METHOD(stop) {
 //----------------
 
 -(void) onApplicationDidBecomeActive:(NSNotification*)notification {
+    RCTLogInfo(@"onApplicationDidBecomeActive - adding session state listener");
     [self addSessionStateListener];
 }
 
 -(void) onApplicationWillResignActive:(NSNotification*)notification {
+    RCTLogInfo(@"onApplicationWillResignActive - removing session state listener");
     [self removeSessionStateListener];
 }
 
@@ -224,7 +273,7 @@ RCT_EXPORT_METHOD(stop) {
     VZBSessionManager* sessionManager = [Vizbee getSessionManager];
     if (nil != sessionManager) {
         
-        NSLog(@"RNVZBSDK: Adding session state listener");
+        RCTLogInfo(@"RNVZBSDK: Adding session state listener");
         [sessionManager addSessionStateDelegate:self];
 
         // force first update
@@ -237,7 +286,7 @@ RCT_EXPORT_METHOD(stop) {
     VZBSessionManager* sessionManager = [Vizbee getSessionManager];
     if (nil != sessionManager) {
 
-        NSLog(@"RNVZBSDK: Removing session state listener");
+        RCTLogInfo(@"RNVZBSDK: Removing session state listener");
         [sessionManager removeSessionStateDelegate:self];
     }
 }
@@ -245,7 +294,7 @@ RCT_EXPORT_METHOD(stop) {
 -(void) notifySessionStatus:(VZBSessionState) newState {
 
     if (newState == self.lastUpdatedState) {
-        NSLog(@"RNVZBSDK: Ignoring duplicate state update");
+        RCTLogInfo(@"RNVZBSDK: Ignoring duplicate state update");
         return;
     }
     self.lastUpdatedState = newState;
@@ -259,7 +308,7 @@ RCT_EXPORT_METHOD(stop) {
         [stateMap addEntriesFromDictionary:deviceMap];
     }
 
-    NSLog(@"RNVZBSDK: Sending session status %@", stateMap);
+    RCTLogInfo(@"RNVZBSDK: Sending session status %@", stateMap);
     [self sendEvent:@"VZB_SESSION_STATUS" withBody:stateMap];
 }
 
@@ -332,35 +381,35 @@ RCT_EXPORT_METHOD(stop) {
     // sanity
     [self removeVideoStatusListener];
 
-    NSLog(@"RNVZBSDK: Trying to add video status listener");
+    RCTLogInfo(@"RNVZBSDK: Trying to add video status listener");
     VZBVideoClient* videoClient = [self getSessionVideoClient];
     if (nil != videoClient) {
 
         [videoClient addVideoStatusDelegate:self];
-        NSLog(@"RNVZBSDK: Success adding video status listener");
+        RCTLogInfo(@"RNVZBSDK: Success adding video status listener");
 
         // force first update
         [self notifyMediaStatus:[videoClient getVideoStatus]];
     } else {
 
-        NSLog(@"RNVZBSDK: Failed adding video status listener");
+        RCTLogInfo(@"RNVZBSDK: Failed adding video status listener");
     }
 }
 
 -(void) removeVideoStatusListener {
     
-    NSLog(@"RNVZBSDK: Trying to remove video status listener");
+    RCTLogInfo(@"RNVZBSDK: Trying to remove video status listener");
     VZBVideoClient* videoClient = [self getSessionVideoClient];
     if (nil != videoClient) {
         
-        NSLog(@"RNVZBSDK: Success removing video status listener");
+        RCTLogInfo(@"RNVZBSDK: Success removing video status listener");
         [videoClient removeVideoStatusDelegate:self];
     }
 }
 
 -(void) notifyMediaStatus:(VZBVideoStatus*) videoStatus {
 
-    NSLog(@"RNVZBSDK: Sending media status %@", videoStatus);
+    RCTLogInfo(@"RNVZBSDK: Sending media status %@", videoStatus);
     NSDictionary* videoStatusMap = [self getVideoStatusMap:videoStatus];
     [self sendEvent:@"VZB_MEDIA_STATUS" withBody:videoStatusMap];
 }
