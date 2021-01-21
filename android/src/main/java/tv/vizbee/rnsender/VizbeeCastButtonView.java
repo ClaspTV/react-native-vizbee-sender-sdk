@@ -20,8 +20,8 @@ public class VizbeeCastButtonView extends LinearLayout implements LifecycleEvent
         m_button = new RemoteButton(themedReactContext);
 
         DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
-        int lr_padding = (int) (8 * displayMetrics.density);
-        int bt_padding = (int) (6 * displayMetrics.density);
+        int lr_padding = (int) (4 * displayMetrics.density);
+        int bt_padding = (int) (3 * displayMetrics.density);
 
         m_button.setPadding(lr_padding, bt_padding, lr_padding, bt_padding);
 
