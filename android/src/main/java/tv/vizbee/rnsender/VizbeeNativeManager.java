@@ -379,7 +379,8 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
 
      private void notifyMediaStatus(VideoStatus videoStatus) {
 
-        Log.v(LOG_TAG, "Sending media status " + videoStatus.toString());
+        Log.v(LOG_TAG, "Sending media status ...");
+        Log.v(LOG_TAG, videoStatus.toString());
         WritableMap videoStatusMap = this.getVideoStatusMap(videoStatus);
         this.sendEvent("VZB_MEDIA_STATUS", videoStatusMap);
     }
