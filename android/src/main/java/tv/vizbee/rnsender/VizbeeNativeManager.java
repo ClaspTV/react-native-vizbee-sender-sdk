@@ -91,7 +91,9 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
         }
 
         VizbeeVideo vizbeeVideo = new VizbeeVideo(vizbeeVideoMap);
-        boolean didPlayOnTV = VizbeeContext.getInstance().smartPlay(activity, vizbeeVideo, (long)(vizbeeVideo.getStartPositionInSeconds()));
+
+        // IMPORTANT: Android expects position in milliseconds (while iOS expects in seconds!)
+        boolean didPlayOnTV = VizbeeContext.getInstance().smartPlay(activity, vizbeeVideo, (long)(1000*vizbeeVideo.getStartPositionInSeconds()));
         if (didPlayOnTV) {
 
           Log.i(LOG_TAG, "SmartPlay success in casting content");
