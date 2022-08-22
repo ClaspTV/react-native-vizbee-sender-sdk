@@ -28,11 +28,11 @@ android {
 
 repositories {
     mavenCentral()
-    maven { url 'http://repo.claspws.tv/artifactory/libs'}
+    maven { url 'https://repo.claspws.tv/artifactory/libs'}
 }
 
 dependencies {
     implementation 'com.facebook.react:react-native:+'
-    implementation 'tv.vizbee:android-remote-sdk:6.0.0'
+    implementation 'tv.vizbee:android-remote-sdk:6.2.3'
 }
   
