@@ -1,10 +1,18 @@
 package tv.vizbee.rnsender;
 
 import android.app.Activity;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import androidx.annotation.Nullable;
+import androidx.core.view.WindowCompat;
+import androidx.fragment.app.FragmentActivity;
 
+import com.facebook.react.ReactActivity;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -28,8 +36,9 @@ import tv.vizbee.api.session.VideoStatus;
 public class VizbeeNativeManager extends ReactContextBaseJavaModule implements LifecycleEventListener {
 
     private static final String LOG_TAG = VizbeeNativeManager.class.getName();
-  
+
     private final ReactApplicationContext reactContext;
+    VizbeeMiniCastController miniCastController;
 
     public VizbeeNativeManager(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -83,7 +92,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
     public void smartPlay(ReadableMap vizbeeVideoMap, Callback didPlayOnTVCallback, Callback doPlayOnPhoneCallback){
 
         Log.v(LOG_TAG, "Invoking smartPlay");
-        
+
         Activity activity = this.reactContext.getCurrentActivity();
         if (activity == null) {
             Log.e(LOG_TAG, "SmartPlay - null activity");
@@ -114,7 +123,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
     public void getSessionState(final Promise promise) {
 
         getReactApplicationContext().runOnUiQueueThread(new Runnable() {
-            
+
             @Override
             public void run() {
 
@@ -131,7 +140,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
 
     @ReactMethod
     public void getSessionConnectedDevice(final Promise promise) {
-        
+
         getReactApplicationContext().runOnUiQueueThread(new Runnable() {
 
             @Override
@@ -158,7 +167,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
 
     @ReactMethod
     public void pause() {
-        
+
         VideoClient videoClient = getSessionVideoClient();
         if (null != videoClient) {
             videoClient.pause();
@@ -169,7 +178,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
 
     @ReactMethod
     public void seek(long position) {
-        
+
         VideoClient videoClient = getSessionVideoClient();
         if (null != videoClient) {
             videoClient.seek(position);
@@ -186,6 +195,105 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
         } else {
             Log.w(LOG_TAG, "Stop ignored because videoClient is null");
         }
+    }
+
+    //----------------
+    // MiniCastController APIs
+    //----------------
+
+    @ReactMethod
+    public void addMiniCastController(int bottomMargin, int height) {
+        Log.v(LOG_TAG, "Adding MiniCastController");
+
+        // sanity
+        ReactActivity reactActivity = (ReactActivity)this.reactContext.getCurrentActivity();
+        if (null == reactActivity) {
+            Log.e(LOG_TAG, "MiniCastController - null activity");
+            return;
+        }
+        ViewGroup rootView = reactActivity.getWindow().getDecorView().findViewById(android.R.id.content);
+        if (null == rootView) {
+            Log.e(LOG_TAG, "MiniCastController - null rootView");
+            return;
+        }
+        if (null != this.miniCastController) {
+            Log.e(LOG_TAG, "MiniCastController - already added to the rootview");
+            return;
+        }
+
+        // crate frame container
+        FrameLayout frameContainer = createFragmentContainer(bottomMargin, height);
+        reactActivity.runOnUiThread(() -> {
+
+            Log.v(LOG_TAG, "addFragmentContainer to rootView");
+            rootView.addView(frameContainer);
+
+            // create MiniCastController and add it to frameContainer
+            VizbeeNativeManager.this.miniCastController = new VizbeeMiniCastController();
+            FragmentActivity fragmentActivity = (FragmentActivity) VizbeeNativeManager.this.reactContext.getCurrentActivity();
+            fragmentActivity.getSupportFragmentManager().beginTransaction().add(
+                R.id.minicastcontroller_fragment_container,
+                VizbeeNativeManager.this.miniCastController,
+                "VZBMiniCastControllerFragment").commitAllowingStateLoss();
+        });
+    }
+
+    @ReactMethod
+    public void setMiniCastControllerBackgroundColor(String backgroundColor) {
+
+        getReactApplicationContext().runOnUiQueueThread(new Runnable() {
+
+            @Override
+            public void run() {
+                if (null != VizbeeNativeManager.this.miniCastController) {
+                    VizbeeNativeManager.this.miniCastController.setBackgroundColor(backgroundColor);
+                }
+            }
+        });
+    }
+
+    @ReactMethod
+    public void setMiniCastControllerPlaybackButtonColor(String buttonColor) {
+
+        getReactApplicationContext().runOnUiQueueThread(new Runnable() {
+
+            @Override
+            public void run() {
+                if (null != VizbeeNativeManager.this.miniCastController) {
+                    VizbeeNativeManager.this.miniCastController.setButtonColor(buttonColor);
+                }
+            }
+        });
+    }
+
+    // Vizbee will handle default behaviour of showing/hiding based on the Cast status.
+    // Control show/hide explicitly as per required
+    @ReactMethod
+    public void showMiniCastController() {
+        this.miniCastController.show();
+    }
+
+    @ReactMethod
+    public void hideMiniCastController() {
+        this.miniCastController.hide();
+    }
+
+    private FrameLayout createFragmentContainer(int bottomMargin, int height) {
+        Log.v(LOG_TAG, "addFragmentContainer");
+
+        final DisplayMetrics dm = this.reactContext.getResources().getDisplayMetrics();
+        float bottomMarginInDP = bottomMargin * dm.density;
+        float heightInDP = height * dm.density;
+        Log.v(LOG_TAG, "bottomMargin " + bottomMargin + " bottomMarginInDP " + bottomMarginInDP);
+
+        FrameLayout frameContainer = new FrameLayout(this.reactContext);
+        frameContainer.setId(R.id.minicastcontroller_fragment_container);
+        FrameLayout.LayoutParams layoutParams =
+            new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, (int) heightInDP);
+        layoutParams.gravity = Gravity.BOTTOM;
+        layoutParams.bottomMargin = (int) bottomMarginInDP;
+        frameContainer.setLayoutParams(layoutParams);
+        return frameContainer;
     }
 
     //----------------
@@ -222,10 +330,10 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
 
             Log.i(LOG_TAG, "Adding session state listener");
             this.sessionStateListener = new SessionStateListener() {
-                
+
                 @Override
                 public void onSessionStateChanged(int newState) {
-                    
+
                     // handle videoClient
                     if (newState == SessionState.CONNECTED) {
                         VizbeeNativeManager.this.addVideoStatusListener();
@@ -348,7 +456,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
         if (null != videoClient) {
 
             this.videoStatusListener = new VideoClient.VideoStatusListener() {
-                
+
                 @Override
                 public void onVideoStatusUpdated(VideoStatus status) {
                     VizbeeNativeManager.this.notifyMediaStatus(status);
@@ -396,7 +504,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
         videoStatusMap.putBoolean("isLive", videoStatus.isStreamLive());
         videoStatusMap.putString("playerState", this.getPlayerStateString(videoStatus.getPlayerState()));
         videoStatusMap.putBoolean("isAdPlaying", videoStatus.isAdPlaying());
-        
+
         return videoStatusMap;
     }
 

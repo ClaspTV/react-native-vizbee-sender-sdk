@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="vizbee_mini_controller_button_margin_end">8dp</dimen>
+    <dimen name="vizbee_mini_controller_button_width">40dp</dimen>
+    <dimen name="vizbee_mini_controller_details_container_margin_start">15dp</dimen>
+    <dimen name="vizbee_mini_controller_details_container_margin_top">5dp</dimen>
+    <dimen name="vizbee_mini_controller_details_container_margin_end">8dp</dimen>
+    <dimen name="vizbee_mini_controller_details_container_margin_bottom">5dp</dimen>
+    <dimen name="vizbee_mini_controller_title_text_size">18sp</dimen>
+    <dimen name="vizbee_mini_controller_subtitle_margin_top">3dp</dimen>
+    <dimen name="vizbee_mini_controller_subtitle_text_size">12sp</dimen>
+    <dimen name="vizbee_mini_controller_progress_bar_height">3dp</dimen>
+    <dimen name="vizbee_mini_controller_thumbnail_size">64dp</dimen>
+</resources>

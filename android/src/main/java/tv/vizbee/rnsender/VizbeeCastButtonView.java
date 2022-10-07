@@ -1,5 +1,8 @@
 package tv.vizbee.rnsender;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.util.Log;
 import android.util.DisplayMetrics;
 import android.widget.LinearLayout;
@@ -17,7 +20,7 @@ public class VizbeeCastButtonView extends LinearLayout implements LifecycleEvent
     public VizbeeCastButtonView(ThemedReactContext themedReactContext) {
         super(themedReactContext);
 
-        m_button = new RemoteButton(themedReactContext);
+        m_button = new RemoteButton(themedReactContext.getCurrentActivity());
 
         DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
         int lr_padding = (int) (4 * displayMetrics.density);

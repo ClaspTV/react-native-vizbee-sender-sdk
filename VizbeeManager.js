@@ -59,6 +59,30 @@ class VizbeeManager {
     }
 
     //------------------
+    // MiniCastController APIs
+    //------------------
+
+    addMiniCastController(bottomMargin, height) {
+        VizbeeNativeManager.addMiniCastController(bottomMargin, height);
+    }
+
+    setMiniCastControllerBackgroundColor(backgroundColor) {
+        VizbeeNativeManager.setMiniCastControllerBackgroundColor(backgroundColor);
+    }
+
+    setMiniCastControllerPlaybackButtonColor(buttonColor) {
+        VizbeeNativeManager.setMiniCastControllerPlaybackButtonColor(buttonColor)
+    }
+    
+    showMiniCastController() {
+        VizbeeManager.showMiniCastController();
+    }
+
+    hideMiniCastController() {
+        VizbeeManager.hideMiniCastController();
+    }
+    
+    //------------------
     // Listeners
     //------------------
 
