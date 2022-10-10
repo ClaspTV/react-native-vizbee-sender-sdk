@@ -38,6 +38,10 @@ class VizbeeManager {
         return VizbeeNativeManager.getSessionConnectedDevice();
     }
 
+    disconnect() {
+        VizbeeNativeManager.disconnect();
+    }
+    
     //------------------
     // Video APIs
     //------------------

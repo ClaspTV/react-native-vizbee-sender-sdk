@@ -9,7 +9,9 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import com.facebook.react.ReactActivity;
@@ -150,6 +152,14 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
         });
     }
 
+    @ReactMethod
+    public void disconnect() {
+        VizbeeSessionManager sessionManager = VizbeeContext.getInstance().getSessionManager();
+        if (null != sessionManager) {
+            sessionManager.disconnectSession();
+        }
+    }
+
     //----------------
     // Video APIs
     //----------------
@@ -222,7 +232,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
         }
 
         // crate frame container
-        FrameLayout frameContainer = createFragmentContainer(bottomMargin, height);
+        FrameLayout frameContainer = createFragmentContainer(bottomMargin, height, rootView);
         reactActivity.runOnUiThread(() -> {
 
             Log.v(LOG_TAG, "addFragmentContainer to rootView");
@@ -278,7 +288,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
         this.miniCastController.hide();
     }
 
-    private FrameLayout createFragmentContainer(int bottomMargin, int height) {
+    private FrameLayout createFragmentContainer(int bottomMargin, int height, ViewGroup rootView) {
         Log.v(LOG_TAG, "addFragmentContainer");
 
         final DisplayMetrics dm = this.reactContext.getResources().getDisplayMetrics();
@@ -291,8 +301,16 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
         FrameLayout.LayoutParams layoutParams =
             new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, (int) heightInDP);
         layoutParams.gravity = Gravity.BOTTOM;
-        layoutParams.bottomMargin = (int) bottomMarginInDP;
-        frameContainer.setLayoutParams(layoutParams);
+
+        // show mini cast controller always on top of system navigation bar (back, home buttons ...)
+        // when they are visible though they are transparent.
+        ViewCompat.setOnApplyWindowInsetsListener(rootView, (v, insets) -> {
+            Log.v(LOG_TAG, "getSystemWindowInsetBottom " + insets.getSystemWindowInsetBottom());
+            layoutParams.bottomMargin = (int) bottomMarginInDP + insets.getSystemWindowInsetBottom();
+            frameContainer.setLayoutParams(layoutParams);
+            return insets;
+        });
+
         return frameContainer;
     }
 

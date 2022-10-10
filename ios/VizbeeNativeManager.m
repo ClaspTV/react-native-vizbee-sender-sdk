@@ -1,6 +1,5 @@
 #import "VizbeeNativeManager.h"
 #import "VizbeeVideo.h"
-#import "VizbeeMiniCastController.h"
 #import <VizbeeKit/VizbeeKit.h>
 #import <React/RCTLog.h>
 
@@ -198,6 +197,12 @@ RCT_REMAP_METHOD(getSessionConnectedDevice, getSessionConnectedDeviceWithResolve
     resolve(map);
 }
 
+RCT_EXPORT_METHOD(disconnect) {
+    RCTLogInfo(@"Invoking disconnect");
+
+    [[Vizbee getSessionManager] disconnectSession];
+}
+
 //----------------
 #pragma mark - Video APIs
 //----------------
@@ -260,7 +265,7 @@ RCT_EXPORT_METHOD(addMiniCastController:(int) bottomMargin height:(int) height) 
             return;
         }
         
-        int yPosition = vc.view.frame.size.height - (bottomMargin + height + vc.view.safeAreaInsets.bottom)
+        int yPosition = vc.view.frame.size.height - (bottomMargin + height + vc.view.safeAreaInsets.bottom);
         CGRect frame = CGRectMake(
                             0, 
                             yPosition, 
