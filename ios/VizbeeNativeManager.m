@@ -250,7 +250,7 @@ RCT_EXPORT_METHOD(stop) {
 RCT_EXPORT_METHOD(setActiveTrack:(NSDictionary *) track) {
 
     VZBVideoTrackInfo* trackInfo = [VZBVideoTrackInfo new];
-    trackInfo.identifier = [track objectForKey:@"identifier"];
+    trackInfo.identifier = [[track objectForKey:@"identifier"] intValue];
     trackInfo.contentIdentifier = [track objectForKey:@"contentIdentifier"];
     trackInfo.contentType = [track objectForKey:@"contentType"];
     trackInfo.name = [track objectForKey:@"name"];
@@ -635,11 +635,11 @@ RCT_EXPORT_METHOD(hideMiniCastController) {
 -(NSMutableDictionary*) getTrackInfoMap:(VZBVideoTrackInfo*) trackInfo {
 
     NSMutableDictionary* trackInfoMap = [NSMutableDictionary new];
-    [trackInfoMap setObject:trackInfo.identifier forKey:"@identifier"];
-    [trackInfoMap setObject:trackInfo.contentIdentifier forKey:"@contentIdentifier"];
-    [trackInfoMap setObject:trackInfo.contentType forKey:"@contentType"];
-    [trackInfoMap setObject:trackInfo.name forKey:"@name"];
-    [trackInfoMap setObject:trackInfo.languageCode forKey:"@languageCode"];
+    [trackInfoMap setObject:@(trackInfo.identifier) forKey:@"identifier"];
+    [trackInfoMap setObject:trackInfo.contentIdentifier forKey:@"contentIdentifier"];
+    [trackInfoMap setObject:trackInfo.contentType forKey:@"contentType"];
+    [trackInfoMap setObject:trackInfo.name forKey:@"name"];
+    [trackInfoMap setObject:trackInfo.languageCode forKey:@"languageCode"];
 
     return trackInfoMap;
 }
