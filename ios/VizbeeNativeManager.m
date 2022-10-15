@@ -247,6 +247,57 @@ RCT_EXPORT_METHOD(stop) {
     }
 }
 
+RCT_EXPORT_METHOD(setActiveTrack:(NSDictionary *) track) {
+
+    VZBVideoTrackInfo* trackInfo = [VZBVideoTrackInfo new];
+    trackInfo.identifier = [track objectForKey:@"identifier"];
+    trackInfo.contentIdentifier = [track objectForKey:@"contentIdentifier"];
+    trackInfo.contentType = [track objectForKey:@"contentType"];
+    trackInfo.name = [track objectForKey:@"name"];
+    trackInfo.languageCode = [track objectForKey:@"languageCode"];
+    NSMutableArray* tracks = [NSMutableArray new];
+    [tracks addObject:trackInfo];
+  
+    VZBVideoClient* videoClient = [self getSessionVideoClient];
+    if (nil != videoClient) {
+        [videoClient setActiveTracks:tracks];
+    } else {
+        RCTLogWarn(@"SetActiveTrack ignored because videoClient is null");
+    }
+}
+
+RCT_EXPORT_METHOD(resetActiveTrack) {
+
+    // empty array
+    NSMutableArray* tracks = [NSMutableArray new];
+    VZBVideoClient* videoClient = [self getSessionVideoClient];
+    if (nil != videoClient) {
+        [videoClient setActiveTracks:tracks];
+    } else {
+        RCTLogWarn(@"resetActiveTrack ignored because videoClient is null");
+    }
+}
+
+RCT_EXPORT_METHOD(mute) {
+  
+    VZBVolumeClient* volumeClient = [self getSessionVolumeClient];
+    if (nil != volumeClient) {
+        [volumeClient setMute:YES];
+    } else {
+        RCTLogWarn(@"Mute ignored because volumeClient is null");
+    }
+}
+
+RCT_EXPORT_METHOD(unmute) {
+  
+    VZBVolumeClient* volumeClient = [self getSessionVolumeClient];
+    if (nil != volumeClient) {
+        [volumeClient setMute:NO];
+    } else {
+        RCTLogWarn(@"Unmute ignored because volumeClient is null");
+    }
+}
+
 //----------------
 #pragma mark - MiniCastController APIs
 //----------------
@@ -442,6 +493,22 @@ RCT_EXPORT_METHOD(hideMiniCastController) {
     return videoClient;
 }
 
+-(VZBVolumeClient*) getSessionVolumeClient {
+
+    VZBSessionManager* sessionManager = [Vizbee getSessionManager];
+    if (nil == sessionManager) {
+        return nil;
+    }
+
+    VZBSession* currentSession = [sessionManager getCurrentSession];
+    if (nil == currentSession) {
+        return nil;
+    }
+
+    VZBVolumeClient* volumeClient = currentSession.volumeClient;
+    return volumeClient;
+}
+
 -(void) addVideoStatusListener {
 
     // sanity
@@ -484,11 +551,23 @@ RCT_EXPORT_METHOD(hideMiniCastController) {
 
     NSMutableDictionary* videoStatusMap = [NSMutableDictionary new];
     [videoStatusMap setObject:videoStatus.guid forKey:@"guid"];
+
+    [videoStatusMap setObject:videoStatus.title forKey:@"title"];
+    [videoStatusMap setObject:videoStatus.subTitle forKey:@"subTitle"];
+    [videoStatusMap setObject:videoStatus.imageURL forKey:@"imageURL"];
+
+    [videoStatusMap setObject:[self getPlayerStateString:videoStatus.playerState] forKey:@"playerState"];
+    [videoStatusMap setObject:[NSNumber numberWithBool:videoStatus.isStreamLive] forKey:@"isLive"];
     [videoStatusMap setObject:[NSNumber numberWithInt:videoStatus.streamPosition] forKey:@"position"];
     [videoStatusMap setObject:[NSNumber numberWithInt:videoStatus.streamDuration] forKey:@"duration"];
-    [videoStatusMap setObject:[NSNumber numberWithBool:videoStatus.isStreamLive] forKey:@"isLive"];
-    [videoStatusMap setObject:[self getPlayerStateString:videoStatus.playerState] forKey:@"playerState"];
+    [videoStatusMap setObject:[NSNumber numberWithInt:videoStatus.streamPosition] forKey:@"streamPosition"];
+    [videoStatusMap setObject:[NSNumber numberWithInt:videoStatus.streamDuration] forKey:@"streamDuration"];
+
     [videoStatusMap setObject:[NSNumber numberWithBool:videoStatus.isAdPlaying] forKey:@"isAdPlaying"];
+    [videoStatusMap setObject:[NSNumber numberWithInt:videoStatus.adPosition] forKey:@"adPosition"];
+    [videoStatusMap setObject:[NSNumber numberWithInt:videoStatus.adDuration] forKey:@"adDuration"];
+
+    [videoStatusMap setObject:[self getTrackStatusMap:videoStatus.trackStatus] forKey:@"trackStatus"];
     
     return videoStatusMap;
 }
@@ -531,4 +610,38 @@ RCT_EXPORT_METHOD(hideMiniCastController) {
     });
 }
 
+//----------------
+#pragma mark - Track Status Helpers
+//----------------
+
+-(NSMutableDictionary*) getTrackStatusMap:(VZBVideoTrackStatus*) trackStatus {
+
+    NSMutableDictionary* trackStatusMap = [NSMutableDictionary new];
+    
+    // available tracks info
+    NSMutableArray* availableTracksInfo = [NSMutableArray new];
+    for (VZBVideoTrackInfo* trackInfo in trackStatus.availableTracks) {
+        [availableTracksInfo addObject:[self getTrackInfoMap:trackInfo]];
+    }
+    [trackStatusMap setObject:availableTracksInfo forKey:@"availableTracks"];
+
+    // current track info
+    VZBVideoTrackInfo* trackInfo = [self getTrackInfoMap:trackStatus.currentTrack];
+    [trackStatusMap setObject:trackInfo forKey:@"currentTrack"];
+    
+    return trackStatusMap;
+}
+
+-(NSMutableDictionary*) getTrackInfoMap:(VZBVideoTrackInfo*) trackInfo {
+
+    NSMutableDictionary* trackInfoMap = [NSMutableDictionary new];
+    [trackInfoMap setObject:trackInfo.identifier forKey:"@identifier"];
+    [trackInfoMap setObject:trackInfo.contentIdentifier forKey:"@contentIdentifier"];
+    [trackInfoMap setObject:trackInfo.contentType forKey:"@contentType"];
+    [trackInfoMap setObject:trackInfo.name forKey:"@name"];
+    [trackInfoMap setObject:trackInfo.languageCode forKey:"@languageCode"];
+
+    return trackInfoMap;
+}
+ 
 @end

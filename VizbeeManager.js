@@ -62,6 +62,22 @@ class VizbeeManager {
         VizbeeNativeManager.stop();
     }
 
+    setActiveTrack(trackInfo) {
+        VizbeeNativeManager.setActiveTrack(trackInfo);
+    }
+
+    resetActiveTrack() {
+        VizbeeNativeManager.resetActiveTrack();
+    }
+
+    mute() {
+        VizbeeNativeManager.mute();
+    }
+
+    unmute() {
+        VizbeeNativeManager.unmute();
+    }
+
     //------------------
     // MiniCastController APIs
     //------------------
