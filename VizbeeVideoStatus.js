@@ -17,6 +17,20 @@ export default class VizbeeVideoStatus {
         this.trackStatus = new VizbeeTrackStatus();
     }
 
+    static _getPlayerState(inputString) {
+        
+        // verify the input string is one of the 9 expected states
+        let allStates = Object.values(VizbeePlayerState);
+        if (allStates === undefined) {
+            allStates = []
+        }
+        if (inputString && allStates.includes(inputString)) {
+            return inputString;
+        }
+
+        return VizbeePlayerState.Idle;
+    }
+
     static fromJson(dict) {
 
         let obj = new VizbeeVideoStatus();
@@ -37,29 +51,16 @@ export default class VizbeeVideoStatus {
     hasState(state) {
         return this.playerState === state;
     }
-
-    _getPlayerState(inputString) {
-        
-        let allStates = Object.values(VizbeePlayerState);
-        if (allStates === undefined) {
-            allStates = []
-        }
-        if (inputString && allStates.includes(inputString)) {
-            return inputString;
-        }
-
-        return VizbeePlayerState.IDLE;
-    }
 }
 
 export const VizbeePlayerState = {
-    IDLE : "Idle",
-    STARTED: "Started",
-    LOADING : "Loading",
-    PLAYING: "Playing",
-    PAUSED: "Paused",
-    BUFFERING: "Buffering",
-    ERROR: "Error",
-    STOPPED: "Stopped",
-    ENDED: "Ended",
+    Idle : "Idle",
+    Started: "Started",
+    Loading : "Loading",
+    Playing: "Playing",
+    Paused: "Paused",
+    Buffering: "Buffering",
+    Error: "Error",
+    Stopped: "Stopped",
+    Ended: "Ended",
 }

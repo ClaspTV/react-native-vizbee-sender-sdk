@@ -26,6 +26,7 @@ import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
+import com.google.android.gms.common.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,7 +92,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
             return;
         }
 
-         VizbeeSessionManager sessionManager = VizbeeContext.getInstance().getSessionManager();
+        VizbeeSessionManager sessionManager = VizbeeContext.getInstance().getSessionManager();
         if (null != sessionManager) {
             sessionManager.onCastIconClicked(activity);
         }
@@ -114,13 +115,13 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
         boolean didPlayOnTV = VizbeeContext.getInstance().smartPlay(activity, vizbeeVideo, (long)(1000*vizbeeVideo.getStartPositionInSeconds()));
         if (didPlayOnTV) {
 
-          Log.i(LOG_TAG, "SmartPlay success in casting content");
-          didPlayOnTVCallback.invoke();
+            Log.i(LOG_TAG, "SmartPlay success in casting content");
+            didPlayOnTVCallback.invoke();
 
         } else {
 
-          Log.e(LOG_TAG, "SmartPlay failed in casting content");
-          doPlayOnPhoneCallback.invoke();
+            Log.e(LOG_TAG, "SmartPlay failed in casting content");
+            doPlayOnPhoneCallback.invoke();
         }
     }
 
@@ -238,12 +239,12 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
     public void setActiveTrack(ReadableMap track) {
 
         // not getting the track type, setting default to type TEXT
-       VideoTrackInfo trackInfo = new VideoTrackInfo.Builder(track.getInt("identifier"), VideoTrackInfo.TYPE_TEXT)
-                .setContentId(track.getString("contentIdentifier"))
-                .setContentType(track.getString("contentType"))
-                .setName(track.getString("name"))
-                .setLanguage(track.getString("languageCode"))
-                .build();
+        VideoTrackInfo trackInfo = new VideoTrackInfo.Builder(track.getInt("identifier"), VideoTrackInfo.TYPE_TEXT)
+            .setContentId(track.getString("contentIdentifier"))
+            .setContentType(track.getString("contentType"))
+            .setName(track.getString("name"))
+            .setLanguage(track.getString("languageCode"))
+            .build();
         List<VideoTrackInfo> tracks = new ArrayList();
         tracks.add(trackInfo);
 
@@ -488,7 +489,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
 
         VizbeeScreen screen = currentSession.getVizbeeScreen();
         if (null == screen) {
-          return null;
+            return null;
         }
 
         WritableMap map = Arguments.createMap();
@@ -519,7 +520,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
         return currentSession.getVideoClient();
     }
 
-     private VolumeClient getSessionVolumeClient() {
+    private VolumeClient getSessionVolumeClient() {
 
         VizbeeSessionManager sessionManager = VizbeeContext.getInstance().getSessionManager();
         if (null == sessionManager) {
@@ -531,7 +532,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
             return null;
         }
 
-         return currentSession.getVolumeClient();
+        return currentSession.getVolumeClient();
     }
 
     private void addVideoStatusListener() {
@@ -569,7 +570,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
         this.videoStatusListener = null;
     }
 
-     private void notifyMediaStatus(VideoStatus videoStatus) {
+    private void notifyMediaStatus(VideoStatus videoStatus) {
 
         Log.v(LOG_TAG, "Sending media status ...");
         Log.v(LOG_TAG, videoStatus.toString());
@@ -605,15 +606,23 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
 
         switch (state) {
             case VideoStatus.PLAYER_STATE_IDLE:
-                return "IDLE";
+                return "Idle";
+            case VideoStatus.PLAYER_STATE_STARTED:
+                return "Started";
             case VideoStatus.PLAYER_STATE_PLAYING:
-                return "PLAYING";
+                return "Playing";
             case VideoStatus.PLAYER_STATE_PAUSED:
-                return "PAUSED";
+                return "Paused";
             case VideoStatus.PLAYER_STATE_BUFFERING:
-                return "BUFFERING";
+                return "Buffering";
+            case VideoStatus.PLAYER_STATE_ERROR:
+                return "Error";
+            case VideoStatus.PLAYER_STATE_STOPPED:
+                return "Stopped";
+            case VideoStatus.PLAYER_STATE_ENDED:
+                return "Ended";
             default:
-                return "UNKNOWN";
+                return "Idle";
         }
     }
 
@@ -622,6 +631,10 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
     //----------------
 
     private WritableMap getTrackStatusMap(VideoTrackStatus videoTrackStatus) {
+
+        if (null == videoTrackStatus) {
+            return null;
+        }
 
         WritableMap trackInfoMap = Arguments.createMap();
 
@@ -632,7 +645,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
         }
         trackInfoMap.putArray("availableTracks", availableTracksInfo);
 
-         // current track info
+        // current track info
         WritableMap videoTrackInfoMap = getTrackInfoMap(videoTrackStatus.getCurrentTrack());
         trackInfoMap.putMap("currentTrack", videoTrackInfoMap);
 
@@ -640,6 +653,10 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
     }
 
     private WritableMap getTrackInfoMap(VideoTrackInfo trackInfo) {
+
+        if (null == trackInfo) {
+            return null;
+        }
 
         WritableMap trackInfoMap = Arguments.createMap();
         trackInfoMap.putDouble("identifier", trackInfo.getId());
@@ -656,7 +673,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
 
     private void sendEvent(String eventName, @Nullable WritableMap params) {
         getReactApplicationContext()
-                  .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                  .emit(eventName, params);
+            .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+            .emit(eventName, params);
     }
 }

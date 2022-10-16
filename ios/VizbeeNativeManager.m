@@ -318,9 +318,9 @@ RCT_EXPORT_METHOD(addMiniCastController:(int) bottomMargin height:(int) height) 
         
         int yPosition = vc.view.frame.size.height - (bottomMargin + height + vc.view.safeAreaInsets.bottom);
         CGRect frame = CGRectMake(
-                            0, 
-                            yPosition, 
-                            vc.view.frame.size.width, 
+                            0,
+                            yPosition,
+                            vc.view.frame.size.width,
                             height);
         self.castBarController = [Vizbee createCastBarController];
         self.castBarController.delegate = self;
@@ -418,7 +418,7 @@ RCT_EXPORT_METHOD(hideMiniCastController) {
 
     NSString* state = [self getSessionStateString:newState];
     NSMutableDictionary* stateMap = [NSMutableDictionary new];
-    [stateMap setObject:state forKey:@"connectionState"];
+    [stateMap setValue:state forKey:@"connectionState"];
 
     NSMutableDictionary* deviceMap = [self getSessionConnectedDeviceMap];
     if (nil != deviceMap) {
@@ -463,9 +463,9 @@ RCT_EXPORT_METHOD(hideMiniCastController) {
     }
 
     NSMutableDictionary* map = [NSMutableDictionary new];
-    [map setObject:screen.screenType.typeName forKey:@"connectedDeviceType"];
-    [map setObject:screen.screenInfo.friendlyName forKey:@"connectedDeviceFriendlyName"];
-    [map setObject:screen.screenInfo.model forKey:@"connectedDeviceModel"];
+    [map setValue:screen.screenType.typeName forKey:@"connectedDeviceType"];
+    [map setValue:screen.screenInfo.friendlyName forKey:@"connectedDeviceFriendlyName"];
+    [map setValue:screen.screenInfo.model forKey:@"connectedDeviceModel"];
     return map;
 }
 
@@ -550,24 +550,24 @@ RCT_EXPORT_METHOD(hideMiniCastController) {
 -(NSMutableDictionary*) getVideoStatusMap:(VZBVideoStatus*) videoStatus {
 
     NSMutableDictionary* videoStatusMap = [NSMutableDictionary new];
-    [videoStatusMap setObject:videoStatus.guid forKey:@"guid"];
+    [videoStatusMap setValue:videoStatus.guid forKey:@"guid"];
 
-    [videoStatusMap setObject:videoStatus.title forKey:@"title"];
-    [videoStatusMap setObject:videoStatus.subTitle forKey:@"subTitle"];
-    [videoStatusMap setObject:videoStatus.imageURL forKey:@"imageURL"];
+    [videoStatusMap setValue:videoStatus.title forKey:@"title"];
+    [videoStatusMap setValue:videoStatus.subTitle forKey:@"subTitle"];
+    [videoStatusMap setValue:videoStatus.imageURL forKey:@"imageURL"];
 
-    [videoStatusMap setObject:[self getPlayerStateString:videoStatus.playerState] forKey:@"playerState"];
-    [videoStatusMap setObject:[NSNumber numberWithBool:videoStatus.isStreamLive] forKey:@"isLive"];
-    [videoStatusMap setObject:[NSNumber numberWithInt:videoStatus.streamPosition] forKey:@"position"];
-    [videoStatusMap setObject:[NSNumber numberWithInt:videoStatus.streamDuration] forKey:@"duration"];
-    [videoStatusMap setObject:[NSNumber numberWithInt:videoStatus.streamPosition] forKey:@"streamPosition"];
-    [videoStatusMap setObject:[NSNumber numberWithInt:videoStatus.streamDuration] forKey:@"streamDuration"];
+    [videoStatusMap setValue:[self getPlayerStateString:videoStatus.playerState] forKey:@"playerState"];
+    [videoStatusMap setValue:[NSNumber numberWithBool:videoStatus.isStreamLive] forKey:@"isLive"];
+    [videoStatusMap setValue:[NSNumber numberWithInt:videoStatus.streamPosition * 1000] forKey:@"position"];
+    [videoStatusMap setValue:[NSNumber numberWithInt:videoStatus.streamDuration * 1000] forKey:@"duration"];
+    [videoStatusMap setValue:[NSNumber numberWithInt:videoStatus.streamPosition * 1000] forKey:@"streamPosition"];
+    [videoStatusMap setValue:[NSNumber numberWithInt:videoStatus.streamDuration * 1000] forKey:@"streamDuration"];
 
-    [videoStatusMap setObject:[NSNumber numberWithBool:videoStatus.isAdPlaying] forKey:@"isAdPlaying"];
-    [videoStatusMap setObject:[NSNumber numberWithInt:videoStatus.adPosition] forKey:@"adPosition"];
-    [videoStatusMap setObject:[NSNumber numberWithInt:videoStatus.adDuration] forKey:@"adDuration"];
+    [videoStatusMap setValue:[NSNumber numberWithBool:videoStatus.isAdPlaying] forKey:@"isAdPlaying"];
+    [videoStatusMap setValue:[NSNumber numberWithInt:videoStatus.adPosition] forKey:@"adPosition"];
+    [videoStatusMap setValue:[NSNumber numberWithInt:videoStatus.adDuration] forKey:@"adDuration"];
 
-    [videoStatusMap setObject:[self getTrackStatusMap:videoStatus.trackStatus] forKey:@"trackStatus"];
+    [videoStatusMap setValue:[self getTrackStatusMap:videoStatus.trackStatus] forKey:@"trackStatus"];
     
     return videoStatusMap;
 }
@@ -576,15 +576,23 @@ RCT_EXPORT_METHOD(hideMiniCastController) {
 
     switch (state) {
         case VZBVideoPlayerStateIdle:
-            return @"IDLE";
+            return @"Idle";
+        case VZBVideoPlayerStateStarted:
+            return @"Started";
         case VZBVideoPlayerStatePlaying:
-            return @"PLAYING";
+            return @"Playing";
         case VZBVideoPlayerStatePaused:
-            return @"PAUSED";
+            return @"Paused";
         case VZBVideoPlayerStateBuffering:
-            return @"BUFFERING";
+            return @"Buffering";
+        case VZBVideoPlayerStateError:
+            return @"Error";
+        case VZBVideoPlayerStateStopped:
+            return @"Stopped";
+        case VZBVideoPlayerStateEnded:
+            return @"Ended";
         default:
-            return @"UNKNOWN";
+            return @"Idle";
     }
 }
 
@@ -623,11 +631,11 @@ RCT_EXPORT_METHOD(hideMiniCastController) {
     for (VZBVideoTrackInfo* trackInfo in trackStatus.availableTracks) {
         [availableTracksInfo addObject:[self getTrackInfoMap:trackInfo]];
     }
-    [trackStatusMap setObject:availableTracksInfo forKey:@"availableTracks"];
+    [trackStatusMap setValue:availableTracksInfo forKey:@"availableTracks"];
 
     // current track info
-    VZBVideoTrackInfo* trackInfo = [self getTrackInfoMap:trackStatus.currentTrack];
-    [trackStatusMap setObject:trackInfo forKey:@"currentTrack"];
+    NSMutableDictionary* trackInfo = [self getTrackInfoMap:trackStatus.currentTrack];
+    [trackStatusMap setValue:trackInfo forKey:@"currentTrack"];
     
     return trackStatusMap;
 }
@@ -635,11 +643,11 @@ RCT_EXPORT_METHOD(hideMiniCastController) {
 -(NSMutableDictionary*) getTrackInfoMap:(VZBVideoTrackInfo*) trackInfo {
 
     NSMutableDictionary* trackInfoMap = [NSMutableDictionary new];
-    [trackInfoMap setObject:@(trackInfo.identifier) forKey:@"identifier"];
-    [trackInfoMap setObject:trackInfo.contentIdentifier forKey:@"contentIdentifier"];
-    [trackInfoMap setObject:trackInfo.contentType forKey:@"contentType"];
-    [trackInfoMap setObject:trackInfo.name forKey:@"name"];
-    [trackInfoMap setObject:trackInfo.languageCode forKey:@"languageCode"];
+    [trackInfoMap setValue:@(trackInfo.identifier) forKey:@"identifier"];
+    [trackInfoMap setValue:trackInfo.contentIdentifier forKey:@"contentIdentifier"];
+    [trackInfoMap setValue:trackInfo.contentType forKey:@"contentType"];
+    [trackInfoMap setValue:trackInfo.name forKey:@"name"];
+    [trackInfoMap setValue:trackInfo.languageCode forKey:@"languageCode"];
 
     return trackInfoMap;
 }
