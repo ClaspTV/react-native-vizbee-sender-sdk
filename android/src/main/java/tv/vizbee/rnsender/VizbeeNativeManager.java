@@ -216,6 +216,31 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
     }
 
     @ReactMethod
+    public void setVolume(float volume) {
+        VolumeClient volumeClient = getSessionVolumeClient();
+        if (null != volumeClient) {
+            volumeClient.setVolume(volume);
+        } else {
+            Log.w(LOG_TAG, "setVolume ignored because volumeClient is null");
+        }
+    }
+
+    @ReactMethod
+    public void getVolume(Callback volumeCallback) {
+        VolumeClient volumeClient = getSessionVolumeClient();
+        if (null != volumeClient) {
+            float volume = volumeClient.getVolume();
+            if (null != volumeCallback) {
+                volumeCallback.invoke((volume));
+            } else {
+                Log.w(LOG_TAG, "getVolume ignored because volumeCallback is null");
+            }
+        } else {
+            Log.w(LOG_TAG, "getVolume ignored because volumeClient is null");
+        }
+    }
+
+    @ReactMethod
     public void mute() {
         VolumeClient volumeClient = getSessionVolumeClient();
         if (null != volumeClient) {

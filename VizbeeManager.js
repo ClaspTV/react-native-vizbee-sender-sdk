@@ -70,6 +70,15 @@ class VizbeeManager {
         VizbeeNativeManager.resetActiveTrack();
     }
 
+    // value between 0 and 1
+    setVolume(volume) {
+        VizbeeNativeManager.setVolume(volume);
+    }
+
+    getVolume(volumeCallback) {
+       return VizbeeNativeManager.getVolume(volumeCallback);
+    }
+
     mute() {
         VizbeeNativeManager.mute();
     }

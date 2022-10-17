@@ -231,7 +231,7 @@ RCT_EXPORT_METHOD(seek:(double) position) {
   
     VZBVideoClient* videoClient = [self getSessionVideoClient];
     if (nil != videoClient) {
-        [videoClient seek:position];
+        [videoClient seek:position/1000];
     } else {
         RCTLogWarn(@"Seek ignored because videoClient is null");
     }
@@ -275,6 +275,31 @@ RCT_EXPORT_METHOD(resetActiveTrack) {
         [videoClient setActiveTracks:tracks];
     } else {
         RCTLogWarn(@"resetActiveTrack ignored because videoClient is null");
+    }
+}
+
+RCT_EXPORT_METHOD(setVolume:(float) volume) {
+  
+    VZBVolumeClient* volumeClient = [self getSessionVolumeClient];
+    if (nil != volumeClient) {
+        [volumeClient setVolume:volume];
+    } else {
+        RCTLogWarn(@"setVolume ignored because volumeClient is null");
+    }
+}
+
+RCT_EXPORT_METHOD(getVolume:(RCTResponseSenderBlock) volumeCallback) {
+  
+    VZBVolumeClient* volumeClient = [self getSessionVolumeClient];
+    if (nil != volumeClient) {
+        float volume = [volumeClient getVolume];
+        if (nil != volumeCallback) {
+            volumeCallback(@[@(volume)]);
+        } else {
+            RCTLogWarn(@"getVolume ignored because volumeCallback is null");
+        }
+    } else {
+        RCTLogWarn(@"getVolume ignored because volumeClient is null");
     }
 }
 
