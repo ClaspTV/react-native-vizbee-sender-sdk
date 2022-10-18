@@ -216,6 +216,20 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
     }
 
     @ReactMethod
+    public void supportsVolumeControl(Callback callback) {
+        VolumeClient volumeClient = getSessionVolumeClient();
+        if (null != volumeClient) {
+            if (null != callback) {
+                callback.invoke((volumeClient.supportsVolumeControl()));
+            } else {
+                Log.w(LOG_TAG, "supportsVolumeControl ignored because callback is null");
+            }
+        } else {
+            Log.w(LOG_TAG, "supportsVolumeControl ignored because volumeClient is null");
+        }
+    }
+
+    @ReactMethod
     public void setVolume(float volume) {
         VolumeClient volumeClient = getSessionVolumeClient();
         if (null != volumeClient) {
@@ -435,11 +449,13 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
             Log.i(LOG_TAG, "Adding session state listener");
             this.sessionStateListener = newState -> {
 
-                // handle videoClient
+                // handle videoClient/volumeClient
                 if (newState == SessionState.CONNECTED) {
                     VizbeeNativeManager.this.addVideoStatusListener();
+                    VizbeeNativeManager.this.addVolumeStatusListener();
                 } else {
                     VizbeeNativeManager.this.removeVideoStatusListener();
+                    VizbeeNativeManager.this.removeVolumeStatusListener();
                 }
 
                 VizbeeNativeManager.this.notifySessionStatus(newState);
@@ -545,21 +561,6 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
         return currentSession.getVideoClient();
     }
 
-    private VolumeClient getSessionVolumeClient() {
-
-        VizbeeSessionManager sessionManager = VizbeeContext.getInstance().getSessionManager();
-        if (null == sessionManager) {
-            return null;
-        }
-
-        VizbeeSession currentSession = sessionManager.getCurrentSession();
-        if (null == currentSession) {
-            return null;
-        }
-
-        return currentSession.getVolumeClient();
-    }
-
     private void addVideoStatusListener() {
 
         // sanity
@@ -649,6 +650,80 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
             default:
                 return "Idle";
         }
+    }
+
+//----------------
+// Volume Listeners
+//----------------
+
+    private VolumeClient.Listener volumeStatusListener;
+
+    private VolumeClient getSessionVolumeClient() {
+
+        VizbeeSessionManager sessionManager = VizbeeContext.getInstance().getSessionManager();
+        if (null == sessionManager) {
+            return null;
+        }
+
+        VizbeeSession currentSession = sessionManager.getCurrentSession();
+        if (null == currentSession) {
+            return null;
+        }
+
+        return currentSession.getVolumeClient();
+    }
+
+    private void addVolumeStatusListener() {
+
+        // sanity
+        this.removeVolumeStatusListener();
+
+        Log.v(LOG_TAG, "TRYING to add volume status listener");
+        VolumeClient volumeClient = getSessionVolumeClient();
+        if (null != volumeClient) {
+
+            this.volumeStatusListener = VizbeeNativeManager.this::notifyVolumeStatus;
+            volumeClient.addVolumeChangedListener(this.volumeStatusListener);
+            Log.i(LOG_TAG, "SUCCESS adding volume status listener");
+
+            // force first update
+            this.notifyVolumeStatus();
+        } else {
+
+            Log.w(LOG_TAG, "FAILED to add volume status listener");
+        }
+    }
+
+    private void removeVolumeStatusListener() {
+
+        Log.v(LOG_TAG, "TRYING to remove volume status listener");
+        VolumeClient volumeClient = getSessionVolumeClient();
+        if (null != volumeClient) {
+            if (null != this.volumeStatusListener) {
+
+                Log.i(LOG_TAG, "SUCCESS removing volume status listener");
+                volumeClient.removeVolumeChangedListener(this.volumeStatusListener);
+            }
+        }
+        this.volumeStatusListener = null;
+    }
+
+    private void notifyVolumeStatus() {
+        Log.v(LOG_TAG, "Sending volume status ...");
+        this.sendEvent("VZB_VOLUME_STATUS", getVolumeStatusMap());
+    }
+
+    private WritableMap getVolumeStatusMap() {
+
+
+        WritableMap volumeStatusMap = Arguments.createMap();
+        VolumeClient volumeClient = getSessionVolumeClient();
+        if (null != volumeClient) {
+            volumeStatusMap.putDouble("volume", volumeClient.getVolume());
+            volumeStatusMap.putBoolean("isMute", volumeClient.isMute());
+        }
+
+        return volumeStatusMap;
     }
 
     //----------------
