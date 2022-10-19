@@ -195,11 +195,11 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
     }
 
     @ReactMethod
-    public void seek(long position) {
+    public void seek(double position) {
 
         VideoClient videoClient = getSessionVideoClient();
         if (null != videoClient) {
-            videoClient.seek(position);
+            videoClient.seek((long)position);
         } else {
             Log.w(LOG_TAG, "Seek ignored because videoClient is null");
         }
@@ -243,9 +243,8 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
     public void getVolume(Callback volumeCallback) {
         VolumeClient volumeClient = getSessionVolumeClient();
         if (null != volumeClient) {
-            float volume = volumeClient.getVolume();
             if (null != volumeCallback) {
-                volumeCallback.invoke((volume));
+                volumeCallback.invoke((getVolumeStatusMap()));
             } else {
                 Log.w(LOG_TAG, "getVolume ignored because volumeCallback is null");
             }
@@ -296,7 +295,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
     }
 
     @ReactMethod
-    public void resetActiveTrack(ReadableMap track) {
+    public void resetActiveTrack() {
 
         List<VideoTrackInfo> tracks = new ArrayList();
         VideoClient videoClient = getSessionVideoClient();

@@ -306,9 +306,8 @@ RCT_EXPORT_METHOD(getVolume:(RCTResponseSenderBlock) volumeCallback) {
   
     VZBVolumeClient* volumeClient = [self getSessionVolumeClient];
     if (nil != volumeClient) {
-        float volume = [volumeClient getVolume];
         if (nil != volumeCallback) {
-            volumeCallback(@[@(volume)]);
+            volumeCallback(@[[self getVolumeStatusMap:volumeClient]]);
         } else {
             RCTLogWarn(@"getVolume ignored because volumeCallback is null");
         }
@@ -741,6 +740,10 @@ RCT_EXPORT_METHOD(hideMiniCastController) {
 
 -(NSMutableDictionary*) getTrackInfoMap:(VZBVideoTrackInfo*) trackInfo {
 
+    if (nil == trackInfo) {
+        return @{};
+    }
+    
     NSMutableDictionary* trackInfoMap = [NSMutableDictionary new];
     [trackInfoMap setValue:@(trackInfo.identifier) forKey:@"identifier"];
     [trackInfoMap setValue:trackInfo.contentIdentifier forKey:@"contentIdentifier"];
