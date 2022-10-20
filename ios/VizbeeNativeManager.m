@@ -685,7 +685,7 @@ RCT_EXPORT_METHOD(unmute) {
 -(NSMutableDictionary*) getTrackInfoMap:(VZBVideoTrackInfo*) trackInfo {
 
     if (nil == trackInfo) {
-        return @{};
+        return [NSMutableDictionary new];
     }
     
     NSMutableDictionary* trackInfoMap = [NSMutableDictionary new];

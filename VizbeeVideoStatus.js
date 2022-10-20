@@ -13,7 +13,7 @@ export default class VizbeeVideoStatus {
         this.isAdPlaying = false;
         this.adPosition = 0;
         this.adDuration = 0;
-        this.playerState = VizbeePlayerState.IDLE;
+        this.playerState = VizbeePlayerState.Idle;
         this.trackStatus = new VizbeeTrackStatus();
     }
 

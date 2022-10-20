@@ -1,8 +1,5 @@
 package tv.vizbee.rnsender;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.ContextWrapper;
 import android.util.Log;
 import android.util.DisplayMetrics;
 import android.widget.LinearLayout;

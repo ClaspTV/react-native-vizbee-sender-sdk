@@ -6,9 +6,8 @@
 
 #import <React/RCTEventEmitter.h>
 #import <VizbeeKit/VZBSessionManager.h>
-#import <VizbeeKit/VZBUIMiniCastViewDelegate.h>
 
-@interface VizbeeNativeManager : RCTEventEmitter <RCTBridgeModule, VZBSessionStateDelegate, VZBVideoStatusUpdateDelegate, VZBUIMiniCastViewDelegate>
+@interface VizbeeNativeManager : RCTEventEmitter <RCTBridgeModule, VZBSessionStateDelegate, VZBVideoStatusUpdateDelegate, VZBVolumeStatusDelegate>
 
 @end
   
