@@ -536,6 +536,8 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
                 return "Error";
             case VideoStatus.PLAYER_STATE_STOPPED:
                 return "Stopped";
+            case VideoStatus.PLAYER_STATE_STOPPED_ON_DISCONNECT:
+                return "Stopped_On_Disconnect";
             case VideoStatus.PLAYER_STATE_ENDED:
                 return "Ended";
             default:

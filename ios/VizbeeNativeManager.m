@@ -555,6 +555,8 @@ RCT_EXPORT_METHOD(unmute) {
             return @"Error";
         case VZBVideoPlayerStateStopped:
             return @"Stopped";
+        case VZBVideoPlayerStateStoppedOnDisconnect:
+            return @"Stopped_On_Disconnect";
         case VZBVideoPlayerStateEnded:
             return @"Ended";
         default:

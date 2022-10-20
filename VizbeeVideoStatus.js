@@ -62,5 +62,6 @@ export const VizbeePlayerState = {
     Buffering: "Buffering",
     Error: "Error",
     Stopped: "Stopped",
+    Stopped_On_Disconnect: "Stopped_On_Disconnect",
     Ended: "Ended",
 }
