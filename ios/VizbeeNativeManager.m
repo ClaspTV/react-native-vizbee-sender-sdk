@@ -337,64 +337,6 @@ RCT_EXPORT_METHOD(unmute) {
 }
 
 //----------------
-#pragma mark - MiniCastController APIs
-//----------------
-
-RCT_EXPORT_METHOD(addMiniCastController:(int) bottomMargin height:(int) height) {
-
-    RCTLogInfo(@"Invoking addMiniCastController");
-    [self topViewControllerThreadSafe:^(UIViewController* vc) {
-        
-        if (nil == vc) {
-            RCTLogError(@"addMiniCastController - nil viewcontroller");
-            return;
-        }
-        if (nil != self.castBarController) {
-            RCTLogWarn(@"addMiniCastController - mini cast controller already added");
-            return;
-        }
-        
-        int yPosition = vc.view.frame.size.height - (bottomMargin + height + vc.view.safeAreaInsets.bottom);
-        CGRect frame = CGRectMake(
-                            0,
-                            yPosition,
-                            vc.view.frame.size.width,
-                            height);
-        self.castBarController = [Vizbee createCastBarController];
-        self.castBarController.delegate = self;
-        self.castBarController.view.frame = frame;
-        
-        [vc addChildViewController:self.castBarController];
-        [vc.view addSubview:self.castBarController.view];
-    }];
-}
-
-RCT_EXPORT_METHOD(setMiniCastControllerBackgroundColor:(NSString*) backgroundColor ) {
-    RCTLogInfo(@"setMiniCastControllerBackgroundColor");
-}
-
-RCT_EXPORT_METHOD(setMiniCastControllerPlaybackButtonColor:(NSString*) buttonColor) {
-    RCTLogInfo(@"setMiniCastControllerPlaybackButtonColor");
-}
-
-RCT_EXPORT_METHOD(showMiniCastController) {
-  
-    RCTLogInfo(@"Invoking showMiniCastController");
-    self.castBarController.view.hidden = NO;
-}
-
-RCT_EXPORT_METHOD(hideMiniCastController) {
-  
-    RCTLogInfo(@"Invoking hideMiniCastController");
-    self.castBarController.view.hidden = YES;
-}
-
--(void)miniCastViewController:(VZBCastBarViewController*) miniCastViewController
-                  shouldAppear:(BOOL) shouldAppear {
-    self.castBarController.view.hidden = !shouldAppear;
-}
-
-//----------------
 #pragma mark - App & session lifecycle
 //----------------
 

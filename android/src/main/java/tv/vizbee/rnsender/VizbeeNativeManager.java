@@ -48,7 +48,6 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
     private static final String LOG_TAG = VizbeeNativeManager.class.getName();
 
     private final ReactApplicationContext reactContext;
-    VizbeeMiniCastController miniCastController;
 
     public VizbeeNativeManager(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -304,113 +303,6 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
         } else {
             Log.w(LOG_TAG, "resetActiveTrack ignored because videoClient is null");
         }
-    }
-
-    //----------------
-    // MiniCastController APIs
-    //----------------
-
-    @ReactMethod
-    public void addMiniCastController(int bottomMargin, int height) {
-        Log.v(LOG_TAG, "Adding MiniCastController");
-
-        // sanity
-        ReactActivity reactActivity = (ReactActivity)this.reactContext.getCurrentActivity();
-        if (null == reactActivity) {
-            Log.e(LOG_TAG, "MiniCastController - null activity");
-            return;
-        }
-        ViewGroup rootView = reactActivity.getWindow().getDecorView().findViewById(android.R.id.content);
-        if (null == rootView) {
-            Log.e(LOG_TAG, "MiniCastController - null rootView");
-            return;
-        }
-        if (null != this.miniCastController) {
-            Log.e(LOG_TAG, "MiniCastController - already added to the rootview");
-            return;
-        }
-
-        // crate frame container
-        FrameLayout frameContainer = createFragmentContainer(bottomMargin, height, rootView);
-        reactActivity.runOnUiThread(() -> {
-
-            Log.v(LOG_TAG, "addFragmentContainer to rootView");
-            rootView.addView(frameContainer);
-
-            // create MiniCastController and add it to frameContainer
-            VizbeeNativeManager.this.miniCastController = new VizbeeMiniCastController();
-            FragmentActivity fragmentActivity = (FragmentActivity) VizbeeNativeManager.this.reactContext.getCurrentActivity();
-            fragmentActivity.getSupportFragmentManager().beginTransaction().add(
-                R.id.minicastcontroller_fragment_container,
-                VizbeeNativeManager.this.miniCastController,
-                "VZBMiniCastControllerFragment").commitAllowingStateLoss();
-        });
-    }
-
-    @ReactMethod
-    public void setMiniCastControllerBackgroundColor(String backgroundColor) {
-
-        getReactApplicationContext().runOnUiQueueThread(new Runnable() {
-
-            @Override
-            public void run() {
-                if (null != VizbeeNativeManager.this.miniCastController) {
-                    VizbeeNativeManager.this.miniCastController.setBackgroundColor(backgroundColor);
-                }
-            }
-        });
-    }
-
-    @ReactMethod
-    public void setMiniCastControllerPlaybackButtonColor(String buttonColor) {
-
-        getReactApplicationContext().runOnUiQueueThread(new Runnable() {
-
-            @Override
-            public void run() {
-                if (null != VizbeeNativeManager.this.miniCastController) {
-                    VizbeeNativeManager.this.miniCastController.setButtonColor(buttonColor);
-                }
-            }
-        });
-    }
-
-    // Vizbee will handle default behaviour of showing/hiding based on the Cast status.
-    // Control show/hide explicitly as per required
-    @ReactMethod
-    public void showMiniCastController() {
-        this.miniCastController.show();
-    }
-
-    @ReactMethod
-    public void hideMiniCastController() {
-        this.miniCastController.hide();
-    }
-
-    private FrameLayout createFragmentContainer(int bottomMargin, int height, ViewGroup rootView) {
-        Log.v(LOG_TAG, "addFragmentContainer");
-
-        final DisplayMetrics dm = this.reactContext.getResources().getDisplayMetrics();
-        float bottomMarginInDP = bottomMargin * dm.density;
-        float heightInDP = height * dm.density;
-        Log.v(LOG_TAG, "bottomMargin " + bottomMargin + " bottomMarginInDP " + bottomMarginInDP);
-
-        FrameLayout frameContainer = new FrameLayout(this.reactContext);
-        frameContainer.setId(R.id.minicastcontroller_fragment_container);
-        FrameLayout.LayoutParams layoutParams =
-            new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, (int) heightInDP);
-        layoutParams.gravity = Gravity.BOTTOM;
-
-        // show mini cast controller always on top of system navigation bar (back, home buttons ...)
-        // when they are visible though they are transparent.
-        ViewCompat.setOnApplyWindowInsetsListener(rootView, (v, insets) -> {
-            Log.v(LOG_TAG, "getSystemWindowInsetBottom " + insets.getSystemWindowInsetBottom());
-            layoutParams.bottomMargin = (int) bottomMarginInDP + insets.getSystemWindowInsetBottom();
-            frameContainer.setLayoutParams(layoutParams);
-            return insets;
-        });
-
-        return frameContainer;
     }
 
     //----------------
