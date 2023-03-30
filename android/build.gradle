@@ -33,6 +33,6 @@ repositories {
 
 dependencies {
     implementation 'com.facebook.react:react-native:+'
-    implementation 'tv.vizbee:android-remote-sdk:6.3.0'
+    implementation 'tv.vizbee:android-remote-sdk:6.3.3'
 }
   
