@@ -210,6 +210,32 @@ RCT_EXPORT_METHOD(disconnect) {
 }
 
 //----------------
+#pragma mark - Signin APIs
+//----------------
+
+RCT_EXPORT_METHOD(onGetSignInInfo:(NSDictionary*) signInInfo) {
+    RCTLogInfo(@"Invoking onGetSignInInfo");
+
+    VZBSessionManager* sessionManager = [Vizbee getSessionManager];
+    if (nil == sessionManager) {
+        RCTLogInfo(@"No session manager, session manager is nil");
+        return nil;
+    }
+
+    VZBSession* currentSession = [sessionManager getCurrentSession];
+    if (nil == currentSession) {
+        RCTLogInfo(@"No current session, current session is nil");
+        return nil;
+    }
+
+    NSMutableDictionary* authInfo = [NSMutableDictionary new];
+    [authInfo setValue:signInInfo forKey:@"authInfo"];
+
+    RCTLogInfo(@"Invoking sendEventWithName with authInfo = %@", authInfo);
+    [currentSession sendEventWithName:@"tv.vizbee.homesign.signin" andData:authInfo];
+}
+
+//----------------
 #pragma mark - Video APIs
 //----------------
 
@@ -364,6 +390,9 @@ RCT_EXPORT_METHOD(unmute) {
     if (newState == VZBSessionStateConnected) {
         [self addVideoStatusListener];
         [self addVolumeStatusListener];
+
+        NSMutableDictionary* dummySignInInfoMap = [NSMutableDictionary new];
+        [self sendEvent:@"VZB_INVOKE_GET_SIGNIN_INFO" withBody:dummySignInInfoMap];
     } else {
         [self removeVideoStatusListener];
         [self removeVolumeStatusListener];

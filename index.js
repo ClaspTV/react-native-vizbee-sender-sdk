@@ -4,6 +4,8 @@ import VizbeeVideo from './VizbeeVideo';
 import VizbeeVideoStatus, {VizbeePlayerState} from './VizbeeVideoStatus';
 import VizbeeTrackStatus from './VizbeeTrackStatus';
 import VizbeeTrackInfo from './VizbeeTrackInfo';
+import VizbeeSignInDelegate from './VizbeeSignInDelegate';
+import VizbeeSignInInfo from './VizbeeSignInInfo';
 
 /*
 Vizbee RN SDK can be used in common JS player code which is used across iOS, Android, Web etc. 
@@ -21,6 +23,8 @@ if (Platform.OS === 'web') {
         VizbeePlayerState,
         VizbeeTrackStatus,
         VizbeeTrackInfo,
+        VizbeeSignInDelegate,
+        VizbeeSignInInfo,
     }
 } else {
     const VizbeeCastButton = requireNativeComponent('VizbeeCastButtonView');
@@ -33,5 +37,7 @@ if (Platform.OS === 'web') {
         VizbeePlayerState,
         VizbeeTrackStatus,
         VizbeeTrackInfo,
+        VizbeeSignInDelegate,
+        VizbeeSignInInfo,
     }
 }
