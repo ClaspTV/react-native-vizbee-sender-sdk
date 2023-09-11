@@ -139,31 +139,35 @@ RCT_EXPORT_METHOD(smartPlay:(NSDictionary*) vizbeeVideoMap
     RCTLogInfo(@"Invoking smartPlay");
     [self topViewControllerThreadSafe:^(UIViewController* vc) {
         
+        // sanity
         if (nil == vc) {
             RCTLogError(@"SmartPlay - nil viewcontroller");
             doPlayOnPhoneCallback(nil);
             return;
         }
-            
+        
+        // create VZBRequest from the app video object
         VizbeeVideo* vizbeeVideo = [[VizbeeVideo alloc] init:vizbeeVideoMap];
-        BOOL didPlayOnTV = [Vizbee smartPlay:vizbeeVideo
-                                     atPosition:vizbeeVideo.startPositionInSeconds
-                       presentingViewController:vc];
-                              
-        if (didPlayOnTV) {
+        VZBRequest* request = [[VZBRequest alloc] initWithAppVideo:vizbeeVideo
+                                                    GUID:vizbeeVideo.guid
+                                                    startPosition:vizbeeVideo.startPositionInSeconds];
+        [request didPlayOnTV:^(VZBScreen *screen) {
 
-            RCTLogInfo(@"SmartPlay success in casting content");
+            RCTLogInfo(@"Played on screen = %@", screen);
             if (nil != didPlayOnTVCallback) {
                 didPlayOnTVCallback(nil);
             }
+        }];
+        [request doPlayOnPhone:^(VZBStatus *status) {
 
-        } else {
-
-             RCTLogError(@"SmartPlay failed in casting content");
-            if (nil != doPlayOnPhoneCallback){
-                doPlayOnPhoneCallback(nil);
-            }
-        }
+            RCTLogInfo(@"SmartPlay invoking play on phone");
+                if (nil != doPlayOnPhoneCallback){
+                    doPlayOnPhoneCallback(nil);
+                }
+        }];
+        
+        // call smartplay api
+        [Vizbee smartPlay:request presentingViewController:vc];
     }];
 }
 
