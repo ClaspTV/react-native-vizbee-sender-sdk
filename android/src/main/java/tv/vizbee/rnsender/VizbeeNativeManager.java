@@ -109,10 +109,11 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
         }
 
         // NOTE:
-        // To enable the SmartPlay flow, the smartPlay api has to be updated
+        // To enable the SmartPlay flow, the smartPlay api has to be updated.
         // Until the api is updated, call the smartPlay api only when the mobile
-        // is connected with the receiver. If not connected call the doP
+        // is connected with the receiver. If not connected call the doPlayOnPhoneCallback
         // with the reason as `CONFIG_FORCES_TO_PLAY_ON_PHONE`
+        // call the didPlayOnTV with the connected device info
         
         VizbeeSessionManager sessionManager = VizbeeContext.getInstance().getSessionManager();
         String sessionState = VizbeeNativeManager.this.getSessionStateString(sessionManager.getSessionState());
