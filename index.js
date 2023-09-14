@@ -1,6 +1,5 @@
 import {requireNativeComponent, Platform} from 'react-native';
 import VizbeeManager from './VizbeeManager';
-import VizbeeScreenInfo from './VizbeeScreenInfo';
 import VizbeeVideo from './VizbeeVideo';
 import VizbeeVideoStatus, {VizbeePlayerState} from './VizbeeVideoStatus';
 import VizbeeTrackStatus from './VizbeeTrackStatus';
@@ -17,7 +16,6 @@ if (Platform.OS === 'web') {
 
     module.exports = {
         VizbeeManager,
-        VizbeeScreenInfo,
         VizbeeVideo,
         VizbeeVideoStatus,
         VizbeePlayerState,
@@ -30,7 +28,6 @@ if (Platform.OS === 'web') {
     module.exports = {
         VizbeeManager,
         VizbeeCastButton,
-        VizbeeScreenInfo,
         VizbeeVideo,
         VizbeeVideoStatus,
         VizbeePlayerState,

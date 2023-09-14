@@ -153,10 +153,10 @@ RCT_EXPORT_METHOD(smartPlay:(NSDictionary*) vizbeeVideoMap
                                                     startPosition:vizbeeVideo.startPositionInSeconds];
         [request didPlayOnTV:^(VZBScreen *screen) {
 
-            NSDictionary* screenInfo = [self getScreenInfoMap:screen];
-            RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::smartPlay - Playing on screen = %@", screenInfo[@"friendlyName"]);
+            NSDictionary* connectedDeviceMap = [self getSessionConnectedDeviceMap];
+            RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::smartPlay - Playing on screen = %@", connectedDeviceMap[@"connectedDeviceFriendlyName"]);
             if (nil != didPlayOnTVCallback) {
-                didPlayOnTVCallback(@[screenInfo]);
+                didPlayOnTVCallback(@[connectedDeviceMap]);
             }
         }];
         [request doPlayOnPhone:^(VZBStatus *status) {
@@ -664,22 +664,6 @@ RCT_EXPORT_METHOD(unmute) {
         UIViewController *topVC = [self topViewController];
         completion(topVC);
     });
-}
-
-//----------------
-#pragma mark - SmartPlay Callback Helpers (ScreenInfo)
-//----------------
-
--(NSMutableDictionary*) getScreenInfoMap:(VZBScreen*) screen {
-
-    NSMutableDictionary* screenInfoMap = [NSMutableDictionary new];
-    
-    [screenInfoMap setValue:screen.screenInfo.deviceId forKey:@"deviceId"];
-    [screenInfoMap setValue:screen.screenInfo.friendlyName forKey:@"friendlyName"];
-    [screenInfoMap setValue:screen.screenInfo.model forKey:@"model"];
-    [screenInfoMap setValue:screen.screenType.typeName forKey:@"typeName"];
-    
-    return screenInfoMap;
 }
 
 //----------------

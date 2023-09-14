@@ -108,19 +108,34 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
             return;
         }
 
-        VizbeeVideo vizbeeVideo = new VizbeeVideo(vizbeeVideoMap);
+        // NOTE:
+        // To enable the SmartPlay flow, the smartPlay api has to be updated
+        // Until the api is updated, call the smartPlay api only when the mobile
+        // is connected with the receiver. If not connected call the doP
+        // with the reason as `CONFIG_FORCES_TO_PLAY_ON_PHONE`
+        
+        VizbeeSessionManager sessionManager = VizbeeContext.getInstance().getSessionManager();
+        String sessionState = VizbeeNativeManager.this.getSessionStateString(sessionManager.getSessionState());
+        if (sessionState.equalsIgnoreCase("CONNECTED")) {
 
-        // IMPORTANT: Android expects position in milliseconds (while iOS expects in seconds!)
-        boolean didPlayOnTV = VizbeeContext.getInstance().smartPlay(activity, vizbeeVideo, (long)(1000*vizbeeVideo.getStartPositionInSeconds()));
-        if (didPlayOnTV) {
+            VizbeeVideo vizbeeVideo = new VizbeeVideo(vizbeeVideoMap);
 
-            Log.i(LOG_TAG, "SmartPlay success in casting content");
-            didPlayOnTVCallback.invoke();
+            // IMPORTANT: Android expects position in milliseconds (while iOS expects in seconds!)
+            boolean didPlayOnTV = VizbeeContext.getInstance().smartPlay(activity, vizbeeVideo, (long)(1000*vizbeeVideo.getStartPositionInSeconds()));
+            if (didPlayOnTV) {
 
+                WritableMap connectedDevicemap = VizbeeNativeManager.this.getSessionConnectedDeviceMap();
+                Log.i(LOG_TAG, "SmartPlay - playing on tv");
+                didPlayOnTVCallback.invoke(connectedDevicemap);
+
+            } else {
+
+                Log.w(LOG_TAG, "SmartPlay - play on phone should not get called when the mobile is connected with the receiver");
+                doPlayOnPhoneCallback.invoke("CONFIG_FORCES_TO_PLAY_ON_PHONE");
+            }
         } else {
-
-            Log.e(LOG_TAG, "SmartPlay failed in casting content");
-            doPlayOnPhoneCallback.invoke();
+            Log.i(LOG_TAG, "SmartPlay - Mobile not connected with the receiver, invoking play on phone with reason CONFIG_FORCES_TO_PLAY_ON_PHONE");
+            doPlayOnPhoneCallback.invoke("CONFIG_FORCES_TO_PLAY_ON_PHONE");
         }
     }
 
