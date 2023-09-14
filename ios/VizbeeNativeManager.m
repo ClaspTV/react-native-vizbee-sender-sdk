@@ -73,25 +73,25 @@ RCT_EXPORT_MODULE(VizbeeNativeManager)
 
 // will be called when this module's first listener is added.
 - (void)startObserving {
-    RCTLogInfo(@"RNVZBSDK: start observing invoked");
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::startObserving - invoked");
     self.hasListeners = YES;
 }
 
 // will be called when this module's last listener is removed, or on dealloc.
 - (void)stopObserving {
-    RCTLogInfo(@"RNVZBSDK: stop observing invoked");
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::stopObserving - invoked");
     self.hasListeners = NO;
 }
 
 -(void)sendEvent:(NSString*) name
         withBody:(NSDictionary*) body {
     
-    RCTLogInfo(@"RNVZBSDK: Sending event %@ with body %@", name, body);
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::sendEvent - Sending event %@ with body %@", name, body);
     
     if (self.hasListeners) {
         [self sendEventWithName:name body:body];
     } else {
-        RCTLogInfo(@"RNVZBSDK: Filtered event because there are no listeners!");
+        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::sendEvent - Filtered event because there are no listeners!");
     }
 }
 
@@ -101,11 +101,11 @@ RCT_EXPORT_MODULE(VizbeeNativeManager)
 
 RCT_EXPORT_METHOD(smartPrompt) {
 
-    RCTLogInfo(@"Invoking smartPrompt");
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::smartPrompt - Invoking smartPrompt");
     [self topViewControllerThreadSafe:^(UIViewController* vc) {
         
         if (nil == vc) {
-            RCTLogError(@"SmartPrompt - nil viewcontroller");
+            RCTLogError(@"[RNVZBSDK] VizbeeNativeManager::smartPrompt - nil viewcontroller");
             return;
         }
         
@@ -116,11 +116,11 @@ RCT_EXPORT_METHOD(smartPrompt) {
 
 RCT_EXPORT_METHOD(smartCast) {
     
-    RCTLogInfo(@"Invoking smartCast");
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::smartCast - Invoking smartCast");
     [self topViewControllerThreadSafe:^(UIViewController* vc) {
         
         if (nil == vc) {
-            RCTLogError(@"SmartCast - nil viewcontroller");
+            RCTLogError(@"[RNVZBSDK] VizbeeNativeManager::smartCast - nil viewcontroller");
             return;
         }
         
@@ -136,12 +136,12 @@ RCT_EXPORT_METHOD(smartPlay:(NSDictionary*) vizbeeVideoMap
       doPlayOnPhoneCallback:(RCTResponseSenderBlock) doPlayOnPhoneCallback
         ) {
     
-    RCTLogInfo(@"Invoking smartPlay");
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::smartPlay - Invoking smartPlay");
     [self topViewControllerThreadSafe:^(UIViewController* vc) {
         
         // sanity
         if (nil == vc) {
-            RCTLogError(@"SmartPlay - nil viewcontroller");
+            RCTLogError(@"[RNVZBSDK] VizbeeNativeManager::smartPlay - nil viewcontroller");
             doPlayOnPhoneCallback(nil);
             return;
         }
@@ -153,16 +153,18 @@ RCT_EXPORT_METHOD(smartPlay:(NSDictionary*) vizbeeVideoMap
                                                     startPosition:vizbeeVideo.startPositionInSeconds];
         [request didPlayOnTV:^(VZBScreen *screen) {
 
-            RCTLogInfo(@"Played on screen = %@", screen);
+            NSDictionary* screenInfo = [self getScreenInfoMap:screen];
+            RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::smartPlay - Playing on screen = %@", screenInfo[@"friendlyName"]);
             if (nil != didPlayOnTVCallback) {
-                didPlayOnTVCallback(nil);
+                didPlayOnTVCallback(@[screenInfo]);
             }
         }];
         [request doPlayOnPhone:^(VZBStatus *status) {
 
-            RCTLogInfo(@"SmartPlay invoking play on phone");
+            NSString* reasonForPlayOnPhone = [self getPlayOnPhoneReason:status];
+            RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::smartPlay - Play on phone with reason = %@", reasonForPlayOnPhone);
                 if (nil != doPlayOnPhoneCallback){
-                    doPlayOnPhoneCallback(nil);
+                    doPlayOnPhoneCallback(@[reasonForPlayOnPhone]);
                 }
         }];
         
@@ -176,7 +178,7 @@ RCT_EXPORT_METHOD(smartPlay:(NSDictionary*) vizbeeVideoMap
 //----------------
 
 RCT_REMAP_METHOD(getSessionState, getSessionStateWithResolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
-    RCTLogInfo(@"Invoking getSessionState");
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::getSessionState - Invoking getSessionState");
   
     VZBSessionManager* sessionManager = [Vizbee getSessionManager];
     if (nil == sessionManager) {
@@ -188,7 +190,7 @@ RCT_REMAP_METHOD(getSessionState, getSessionStateWithResolver:(RCTPromiseResolve
 }
 
 RCT_REMAP_METHOD(getSessionConnectedDevice, getSessionConnectedDeviceWithResolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
-    RCTLogInfo(@"Invoking getSessionConnectedDevice");
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::getSessionConnectedDevice - Invoking getSessionConnectedDevice");
   
     VZBSessionManager* sessionManager = [Vizbee getSessionManager];
     if (nil == sessionManager) {
@@ -197,12 +199,12 @@ RCT_REMAP_METHOD(getSessionConnectedDevice, getSessionConnectedDeviceWithResolve
     }
   
     NSDictionary* map = [self getSessionConnectedDeviceMap];
-    RCTLogInfo(@"getSessionConnectedDevice %@", map);
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::getSessionConnectedDevice - %@", map);
     resolve(map);
 }
 
 RCT_EXPORT_METHOD(disconnect) {
-    RCTLogInfo(@"Invoking disconnect");
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::disconnect - invoking disconnect");
 
     [[Vizbee getSessionManager] disconnectSession];
 }
@@ -217,7 +219,7 @@ RCT_EXPORT_METHOD(play) {
     if (nil != videoClient) {
         [videoClient play];
     } else {
-        RCTLogWarn(@"Play ignored because videoClient is null");
+        RCTLogWarn(@"[RNVZBSDK] VizbeeNativeManager::play - ignored because videoClient is null");
     }
 }
 
@@ -227,7 +229,7 @@ RCT_EXPORT_METHOD(pause) {
     if (nil != videoClient) {
         [videoClient pause];
     } else {
-        RCTLogWarn(@"Pause ignored because videoClient is null");
+        RCTLogWarn(@"[RNVZBSDK] VizbeeNativeManager::pause - ignored because videoClient is null");
     }
 }
 
@@ -237,7 +239,7 @@ RCT_EXPORT_METHOD(seek:(double) position) {
     if (nil != videoClient) {
         [videoClient seek:position/1000];
     } else {
-        RCTLogWarn(@"Seek ignored because videoClient is null");
+        RCTLogWarn(@"[RNVZBSDK] VizbeeNativeManager::seek - ignored because videoClient is null");
     }
 }
 
@@ -247,7 +249,7 @@ RCT_EXPORT_METHOD(stop) {
     if (nil != videoClient) {
         [videoClient stop];
     } else {
-        RCTLogWarn(@"Stop ignored because videoClient is null");
+        RCTLogWarn(@"[RNVZBSDK] VizbeeNativeManager::stop - ignored because videoClient is null");
     }
 }
 
@@ -266,7 +268,7 @@ RCT_EXPORT_METHOD(setActiveTrack:(NSDictionary *) track) {
     if (nil != videoClient) {
         [videoClient setActiveTracks:tracks];
     } else {
-        RCTLogWarn(@"SetActiveTrack ignored because videoClient is null");
+        RCTLogWarn(@"[RNVZBSDK] VizbeeNativeManager::setActiveTrack - ignored because videoClient is null");
     }
 }
 
@@ -278,7 +280,7 @@ RCT_EXPORT_METHOD(resetActiveTrack) {
     if (nil != videoClient) {
         [videoClient setActiveTracks:tracks];
     } else {
-        RCTLogWarn(@"resetActiveTrack ignored because videoClient is null");
+        RCTLogWarn(@"[RNVZBSDK] VizbeeNativeManager::resetActiveTrack - ignored because videoClient is null");
     }
 }
 
@@ -289,10 +291,10 @@ RCT_EXPORT_METHOD(supportsVolumeControl:(RCTResponseSenderBlock) callback) {
         if (nil != callback) {
             callback(@[@(volumeClient.supportsVolumeControl)]);
         } else {
-            RCTLogWarn(@"supportsVolumeControl ignored because callback is null");
+            RCTLogWarn(@"[RNVZBSDK] VizbeeNativeManager::supportsVolumeControl - ignored because callback is null");
         }
     } else {
-        RCTLogWarn(@"supportsVolumeControl ignored because volumeClient is null");
+        RCTLogWarn(@"[RNVZBSDK] VizbeeNativeManager::supportsVolumeControl - ignored because volumeClient is null");
     }
 }
 
@@ -302,7 +304,7 @@ RCT_EXPORT_METHOD(setVolume:(float) volume) {
     if (nil != volumeClient) {
         [volumeClient setVolume:volume];
     } else {
-        RCTLogWarn(@"setVolume ignored because volumeClient is null");
+        RCTLogWarn(@"[RNVZBSDK] VizbeeNativeManager::setVolume - ignored because volumeClient is null");
     }
 }
 
@@ -313,10 +315,10 @@ RCT_EXPORT_METHOD(getVolume:(RCTResponseSenderBlock) volumeCallback) {
         if (nil != volumeCallback) {
             volumeCallback(@[[self getVolumeStatusMap:volumeClient]]);
         } else {
-            RCTLogWarn(@"getVolume ignored because volumeCallback is null");
+            RCTLogWarn(@"[RNVZBSDK] VizbeeNativeManager::getVolume - ignored because volumeCallback is null");
         }
     } else {
-        RCTLogWarn(@"getVolume ignored because volumeClient is null");
+        RCTLogWarn(@"[RNVZBSDK] VizbeeNativeManager::getVolume - ignored because volumeClient is null");
     }
 }
 
@@ -326,7 +328,7 @@ RCT_EXPORT_METHOD(mute) {
     if (nil != volumeClient) {
         [volumeClient setMute:YES];
     } else {
-        RCTLogWarn(@"Mute ignored because volumeClient is null");
+        RCTLogWarn(@"[RNVZBSDK] VizbeeNativeManager::mute - ignored because volumeClient is null");
     }
 }
 
@@ -336,7 +338,7 @@ RCT_EXPORT_METHOD(unmute) {
     if (nil != volumeClient) {
         [volumeClient setMute:NO];
     } else {
-        RCTLogWarn(@"Unmute ignored because volumeClient is null");
+        RCTLogWarn(@"[RNVZBSDK] VizbeeNativeManager::unmute - ignored because volumeClient is null");
     }
 }
 
@@ -345,12 +347,12 @@ RCT_EXPORT_METHOD(unmute) {
 //----------------
 
 -(void) onApplicationDidBecomeActive:(NSNotification*)notification {
-    RCTLogInfo(@"onApplicationDidBecomeActive - adding session state listener");
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::onApplicationDidBecomeActive - adding session state listener");
     [self addSessionStateListener];
 }
 
 -(void) onApplicationWillResignActive:(NSNotification*)notification {
-    RCTLogInfo(@"onApplicationWillResignActive - removing session state listener");
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::onApplicationWillResignActive - removing session state listener");
     [self removeSessionStateListener];
 }
 
@@ -376,7 +378,7 @@ RCT_EXPORT_METHOD(unmute) {
     VZBSessionManager* sessionManager = [Vizbee getSessionManager];
     if (nil != sessionManager) {
         
-        RCTLogInfo(@"RNVZBSDK: Adding session state listener");
+        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::addSessionStateListener - Adding session state listener");
         [sessionManager addSessionStateDelegate:self];
 
         // force first update
@@ -389,7 +391,7 @@ RCT_EXPORT_METHOD(unmute) {
     VZBSessionManager* sessionManager = [Vizbee getSessionManager];
     if (nil != sessionManager) {
 
-        RCTLogInfo(@"RNVZBSDK: Removing session state listener");
+        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::removeSessionStateListener - Removing session state listener");
         [sessionManager removeSessionStateDelegate:self];
     }
 }
@@ -397,7 +399,7 @@ RCT_EXPORT_METHOD(unmute) {
 -(void) notifySessionStatus:(VZBSessionState) newState {
 
     if (newState == self.lastUpdatedState) {
-        RCTLogInfo(@"RNVZBSDK: Ignoring duplicate state update");
+        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::notifySessionStatus - Ignoring duplicate state update");
         return;
     }
     self.lastUpdatedState = newState;
@@ -411,7 +413,7 @@ RCT_EXPORT_METHOD(unmute) {
         [stateMap addEntriesFromDictionary:deviceMap];
     }
 
-    RCTLogInfo(@"RNVZBSDK: Sending session status %@", stateMap);
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::notifySessionStatus - Sending session status %@", stateMap);
     [self sendEvent:@"VZB_SESSION_STATUS" withBody:stateMap];
 }
 
@@ -484,35 +486,35 @@ RCT_EXPORT_METHOD(unmute) {
     // sanity
     [self removeVideoStatusListener];
 
-    RCTLogInfo(@"RNVZBSDK: Trying to add video status listener");
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::addVideoStatusListener - Trying to add video status listener");
     VZBVideoClient* videoClient = [self getSessionVideoClient];
     if (nil != videoClient) {
 
         [videoClient addVideoStatusDelegate:self];
-        RCTLogInfo(@"RNVZBSDK: Success adding video status listener");
+        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::addVideoStatusListener - Success adding video status listener");
 
         // force first update
         [self notifyMediaStatus:[videoClient getVideoStatus]];
     } else {
 
-        RCTLogInfo(@"RNVZBSDK: Failed adding video status listener");
+        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::addVideoStatusListener - Failed adding video status listener");
     }
 }
 
 -(void) removeVideoStatusListener {
     
-    RCTLogInfo(@"RNVZBSDK: Trying to remove video status listener");
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::removeVideoStatusListener - Trying to remove video status listener");
     VZBVideoClient* videoClient = [self getSessionVideoClient];
     if (nil != videoClient) {
         
-        RCTLogInfo(@"RNVZBSDK: Success removing video status listener");
+        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::removeVideoStatusListener - Success removing video status listener");
         [videoClient removeVideoStatusDelegate:self];
     }
 }
 
 -(void) notifyMediaStatus:(VZBVideoStatus*) videoStatus {
 
-    RCTLogInfo(@"RNVZBSDK: Sending media status %@", videoStatus);
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::notifyMediaStatus - Sending media status %@", videoStatus);
     NSDictionary* videoStatusMap = [self getVideoStatusMap:videoStatus];
     [self sendEvent:@"VZB_MEDIA_STATUS" withBody:videoStatusMap];
 }
@@ -600,35 +602,35 @@ RCT_EXPORT_METHOD(unmute) {
     // sanity
     [self removeVolumeStatusListener];
 
-    RCTLogInfo(@"RNVZBSDK: Trying to add volume status listener");
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::addVolumeStatusListener - Trying to add volume status listener");
     VZBVolumeClient* volumeClient = [self getSessionVolumeClient];
     if (nil != volumeClient) {
 
         [volumeClient addVolumeStatusDelegate:self];
-        RCTLogInfo(@"RNVZBSDK: Success adding volume status listener");
+        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::addVolumeStatusListener - Success adding volume status listener");
 
         // force first update
         [self notifyVolumeStatus:[self getVolumeStatusMap:volumeClient]];
     } else {
 
-        RCTLogInfo(@"RNVZBSDK: Failed adding volume status listener");
+        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::addVolumeStatusListener - Failed adding volume status listener");
     }
 }
 
 -(void) removeVolumeStatusListener {
     
-    RCTLogInfo(@"RNVZBSDK: Trying to remove volume status listener");
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::removeVolumeStatusListener - Trying to remove volume status listener");
     VZBVolumeClient* volumeClient = [self getSessionVolumeClient];
     if (nil != volumeClient) {
         
-        RCTLogInfo(@"RNVZBSDK: Success removing volume status listener");
+        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::removeVolumeStatusListener - Success removing volume status listener");
         [volumeClient removeVolumeStatusDelegate:self];
     }
 }
 
 -(void) notifyVolumeStatus:(NSMutableDictionary*) volumeStatusMap {
 
-    RCTLogInfo(@"RNVZBSDK: Sending volume status %@", volumeStatusMap);
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::notifyVolumeStatus - Sending volume status %@", volumeStatusMap);
     [self sendEvent:@"VZB_VOLUME_STATUS" withBody:volumeStatusMap];
 }
 
@@ -662,6 +664,55 @@ RCT_EXPORT_METHOD(unmute) {
         UIViewController *topVC = [self topViewController];
         completion(topVC);
     });
+}
+
+//----------------
+#pragma mark - SmartPlay Callback Helpers (ScreenInfo)
+//----------------
+
+-(NSMutableDictionary*) getScreenInfoMap:(VZBScreen*) screen {
+
+    NSMutableDictionary* screenInfoMap = [NSMutableDictionary new];
+    
+    [screenInfoMap setValue:screen.screenInfo.deviceId forKey:@"deviceId"];
+    [screenInfoMap setValue:screen.screenInfo.friendlyName forKey:@"friendlyName"];
+    [screenInfoMap setValue:screen.screenInfo.model forKey:@"model"];
+    [screenInfoMap setValue:screen.screenType.typeName forKey:@"typeName"];
+    
+    return screenInfoMap;
+}
+
+//----------------
+#pragma mark - SmartPlay Callback Helpers (PlayOnPhone Reason)
+//----------------
+
+-(NSString*) getPlayOnPhoneReason:(VZBStatus*) statusCode {
+
+    NSString *reason = nil;
+    switch(statusCode.code) {
+        case VZBStatusCodeSDKNotInitialized:
+            reason = @"SDK_NOT_INITIALIZED";
+            break;
+        case VZBStatusCodeVideoExcludedFromSmartPlay:
+            reason = @"VIDEO_EXCLUDED_FROM_SMARTPLAY";
+            break;
+        case VZBStatusCodeFailedToResolveMetadata:
+            reason = @"FAILED_TO_RESOLVE_METADATA";
+            break;
+        case VZBStatusCodeFailedToResolveStreamInfo:
+            reason = @"FAILED_TO_RESOLVE_STREAM_INFO";
+            break;
+        case VZBStatusCodeConfigForcesToPlayOnPhone:
+            reason = @"CONFIG_FORCES_TO_PLAY_ON_PHONE";
+            break;
+        case VZBStatusCodeUserSelectedPlayOnPhone:
+            reason = @"USER_SELECTED_PLAY_ON_PHONE";
+            break;
+        default:
+            reason = @"GENERIC";
+    }
+
+    return reason;
 }
 
 //----------------
