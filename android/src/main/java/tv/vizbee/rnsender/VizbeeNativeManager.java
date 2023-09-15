@@ -45,7 +45,7 @@ import tv.vizbee.api.session.VolumeClient;
 
 public class VizbeeNativeManager extends ReactContextBaseJavaModule implements LifecycleEventListener {
 
-    private static final String LOG_TAG = VizbeeNativeManager.class.getName();
+    private static final String LOG_TAG = "VZBRNSDK_VizbeeNativeManager";
 
     private final ReactApplicationContext reactContext;
 
