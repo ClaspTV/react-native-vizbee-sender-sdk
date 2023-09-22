@@ -209,7 +209,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
             JSONObject authJSONObject = new JSONObject();
             authJSONObject.put("authInfo", authInfo);
 
-            currentSession.sendEventWithName("tv.vizbee.homesign.signin", authJSONObject); 
+            currentSession.sendEventWithName(VizbeeConstants.VZB_SIGNIN_EVENT, authJSONObject); 
         } catch (Exception e) {
             Log.w(LOG_TAG, "Exception while converting vizbeeSignInInfoMap to JSON");
         }
@@ -485,7 +485,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
 
         Log.v(LOG_TAG, "Sending signin info trigger ...");
         WritableMap signInInfoMap = Arguments.createMap();
-        this.sendEvent("VZB_INVOKE_GET_SIGNIN_INFO", signInInfoMap);
+        this.sendEvent(VizbeeConstants.VZB_INVOKE_GET_SIGNIN_INFO, signInInfoMap);
     }
 
     //----------------

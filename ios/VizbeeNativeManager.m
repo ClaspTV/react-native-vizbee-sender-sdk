@@ -1,4 +1,5 @@
 #import "VizbeeNativeManager.h"
+#import "VizbeeConstants.h"
 #import "VizbeeVideo.h"
 #import <VizbeeKit/VizbeeKit.h>
 #import <React/RCTLog.h>
@@ -68,7 +69,7 @@ RCT_EXPORT_MODULE(VizbeeNativeManager)
 }
 
 -(NSArray<NSString*>*) supportedEvents {
-    return @[@"VZB_SESSION_STATUS", @"VZB_MEDIA_STATUS", @"VZB_VOLUME_STATUS"];
+    return @[@"VZB_SESSION_STATUS", VZB_INVOKE_GET_SIGNIN_INFO, @"VZB_MEDIA_STATUS", @"VZB_VOLUME_STATUS"];
 }
 
 // will be called when this module's first listener is added.
@@ -214,25 +215,25 @@ RCT_EXPORT_METHOD(disconnect) {
 //----------------
 
 RCT_EXPORT_METHOD(onGetSignInInfo:(NSDictionary*) signInInfo) {
-    RCTLogInfo(@"Invoking onGetSignInInfo");
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::onGetSignInInfo - invoking onGetSignInInfo");
 
     VZBSessionManager* sessionManager = [Vizbee getSessionManager];
     if (nil == sessionManager) {
-        RCTLogInfo(@"No session manager, session manager is nil");
-        return nil;
+        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::onGetSignInInfo - no session manager, session manager is nil");
+        return;
     }
 
     VZBSession* currentSession = [sessionManager getCurrentSession];
     if (nil == currentSession) {
-        RCTLogInfo(@"No current session, current session is nil");
-        return nil;
+        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::onGetSignInInfo - no current session, current session is nil");
+        return;
     }
 
     NSMutableDictionary* authInfo = [NSMutableDictionary new];
     [authInfo setValue:signInInfo forKey:@"authInfo"];
 
-    RCTLogInfo(@"Invoking sendEventWithName with authInfo = %@", authInfo);
-    [currentSession sendEventWithName:@"tv.vizbee.homesign.signin" andData:authInfo];
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::onGetSignInInfo - invoking sendEventWithName with authInfo = %@", authInfo);
+    [currentSession sendEventWithName:VZB_SIGNIN_EVENT andData:authInfo];
 }
 
 //----------------
@@ -392,7 +393,7 @@ RCT_EXPORT_METHOD(unmute) {
         [self addVolumeStatusListener];
 
         NSMutableDictionary* dummySignInInfoMap = [NSMutableDictionary new];
-        [self sendEvent:@"VZB_INVOKE_GET_SIGNIN_INFO" withBody:dummySignInInfoMap];
+        [self sendEvent:VZB_INVOKE_GET_SIGNIN_INFO withBody:dummySignInInfoMap];
     } else {
         [self removeVideoStatusListener];
         [self removeVolumeStatusListener];

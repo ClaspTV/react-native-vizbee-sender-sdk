@@ -1,11 +1,11 @@
 import {requireNativeComponent, Platform} from 'react-native';
 import VizbeeManager from './VizbeeManager';
+import VizbeeSignInDelegate from './VizbeeSignInDelegate';
+import VizbeeSignInInfo from './VizbeeSignInInfo';
 import VizbeeVideo from './VizbeeVideo';
 import VizbeeVideoStatus, {VizbeePlayerState} from './VizbeeVideoStatus';
 import VizbeeTrackStatus from './VizbeeTrackStatus';
 import VizbeeTrackInfo from './VizbeeTrackInfo';
-import VizbeeSignInDelegate from './VizbeeSignInDelegate';
-import VizbeeSignInInfo from './VizbeeSignInInfo';
 
 /*
 Vizbee RN SDK can be used in common JS player code which is used across iOS, Android, Web etc. 
@@ -18,13 +18,13 @@ if (Platform.OS === 'web') {
 
     module.exports = {
         VizbeeManager,
+        VizbeeSignInDelegate,
+        VizbeeSignInInfo,
         VizbeeVideo,
         VizbeeVideoStatus,
         VizbeePlayerState,
         VizbeeTrackStatus,
         VizbeeTrackInfo,
-        VizbeeSignInDelegate,
-        VizbeeSignInInfo,
     }
 } else {
     const VizbeeCastButton = requireNativeComponent('VizbeeCastButtonView');
@@ -32,12 +32,12 @@ if (Platform.OS === 'web') {
     module.exports = {
         VizbeeManager,
         VizbeeCastButton,
+        VizbeeSignInDelegate,
+        VizbeeSignInInfo,
         VizbeeVideo,
         VizbeeVideoStatus,
         VizbeePlayerState,
         VizbeeTrackStatus,
         VizbeeTrackInfo,
-        VizbeeSignInDelegate,
-        VizbeeSignInInfo,
     }
 }
