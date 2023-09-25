@@ -1,4 +1,7 @@
 import { NativeModules, NativeEventEmitter, Platform } from "react-native";
+import VizbeeConstants from "./VizbeeConstants";
+import VizbeeSignInInfo from "./VizbeeSignInInfo";
+import VizbeeSignInDelegate from "./VizbeeSignInDelegate";
 
 const VizbeeNativeManager = NativeModules.VizbeeNativeManager;
 const VizbeeNativeEmitter = new NativeEventEmitter(VizbeeNativeManager);
@@ -8,6 +11,9 @@ class VizbeeManager {
     constructor() {
         this.subs = {}
         this.sub_id = 0
+
+        this.signInDelegate = undefined;
+        this._registerSignInListeners();
     }
 
     //------------------
@@ -41,7 +47,25 @@ class VizbeeManager {
     disconnect() {
         VizbeeNativeManager.disconnect();
     }
-    
+
+    //------------------
+    // Sign in APIs
+    //------------------
+
+    setSignInDelegate(signInDelegate) {
+        if (signInDelegate instanceof VizbeeSignInDelegate) {
+            this.signInDelegate = signInDelegate;
+        }
+    }
+
+    removeSignInDelegate() {
+        this.signInDelegate = undefined;
+    }
+
+    getSignInDelegate() {
+        return this.signInDelegate;
+    }
+
     //------------------
     // Video APIs
     //------------------
@@ -112,6 +136,28 @@ class VizbeeManager {
 
     removeAllListeners(eventName) {
         VizbeeNativeEmitter.removeAllListeners(eventName)
+    }
+
+    //------------------
+    // Sign in Helpers
+    //------------------
+
+    _registerSignInListeners() {
+        // listen for sign in events
+        this.addListener(
+            VizbeeConstants.VZB_INVOKE_GET_SIGNIN_INFO,
+            this._invokeAndHandleGetSignInInfo,
+            this
+        );
+    }
+    
+    _invokeAndHandleGetSignInInfo() {
+        if (this.signInDelegate) {
+            let signInInfo = this.signInDelegate.getSignInInfo();
+            if (signInInfo instanceof VizbeeSignInInfo) {
+                VizbeeNativeManager.onGetSignInInfo(signInInfo);
+            }
+        }
     }
 }
 

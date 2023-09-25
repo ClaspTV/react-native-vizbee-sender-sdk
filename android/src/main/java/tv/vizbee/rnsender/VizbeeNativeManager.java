@@ -31,6 +31,8 @@ import com.google.android.gms.common.util.CollectionUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONObject;
+
 import tv.vizbee.api.VideoTrackInfo;
 import tv.vizbee.api.VizbeeContext;
 import tv.vizbee.api.session.SessionState;
@@ -180,6 +182,36 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
         VizbeeSessionManager sessionManager = VizbeeContext.getInstance().getSessionManager();
         if (null != sessionManager) {
             sessionManager.disconnectSession();
+        }
+    }
+
+    //----------------
+    // SignIn APIs
+    //----------------
+
+    @ReactMethod
+    public void onGetSignInInfo(ReadableMap vizbeeSignInInfoMap) {
+        Log.v(LOG_TAG, "Invoking onGetSignInInfo");
+        VizbeeSessionManager sessionManager = VizbeeContext.getInstance().getSessionManager();
+        if (null == sessionManager) {
+            Log.i(LOG_TAG, "sessionManager is null");
+            return;
+        }
+
+        VizbeeSession currentSession = sessionManager.getCurrentSession();
+        if (null == currentSession) {
+            Log.i(LOG_TAG, "currentSession is null");
+            return;
+        }
+
+        try {
+            JSONObject authInfo = RNJSONConverter.convertMapToJson(vizbeeSignInInfoMap);
+            JSONObject authJSONObject = new JSONObject();
+            authJSONObject.put("authInfo", authInfo);
+
+            currentSession.sendEventWithName(VizbeeConstants.VZB_SIGNIN_EVENT, authJSONObject); 
+        } catch (Exception e) {
+            Log.w(LOG_TAG, "Exception while converting vizbeeSignInInfoMap to JSON");
         }
     }
 
@@ -360,6 +392,8 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
                 if (newState == SessionState.CONNECTED) {
                     VizbeeNativeManager.this.addVideoStatusListener();
                     VizbeeNativeManager.this.addVolumeStatusListener();
+
+                    VizbeeNativeManager.this.notifyGetSignInInfo();
                 } else {
                     VizbeeNativeManager.this.removeVideoStatusListener();
                     VizbeeNativeManager.this.removeVolumeStatusListener();
@@ -445,6 +479,13 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
         map.putString("connectedDeviceFriendlyName", screen.getScreenInfo().getFriendlyName());
         map.putString("connectedDeviceModel", screen.getScreenInfo().getModel());
         return map;
+    }
+
+    private void notifyGetSignInInfo() {
+
+        Log.v(LOG_TAG, "Sending signin info trigger ...");
+        WritableMap signInInfoMap = Arguments.createMap();
+        this.sendEvent(VizbeeConstants.VZB_INVOKE_GET_SIGNIN_INFO, signInInfoMap);
     }
 
     //----------------
