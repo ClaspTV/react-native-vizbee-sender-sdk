@@ -3,7 +3,7 @@ import VizbeeConstants from "./VizbeeConstants";
 import VizbeeSignInInfo from "./VizbeeSignInInfo";
 import VizbeeSignInDelegate from "./VizbeeSignInDelegate";
 
-const VizbeeNativeManager = NativeModules.VizbeeNativeManager;
+const VizbeeNativeManager = NativeModules.VizbeeNativeManager || {};
 const VizbeeNativeEmitter = new NativeEventEmitter(VizbeeNativeManager);
 
 class VizbeeManager {
