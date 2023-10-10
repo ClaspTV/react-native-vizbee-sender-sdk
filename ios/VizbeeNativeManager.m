@@ -708,7 +708,7 @@ RCT_EXPORT_METHOD(unmute) {
             reason = @"SDK_NOT_INITIALIZED";
             break;
         case VZBStatusCodeVideoExcludedFromSmartPlay:
-            reason = @"VIDEO_EXCLUDED_FROM_SMARTPLAY";
+            reason = @"VIDEO_EXCLUDED_FROM_SMART_PLAY";
             break;
         case VZBStatusCodeFailedToResolveMetadata:
             reason = @"FAILED_TO_RESOLVE_METADATA";

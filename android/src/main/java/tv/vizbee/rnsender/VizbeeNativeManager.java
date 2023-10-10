@@ -35,6 +35,8 @@ import org.json.JSONObject;
 
 import tv.vizbee.api.VideoTrackInfo;
 import tv.vizbee.api.VizbeeContext;
+import tv.vizbee.api.VizbeeRequest;
+import tv.vizbee.api.VizbeeStatus;
 import tv.vizbee.api.session.SessionState;
 import tv.vizbee.api.session.SessionStateListener;
 import tv.vizbee.api.session.VideoTrackStatus;
@@ -110,36 +112,29 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
             return;
         }
 
-        // NOTE:
-        // To enable the SmartPlay flow, the smartPlay api has to be updated.
-        // Until the api is updated, call the smartPlay api only when the mobile
-        // is connected with the receiver. If not connected call the doPlayOnPhoneCallback
-        // with the reason as `CONFIG_FORCES_TO_PLAY_ON_PHONE`
-        // call the didPlayOnTV with the connected device info
-        
-        VizbeeSessionManager sessionManager = VizbeeContext.getInstance().getSessionManager();
-        String sessionState = VizbeeNativeManager.this.getSessionStateString(sessionManager.getSessionState());
-        if (sessionState.equalsIgnoreCase("CONNECTED")) {
+        VizbeeVideo vizbeeVideo = new VizbeeVideo(vizbeeVideoMap);
 
-            VizbeeVideo vizbeeVideo = new VizbeeVideo(vizbeeVideoMap);
-
-            // IMPORTANT: Android expects position in milliseconds (while iOS expects in seconds!)
-            boolean didPlayOnTV = VizbeeContext.getInstance().smartPlay(activity, vizbeeVideo, (long)(1000*vizbeeVideo.getStartPositionInSeconds()));
-            if (didPlayOnTV) {
-
+        VizbeeRequest request = new VizbeeRequest(vizbeeVideo, vizbeeVideo.getGuid(), 0);
+        request.doPlayOnPhone(status -> {
+            Log.i(LOG_TAG,"Play on phone with status = "+ status.toString());
+            if (null != doPlayOnPhoneCallback) {
+                String reasonForPlayOnPhone = getPlayOnPhoneReason(status);
+                doPlayOnPhoneCallback.invoke(reasonForPlayOnPhone);
+            }
+            return null;
+        });
+        request.didPlayOnTV(vizbeeScreen -> {
+            Log.i(LOG_TAG, "Played on TV = "+ vizbeeScreen.toString());
+            if (null != didPlayOnTVCallback) {
                 WritableMap connectedDevicemap = VizbeeNativeManager.this.getSessionConnectedDeviceMap();
-                Log.i(LOG_TAG, "SmartPlay - playing on tv");
                 didPlayOnTVCallback.invoke(connectedDevicemap);
 
-            } else {
-
-                Log.w(LOG_TAG, "SmartPlay - play on phone should not get called when the mobile is connected with the receiver");
-                doPlayOnPhoneCallback.invoke("CONFIG_FORCES_TO_PLAY_ON_PHONE");
             }
-        } else {
-            Log.i(LOG_TAG, "SmartPlay - Mobile not connected with the receiver, invoking play on phone with reason CONFIG_FORCES_TO_PLAY_ON_PHONE");
-            doPlayOnPhoneCallback.invoke("CONFIG_FORCES_TO_PLAY_ON_PHONE");
-        }
+            return null;
+        });
+
+        // IMPORTANT: Android expects position in milliseconds (while iOS expects in seconds!)
+        VizbeeContext.getInstance().smartPlay(activity, request);
     }
 
     //----------------
@@ -674,6 +669,30 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
         }
 
         return volumeStatusMap;
+    }
+
+    //----------------
+    // SmartPlay Callback Helpers (PlayOnPhone Reason)
+    //----------------
+
+    private String getPlayOnPhoneReason(VizbeeStatus status) {
+
+        switch (status.getStatusCode()) {
+            case VizbeeStatus.SDK_NOT_INITIALIZED:
+                return "SDK_NOT_INITIALIZED";
+            case VizbeeStatus.VIDEO_EXCLUDED_FROM_SMART_PLAY:
+                return "VIDEO_EXCLUDED_FROM_SMART_PLAY";
+            case VizbeeStatus.FAILED_TO_RESOLVE_METADATA:
+                return "FAILED_TO_RESOLVE_METADATA";
+            case VizbeeStatus.FAILED_TO_RESOLVE_STREAM_INFO:
+                return "FAILED_TO_RESOLVE_STREAM_INFO";
+            case VizbeeStatus.CONFIG_FORCES_TO_PLAY_ON_PHONE:
+                return "CONFIG_FORCES_TO_PLAY_ON_PHONE";
+            case VizbeeStatus.USER_SELECTED_PLAY_ON_PHONE:
+                return "USER_SELECTED_PLAY_ON_PHONE";
+            default:
+                return "GENERIC";
+        }
     }
 
     //----------------
