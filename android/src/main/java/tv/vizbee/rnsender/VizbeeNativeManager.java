@@ -14,6 +14,8 @@ import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import androidx.annotation.NonNull;
+
 import com.facebook.react.ReactActivity;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -36,7 +38,9 @@ import org.json.JSONObject;
 import tv.vizbee.api.VideoTrackInfo;
 import tv.vizbee.api.VizbeeContext;
 import tv.vizbee.api.VizbeeRequest;
+import tv.vizbee.api.RequestCallback;
 import tv.vizbee.api.VizbeeStatus;
+import tv.vizbee.api.SmartPlayCardVisibility;
 import tv.vizbee.api.session.SessionState;
 import tv.vizbee.api.session.SessionStateListener;
 import tv.vizbee.api.session.VideoTrackStatus;
@@ -113,27 +117,28 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
         }
 
         VizbeeVideo vizbeeVideo = new VizbeeVideo(vizbeeVideoMap);
-
-        VizbeeRequest request = new VizbeeRequest(vizbeeVideo, vizbeeVideo.getGuid(), 0);
-        request.doPlayOnPhone(status -> {
-            Log.i(LOG_TAG,"Play on phone with status = "+ status.toString());
-            if (null != doPlayOnPhoneCallback) {
-                String reasonForPlayOnPhone = getPlayOnPhoneReason(status);
-                doPlayOnPhoneCallback.invoke(reasonForPlayOnPhone);
-            }
-            return null;
-        });
-        request.didPlayOnTV(vizbeeScreen -> {
-            Log.i(LOG_TAG, "Played on TV = "+ vizbeeScreen.toString());
-            if (null != didPlayOnTVCallback) {
-                WritableMap connectedDevicemap = VizbeeNativeManager.this.getSessionConnectedDeviceMap();
-                didPlayOnTVCallback.invoke(connectedDevicemap);
-
-            }
-            return null;
-        });
-
         // IMPORTANT: Android expects position in milliseconds (while iOS expects in seconds!)
+        VizbeeRequest request = new VizbeeRequest(vizbeeVideo, vizbeeVideo.getGuid(), (long)(1000*vizbeeVideo.getStartPositionInSeconds()));
+        request.setCallback(new RequestCallback() {
+            @Override
+            public void doPlayOnPhone(@NonNull VizbeeStatus status) {
+                Log.i(LOG_TAG,"Play on phone with status = " + status);
+                if (null != doPlayOnPhoneCallback) {
+                    String reasonForPlayOnPhone = getPlayOnPhoneReason(status);
+                    doPlayOnPhoneCallback.invoke(reasonForPlayOnPhone);
+                }
+            }
+
+            @Override
+            public void didPlayOnTV(@NonNull VizbeeScreen screen) {
+                Log.i(LOG_TAG, "Played on TV = " + screen.toString());
+                if (null != didPlayOnTVCallback) {
+                    WritableMap connectedDevicemap = VizbeeNativeManager.this.getSessionConnectedDeviceMap();
+                    didPlayOnTVCallback.invoke(connectedDevicemap);
+                }
+            }
+        });
+
         VizbeeContext.getInstance().smartPlay(activity, request);
     }
 
