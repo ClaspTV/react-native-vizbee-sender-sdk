@@ -40,7 +40,6 @@ import tv.vizbee.api.VizbeeContext;
 import tv.vizbee.api.VizbeeRequest;
 import tv.vizbee.api.RequestCallback;
 import tv.vizbee.api.VizbeeStatus;
-import tv.vizbee.api.SmartPlayCardVisibility;
 import tv.vizbee.api.session.SessionState;
 import tv.vizbee.api.session.SessionStateListener;
 import tv.vizbee.api.session.VideoTrackStatus;
