@@ -1,6 +1,8 @@
+#import <UIKit/UIKit.h>
 #import <VizbeeKit/VizbeeKit.h>
 #import <React/RCTViewManager.h>
-#import <UIKit/UIKit.h>
+#import <React/RCTUIManager.h>
+#import "VizbeeCastButtonView.h"
 
 @interface VizbeeCastButtonViewManager: RCTViewManager
 @end
@@ -9,6 +11,36 @@
 
 RCT_EXPORT_MODULE(VizbeeCastButtonView)
 
+RCT_EXPORT_VIEW_PROPERTY(color, NSString)
+
+RCT_EXPORT_METHOD(setColor:(nonnull NSNumber *)viewTag color:(NSString *)color) {
+    // Find the view by its tag
+    // Get the bridge
+    dispatch_async(dispatch_get_main_queue(), ^{
+        RCTBridge *bridge = self.bridge;
+
+        // Get the UIManager instance
+        RCTUIManager *uiManager = bridge.uiManager;
+        
+        UIView *view = [uiManager viewForReactTag:viewTag];
+        
+        // Check if the view is a castWrapperView containing a VZBCastButton
+        if ([view isKindOfClass:[UIView class]]) {
+            for (UIView *subview in view.subviews) {
+                if ([subview isKindOfClass:[VZBCastButton class]]) {
+                    VZBCastButton *castButton = (VZBCastButton *)subview;
+                    // Change the tint color
+                    UIColor * initialColor = [VizbeeCastButtonView colorFromHex:color];
+                    if(initialColor){
+                       castButton.tintColor = initialColor;
+                    }
+                    break; // Assuming there is only one VZBCastButton in the castWrapperView
+                }
+            }
+        }
+    });
+}
+
 /*
  Do not attempt to set the frame or backgroundColor properties on the UIView instance that is exposed through the -view method.
  React Native will overwrite the values set by your custom class in order to match your JavaScript component's layout props.
@@ -16,53 +48,9 @@ RCT_EXPORT_MODULE(VizbeeCastButtonView)
  in another UIView and return the wrapper UIView instead.
  https://reactnative.dev/docs/native-components-ios
  */
--(UIView*) view {
-    
-    // 1. Create VZBCastButton
-    UIViewController* vc = [self currentTopViewController];
-    VZBCastButton* castButton = [Vizbee createCastButtonWithDelegate:nil
-                              forViewController:vc];
-    
-    // 2. Create a castWrapperView and add castButton to it
-    UIView* castWrapperView = [[UIView alloc] init];
-    [castWrapperView addSubview:castButton];
-    
-    // 3. Add autolayout constraints
-    castButton.translatesAutoresizingMaskIntoConstraints = false;
-    [NSLayoutConstraint constraintWithItem:castButton
-                         attribute:NSLayoutAttributeTop
-                         relatedBy:NSLayoutRelationEqual
-                            toItem:castWrapperView
-                         attribute:NSLayoutAttributeTop
-                        multiplier:1.0 constant:0].active = YES;
-    [NSLayoutConstraint constraintWithItem:castButton
-                         attribute:NSLayoutAttributeLeading
-                         relatedBy:NSLayoutRelationEqual
-                            toItem:castWrapperView
-                         attribute:NSLayoutAttributeLeading
-                        multiplier:1.0 constant:0].active = YES;
-    [NSLayoutConstraint constraintWithItem:castButton
-                       attribute:NSLayoutAttributeWidth
-                       relatedBy:NSLayoutRelationEqual
-                          toItem:castWrapperView
-                       attribute:NSLayoutAttributeWidth
-                      multiplier:1.0 constant:0].active = YES;
-    [NSLayoutConstraint constraintWithItem:castButton
-                        attribute:NSLayoutAttributeHeight
-                        relatedBy:NSLayoutRelationEqual
-                           toItem:castWrapperView
-                        attribute:NSLayoutAttributeHeight
-                       multiplier:1.0 constant:0].active = YES;
-    
-    return castWrapperView;
-}
 
-- (UIViewController *)currentTopViewController {
-    UIViewController *topVC = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
-    while (topVC.presentedViewController) {
-        topVC = topVC.presentedViewController;
-    }
-    return topVC;
+-(UIView*) view {
+    return [[VizbeeCastButtonView alloc]init];
 }
 
 @end

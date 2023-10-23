@@ -21,6 +21,10 @@ public class VizbeeCastButtonView extends LinearLayout implements LifecycleEvent
         this.addView(m_button);
     }
 
+    public void setColor(String color){
+        Log.d(TAG, "setColor " + color + " for view "+ m_button.getId());
+    }
+
      @Override
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
