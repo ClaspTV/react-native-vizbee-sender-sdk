@@ -30,6 +30,6 @@ public class VizbeeCastButtonViewManager extends SimpleViewManager<VizbeeCastBut
     @ReactProp(name = "tintColor")
     public void setTintColor(VizbeeCastButtonView view, @NonNull String tintColor) {
         Log.v(LOG_TAG, "setTintColor - " + tintColor);
-        view.setTintColor(color);
+        view.setTintColor(tintColor);
     }
 }

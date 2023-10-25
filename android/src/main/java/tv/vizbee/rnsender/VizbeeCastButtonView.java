@@ -24,6 +24,11 @@ public class VizbeeCastButtonView extends LinearLayout implements LifecycleEvent
 
     public void setTintColor(String tintColor){
         Log.v(LOG_TAG, "setTintColor - " + tintColor);
+        if (null != m_button && null != tintColor) {
+            m_button.setDrawableTintColor(tintColor);
+        } else {
+            Log.w(LOG_TAG, "setTintColor - failed to set the tint color " + tintColor);
+        }
     }
 
      @Override
