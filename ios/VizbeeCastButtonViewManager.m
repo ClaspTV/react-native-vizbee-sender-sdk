@@ -1,7 +1,4 @@
-#import <UIKit/UIKit.h>
-#import <VizbeeKit/VizbeeKit.h>
 #import <React/RCTViewManager.h>
-#import <React/RCTUIManager.h>
 #import "VizbeeCastButtonView.h"
 
 @interface VizbeeCastButtonViewManager: RCTViewManager
@@ -11,7 +8,7 @@
 
 RCT_EXPORT_MODULE(VizbeeCastButtonView)
 
-RCT_EXPORT_VIEW_PROPERTY(color, NSString)
+RCT_EXPORT_VIEW_PROPERTY(tintColor, NSString)
 
 /*
  Do not attempt to set the frame or backgroundColor properties on the UIView instance that is exposed through the -view method.

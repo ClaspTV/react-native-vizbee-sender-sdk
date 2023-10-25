@@ -11,7 +11,8 @@ import tv.vizbee.api.RemoteButton;
 
 public class VizbeeCastButtonView extends LinearLayout implements LifecycleEventListener {
 
-    public static final String TAG = VizbeeCastButtonView.class.getName();
+    private static final String LOG_TAG = "VZBRNSDK_VizbeeCastButtonView";
+
     private RemoteButton m_button;
 
     public VizbeeCastButtonView(ThemedReactContext themedReactContext) {
@@ -21,8 +22,8 @@ public class VizbeeCastButtonView extends LinearLayout implements LifecycleEvent
         this.addView(m_button);
     }
 
-    public void setColor(String color){
-        Log.d(TAG, "setColor " + color + " for view "+ m_button.getId());
+    public void setTintColor(String tintColor){
+        Log.v(LOG_TAG, "setTintColor - " + tintColor);
     }
 
      @Override
@@ -42,16 +43,16 @@ public class VizbeeCastButtonView extends LinearLayout implements LifecycleEvent
 
     @Override
     public void onHostResume() {
-        Log.i(TAG, "onHostResume");
+        Log.i(LOG_TAG, "onHostResume");
     }
 
     @Override
     public void onHostPause() {
-        Log.i(TAG, "onHostPause");
+        Log.i(LOG_TAG, "onHostPause");
     }
 
     @Override
     public void onHostDestroy() {
-        Log.i(TAG, "onHostDestroy");
+        Log.i(LOG_TAG, "onHostDestroy");
     }
 }

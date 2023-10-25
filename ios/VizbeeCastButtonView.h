@@ -9,7 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface VizbeeCastButtonView : UIView
 
-@property (nonatomic, strong) NSString *color;
+@property (nonatomic, strong) NSString *tintColor;
 
 @end
 

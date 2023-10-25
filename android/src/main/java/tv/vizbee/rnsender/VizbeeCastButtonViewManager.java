@@ -2,13 +2,15 @@ package tv.vizbee.rnsender;
 
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
-import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import android.util.Log;
+
 
 public class VizbeeCastButtonViewManager extends SimpleViewManager<VizbeeCastButtonView> {
 
     private static final String REACT_CLASS = "VizbeeCastButtonView";
+    private static final String LOG_TAG = "VZBRNSDK_VizbeeCastButtonViewManager";
 
     @Override
     public String getName() {
@@ -25,9 +27,9 @@ public class VizbeeCastButtonViewManager extends SimpleViewManager<VizbeeCastBut
         super.onDropViewInstance(buttonView);
     }
 
-    @ReactProp(name = "color")
-    public void setColor(VizbeeCastButtonView view, @Nullable String color) {
-        Log.d(REACT_CLASS,"setColor color = " + color + " view =" + view);
-        view.setColor(color);
+    @ReactProp(name = "tintColor")
+    public void setTintColor(VizbeeCastButtonView view, @NonNull String tintColor) {
+        Log.v(LOG_TAG, "setTintColor - " + tintColor);
+        view.setTintColor(color);
     }
 }

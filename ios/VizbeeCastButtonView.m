@@ -2,11 +2,10 @@
 //  VizbeeCastButtonView.m
 //  RNVizbeeSenderSdk
 //
-//  Created by Sidharth Datta on 20/10/23.
-//
+
 #import <VizbeeKit/VizbeeKit.h>
-#import <UIKit/UIKit.h>
 #import "VizbeeCastButtonView.h"
+#import <React/RCTLog.h>
 
 @interface VizbeeCastButtonView ()
 
@@ -16,17 +15,19 @@
 
 @implementation VizbeeCastButtonView
 
-@synthesize color = _color;
+@synthesize tintColor = _tintColor;
 
-- (NSString *)color {
-    return _color;
+- (NSString *)tintColor {
+    return _tintColor;
 }
 
-- (void)setColor:(NSString *)color {
-    UIColor * updatedColor = [self colorFromHex:color];
+- (void)setTintColor:(NSString *)tintColor {
+    UIColor * updatedColor = [self colorFromHex:tintColor];
     if(updatedColor){
         self.castButton.tintColor = updatedColor;
-        _color = color;
+        _tintColor = tintColor;
+    }else{
+        RCTLogError(@"[RNVZBSDK] VizbeeCastButtonView::invalid tintColor - %@",tintColor);
     }
 }
 
@@ -68,12 +69,20 @@
     
 }
 
+- (BOOL)isValidHexColor:(NSString *)hexColor {
+    // Define a regular expression pattern for a valid hex color code
+    NSString *hexColorPattern = @"^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$";
+    
+    NSPredicate *hexColorTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", hexColorPattern];
+    return [hexColorTest evaluateWithObject:hexColor];
+}
+
 - (UIColor *)colorFromHex:(NSString *)hexString {
-    hexString = [hexString stringByReplacingOccurrencesOfString:@"#" withString:@""];
-    NSScanner *scanner = [NSScanner scannerWithString:hexString];
+    NSString *mutatedHexString = [hexString stringByReplacingOccurrencesOfString:@"#" withString:@""];
+    NSScanner *scanner = [NSScanner scannerWithString:mutatedHexString];
     unsigned hexValue = 0;
     
-    if ([scanner scanHexInt:&hexValue]) {
+    if ([scanner scanHexInt:&hexValue] && [self isValidHexColor:hexString]) {
         CGFloat red = ((hexValue & 0xFF0000) >> 16) / 255.0;
         CGFloat green = ((hexValue & 0x00FF00) >> 8) / 255.0;
         CGFloat blue = (hexValue & 0x0000FF) / 255.0;
