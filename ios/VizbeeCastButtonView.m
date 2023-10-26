@@ -22,13 +22,15 @@
 }
 
 - (void)setTintColor:(NSString *)tintColor {
-    UIColor * updatedColor = [self colorFromHex:tintColor];
-    if(updatedColor){
-        self.castButton.tintColor = updatedColor;
-        _tintColor = tintColor;
-    }else{
-        RCTLogError(@"[RNVZBSDK] VizbeeCastButtonView::invalid tintColor - %@",tintColor);
+    if(self.castButton){
+        UIColor * updatedColor = [self colorFromHex:tintColor];
+        if(updatedColor){
+            self.castButton.tintColor = updatedColor;
+        }else{
+            RCTLogError(@"[RNVZBSDK] VizbeeCastButtonView::invalid tintColor - %@",tintColor);
+        }
     }
+    _tintColor = tintColor;
 }
 
 - (void)layoutSubviews {
@@ -38,6 +40,7 @@
     self.castButton = [Vizbee createCastButtonWithDelegate:nil
                                          forViewController:vc];
     // 2. Create a castWrapperView and add castButton to it
+    [self setTintColor:self.tintColor];
     [self addSubview:self.castButton];
     
     // 3. Add autolayout constraints
