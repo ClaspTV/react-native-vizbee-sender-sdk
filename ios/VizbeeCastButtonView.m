@@ -40,7 +40,9 @@
     self.castButton = [Vizbee createCastButtonWithDelegate:nil
                                          forViewController:vc];
     // 2. Create a castWrapperView and add castButton to it
-    [self setTintColor:self.tintColor];
+    if(nil != self.tintColor){
+        [self setTintColor:self.tintColor];
+    }
     [self addSubview:self.castButton];
     
     // 3. Add autolayout constraints
