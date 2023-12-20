@@ -27,6 +27,12 @@
     
     // always use production
     options.isProduction = YES;
+
+    // set UIWindowLevel Normal + 3 as a default if not set
+    if (options.useVizbeeUIWindowAtLevel == 0) {
+        options.useVizbeeUIWindowAtLevel = UIWindowLevelNormal + 3;
+    }
+    
     VizbeeAppAdapter* vizbeeAppAdapter = [[VizbeeAppAdapter alloc] init];
     [Vizbee startWithAppID:vizbeeAppId appAdapterDelegate:vizbeeAppAdapter andVizbeeOptions:options];
 }

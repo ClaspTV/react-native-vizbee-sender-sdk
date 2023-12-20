@@ -104,14 +104,23 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
         }
     }
 
+    private Callback mDidPlayOnTVCallback;
+    private Callback mDoPlayOnPhoneCallback;
     @ReactMethod
     public void smartPlay(ReadableMap vizbeeVideoMap, Callback didPlayOnTVCallback, Callback doPlayOnPhoneCallback){
+
+        this.mDoPlayOnPhoneCallback = doPlayOnPhoneCallback;
+        this.mDidPlayOnTVCallback = didPlayOnTVCallback;
 
         Log.v(LOG_TAG, "Invoking smartPlay");
 
         Activity activity = this.reactContext.getCurrentActivity();
         if (activity == null) {
             Log.e(LOG_TAG, "SmartPlay - null activity");
+            if (null != this.mDoPlayOnPhoneCallback) {
+                mDoPlayOnPhoneCallback.invoke("FAILED_TO_GET_ACTIVITY");
+                mDoPlayOnPhoneCallback = null;
+            }
             return;
         }
 
@@ -120,20 +129,21 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
         VizbeeRequest request = new VizbeeRequest(vizbeeVideo, vizbeeVideo.getGuid(), (long)(1000*vizbeeVideo.getStartPositionInSeconds()));
         request.setCallback(new RequestCallback() {
             @Override
-            public void doPlayOnPhone(@NonNull VizbeeStatus status) {
-                Log.i(LOG_TAG,"Play on phone with status = " + status);
-                if (null != doPlayOnPhoneCallback) {
-                    String reasonForPlayOnPhone = getPlayOnPhoneReason(status);
-                    doPlayOnPhoneCallback.invoke(reasonForPlayOnPhone);
-                }
-            }
-
-            @Override
             public void didPlayOnTV(@NonNull VizbeeScreen screen) {
                 Log.i(LOG_TAG, "Played on TV = " + screen.toString());
-                if (null != didPlayOnTVCallback) {
+                if (null != mDidPlayOnTVCallback) {
                     WritableMap connectedDevicemap = VizbeeNativeManager.this.getSessionConnectedDeviceMap();
-                    didPlayOnTVCallback.invoke(connectedDevicemap);
+                    mDidPlayOnTVCallback.invoke(connectedDevicemap);
+                    mDidPlayOnTVCallback = null;
+                }
+            }
+            @Override
+            public void doPlayOnPhone(@NonNull VizbeeStatus status) {
+                Log.i(LOG_TAG,"Play on phone with status = " + status);
+                if (null != mDoPlayOnPhoneCallback) {
+                    String reasonForPlayOnPhone = getPlayOnPhoneReason(status);
+                    mDoPlayOnPhoneCallback.invoke(reasonForPlayOnPhone);
+                    mDoPlayOnPhoneCallback = null;
                 }
             }
         });

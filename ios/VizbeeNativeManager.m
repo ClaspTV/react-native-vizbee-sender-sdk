@@ -137,13 +137,19 @@ RCT_EXPORT_METHOD(smartPlay:(NSDictionary*) vizbeeVideoMap
       doPlayOnPhoneCallback:(RCTResponseSenderBlock) doPlayOnPhoneCallback
         ) {
     
+    __block RCTResponseSenderBlock _didPlayOnTVCallback = didPlayOnTVCallback;
+    __block RCTResponseSenderBlock _doPlayOnPhoneCallback = doPlayOnPhoneCallback;
+    
     RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::smartPlay - Invoking smartPlay");
     [self topViewControllerThreadSafe:^(UIViewController* vc) {
         
         // sanity
         if (nil == vc) {
             RCTLogError(@"[RNVZBSDK] VizbeeNativeManager::smartPlay - nil viewcontroller");
-            doPlayOnPhoneCallback(nil);
+            if (nil != _doPlayOnPhoneCallback) {
+                _doPlayOnPhoneCallback(@[@"FAILED_TO_GET_VIEW_CONTROLLER"]);
+                _doPlayOnPhoneCallback = nil;
+            }
             return;
         }
         
@@ -156,16 +162,18 @@ RCT_EXPORT_METHOD(smartPlay:(NSDictionary*) vizbeeVideoMap
 
             NSDictionary* connectedDeviceMap = [self getSessionConnectedDeviceMap];
             RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::smartPlay - Playing on screen = %@", connectedDeviceMap[@"connectedDeviceFriendlyName"]);
-            if (nil != didPlayOnTVCallback) {
-                didPlayOnTVCallback(@[connectedDeviceMap]);
+            if (nil != _didPlayOnTVCallback) {
+                _didPlayOnTVCallback(@[connectedDeviceMap]);
+                _didPlayOnTVCallback = nil;
             }
         }];
         [request doPlayOnPhone:^(VZBStatus *status) {
 
             NSString* reasonForPlayOnPhone = [self getPlayOnPhoneReason:status];
             RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::smartPlay - Play on phone with reason = %@", reasonForPlayOnPhone);
-                if (nil != doPlayOnPhoneCallback){
-                    doPlayOnPhoneCallback(@[reasonForPlayOnPhone]);
+                if (nil != _doPlayOnPhoneCallback){
+                    _doPlayOnPhoneCallback(@[reasonForPlayOnPhone]);
+                    _doPlayOnPhoneCallback = nil;
                 }
         }];
         

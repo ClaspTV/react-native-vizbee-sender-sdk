@@ -31,7 +31,39 @@ public class VizbeeCastButtonView extends LinearLayout implements LifecycleEvent
         }
     }
 
-     @Override
+    // PROBLEM: 
+    // If a sub view 'm_button' of native view's visibility is set to GONE (`setVisibility(GONE))`
+    // before it render on the screen and later if we set it's visibility to VISIBLE (`setVisibility(VISIBLE)`) 
+    // it will not show on the screen as its width and height are both zero, but its visibility is VISIBLE.
+    //
+    // SOLUTION: 
+    // Re-measure the size and layout from the requestLayout() override.
+    //
+    // REFERENCES:
+    // https://github.com/homeeondemand/react-native-mapbox-navigation/commit/4fceba358224cb3bc5ee9a649320723c4dea0ea8
+    // https://github.com/facebook/react-native/issues/17968#issuecomment-457236577
+    // https://github.com/facebook/react-native/issues/5531
+    
+    @Override
+    public void requestLayout() {
+        super.requestLayout();
+        Log.v(LOG_TAG, "VizbeeCastButtonView - requestLayout");
+        post(measureAndLayout);
+    }
+
+    private final Runnable measureAndLayout = new Runnable() {
+        @Override
+        public void run() {
+            measure(
+                MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY)
+            );
+            Log.v(LOG_TAG, "VizbeeCastButtonView - measureAndLayout");
+            layout(getLeft(), getTop(), getRight(), getBottom());
+        }
+    };
+
+    @Override
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
     }
