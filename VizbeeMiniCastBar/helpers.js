@@ -4,7 +4,7 @@
  * @returns {string} title to display
  */
 export const getTitleFromVideoInfo = ({ title, castingTo }) => {
-  if (title && title.length) {
+  if (title && title?.length) {
     return title;
   }
 
@@ -21,11 +21,11 @@ export const getTitleFromVideoInfo = ({ title, castingTo }) => {
  * @returns {string} subtitle to display
  */
 export const getSubTitleFromVideoInfo = ({ title, subTitle, castingTo }) => {
-  if (subTitle && subTitle.length) {
+  if (subTitle && subTitle?.length) {
     return subTitle;
   }
 
-  if (title && title.length) {
+  if (title && title?.length) {
     return `Casting to ${castingTo}`;
   }
 
