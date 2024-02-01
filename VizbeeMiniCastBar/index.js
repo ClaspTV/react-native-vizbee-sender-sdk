@@ -90,10 +90,10 @@ const VizbeeMiniCastBar = ({
           resizeMode="contain"
         />
         <View style={defaultStyles.textContentView}>
-          <Text style={defaultStyles?.titleText}>
+          <Text style={defaultStyles?.titleText} numberOfLines={1}>
             {getTitleFromVideoInfo({ title, castingTo })}
           </Text>
-          <Text style={defaultStyles?.subTitleText}>
+          <Text style={defaultStyles?.subTitleText} numberOfLines={1}>
             {getSubTitleFromVideoInfo({ title, subTitle, castingTo })}
           </Text>
         </View>
