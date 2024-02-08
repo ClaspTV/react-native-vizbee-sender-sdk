@@ -1,38 +1,43 @@
-import { useState } from "react";
+
+import {useEffect, useState } from "react";
 import {
   VizbeeManager,
   VizbeePlayerState,
 } from "react-native-vizbee-sender-sdk";
 import { ButtonType } from "react-native-vizbee-sender-sdk/VizbeeMiniCastBar/constants";
 
-export const useMiniPlayerHook = ({
-  playActionButtonType,
-  shouldDisablePlayPauseButtonForLive,
-  buttonImgPlay,
-  buttonImgPause,
-  buttonImgStop,
+export const useMiniPlayerMediaStatusListenerHook = ({
+  isVisible,
+  setIsVisible,
+    playActionButtonType,
+    shouldDisablePlayPauseButtonForLive,
+    buttonImgPlay,
+    buttonImgPause,
+    buttonImgStop
 }) => {
-  // Define state
-  const [isVisible, setIsVisible] = useState(false);
+
+     // Define state
   const [mediaStatus, setMediaStatus] = useState({});
-  const [castingTo, setCastingTo] = useState("TV");
-  const [disableButton, setDisableButton] = useState(true);
+  const [isButtonDisabled, setButtonDisabled] = useState(true);
   const [buttonImg, setButtonImg] = useState(null);
   const [buttonType, setButtonType] = useState(null);
 
-  /**
-   * Get connected device friendly name
-   */
-  const getConnectedDeviceInfo = () => {
+    // useEffect hook
+  useEffect(() => {
     console.debug("Add VZB_MEDIA_STATUS Listener");
-    VizbeeManager.getSessionConnectedDevice()
-      .then((connectedDeviceInfo) => {
-        setCastingTo(connectedDeviceInfo?.connectedDeviceFriendlyName || "TV");
-      })
-      .catch(() => {
-        setCastingTo("TV");
-      });
-  };
+    const mediaStatusListener = VizbeeManager.addListener(
+      "VZB_MEDIA_STATUS",
+      videoPlayerStatusCallback
+    );
+
+    return () => {
+      console.debug("Remove VZB_MEDIA_STATUS Listener");
+      VizbeeManager.removeListener(mediaStatusListener);
+    };
+  }, []);
+
+
+
 
   /**
    * Update the state of the mini player controls
@@ -42,14 +47,14 @@ export const useMiniPlayerHook = ({
    */
   const updatePlayerState = (newMediaStatus) => {
     if (newMediaStatus?.playerState === VizbeePlayerState.Playing) {
-      setDisableButton(false);
+      setButtonDisabled(false);
 
       if (newMediaStatus?.isLive && playActionButtonType !== "playpause") {
         setButtonType(ButtonType.STOP);
         setButtonImg(buttonImgStop);
       } else {
         if (newMediaStatus?.isLive && shouldDisablePlayPauseButtonForLive) {
-          setDisableButton(true);
+          setButtonDisabled(true);
         }
 
         setButtonType(ButtonType.PAUSE);
@@ -60,9 +65,9 @@ export const useMiniPlayerHook = ({
 
     if (newMediaStatus?.playerState === VizbeePlayerState.Paused) {
       if (newMediaStatus.isLive && shouldDisablePlayPauseButtonForLive) {
-        setDisableButton(true);
+        setButtonDisabled(true);
       } else {
-        setDisableButton(false);
+        setButtonDisabled(false);
       }
 
       setButtonType(ButtonType.PLAY);
@@ -71,7 +76,7 @@ export const useMiniPlayerHook = ({
 
     // update the button state to disabled
     if (mediaStatus.isAdPlaying) {
-      setDisableButton(true);
+      setButtonDisabled(true);
     }
   };
 
@@ -91,65 +96,27 @@ export const useMiniPlayerHook = ({
         case VizbeePlayerState.Stopped:
         case VizbeePlayerState.Stopped_On_Disconnect:
         case VizbeePlayerState.Ended:
+         // Receiving started event with empty title and subtitle so remo
+        case VizbeePlayerState.Started:
           resetStateToDefault();
           break;
         default:
           setIsVisible(true);
-          getConnectedDeviceInfo();
           updatePlayerState(newMediaStatus);
       }
     }
   };
 
-  /**
+  /** 
    * Resets states to default
-   */
-  const resetStateToDefault = () => {
+   */ 
+  const resetStateToDefault = () =>{
     setIsVisible(false);
-    setDisableButton(true);
+    setButtonDisabled(true);
     setMediaStatus({});
-    setCastingTo("TV");
     setButtonType(null);
     setButtonImg(null);
-  };
+  }
 
-  /**
-   * Called on Miniplayer View press
-   */
-  const onMiniPlayerViewPress = () => {
-    console.debug(`Miniplayer View pressed`);
-    VizbeeManager.smartCast();
-  };
-
-  /**
-   * Called on Miniplayer Control press
-   */
-  const onButtonPress = () => {
-    console.debug(`Miniplayer control pressed :: ${buttonType}.`);
-    switch (buttonType) {
-      case ButtonType.PLAY:
-        VizbeeManager.play();
-        break;
-      case ButtonType.PAUSE:
-        VizbeeManager.pause();
-        break;
-      case ButtonType.STOP:
-        VizbeeManager.stop();
-        break;
-      default:
-        break;
-    }
-  };
-
-  return {
-    isVisible,
-    mediaStatus,
-    disableButton,
-    buttonImg,
-    buttonType,
-    castingTo,
-    videoPlayerStatusCallback,
-    onMiniPlayerViewPress,
-    onButtonPress,
-  };
-};
+  return {isVisible,setIsVisible, mediaStatus, isButtonDisabled, buttonImg, buttonType}
+}

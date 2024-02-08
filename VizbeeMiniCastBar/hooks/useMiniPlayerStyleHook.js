@@ -1,30 +1,43 @@
-import { StyleSheet } from "react-native";
+import { useEffect } from "react";
 
 /**
- * Define default styles for the SDK component
- */
+   * Define default styles for the SDK component
+   */
 export const useMiniPlayerStyleHook = ({
   backgroundLayerStyle,
   progressViewStyle,
   titleStyle,
   subTitleStyle,
   buttonStyle,
-  disableButtonStyle,
-}) => {
-  const defaultStyles = StyleSheet.create({
+  disableButtonStyle, 
+  defaultApperance
+}) => {  
+
+  useEffect(()=>{
+    getDefaultStyle();
+  },[defaultApperance])
+
+  const getDefaultStyle = () => {
+    console.log({backgroundLayerStyle,
+      progressViewStyle,
+      titleStyle,
+      subTitleStyle,
+      buttonStyle,
+      disableButtonStyle})
+    return {
     backgroundLayer: {
       alignItems: "center",
-      height: backgroundLayerStyle?.height ?? 64,
+      height:backgroundLayerStyle?.height ?? 64,
       width: backgroundLayerStyle?.width ?? "100%",
-      backgroundColor: backgroundLayerStyle?.backgroundColor ?? "#FFFFFF",
+      backgroundColor: backgroundLayerStyle?.backgroundColor ?? defaultApperance.viewBackgroundColor,
     },
     progressBarBackground: {
-      backgroundColor: progressViewStyle?.backgroundColor ?? "#000000",
+      backgroundColor: progressViewStyle?.backgroundColor ?? defaultApperance.progressViewBackgroundColor,
       height: progressViewStyle?.height ?? 2,
       width: "100%",
     },
     progressBar: {
-      backgroundColor: progressViewStyle?.color ?? "red",
+      backgroundColor: progressViewStyle?.color ?? defaultApperance.progressBarColor,
       height: progressViewStyle?.height ?? 2,
     },
     contentView: {
@@ -46,12 +59,12 @@ export const useMiniPlayerStyleHook = ({
       paddingRight: 10,
     },
     titleText: {
-      color: "#000000",
+      color: defaultApperance.titleTextColor,
       fontSize: 14,
       ...titleStyle,
     },
     subTitleText: {
-      color: "#000000",
+      color: defaultApperance.subtitleTextColor,
       fontSize: 12,
       ...subTitleStyle,
     },
@@ -62,20 +75,21 @@ export const useMiniPlayerStyleHook = ({
     buttonImg: {
       aspectRatio: 1,
       height: "100%",
-      tintColor: buttonStyle?.color ?? "#000000",
+      tintColor: buttonStyle?.color ?? defaultApperance.buttonColor.active,
     },
     disableButton: {
       margin: 5,
-      backgroundColor: "#cccccc",
+      backgroundColor: defaultApperance.buttonColor.inactiveBackground,
       borderRadius: 25,
       ...disableButtonStyle,
     },
     disableButtonImg: {
       aspectRatio: 1,
       height: "100%",
-      tintColor: disableButtonStyle?.color ?? "#808080",
+      tintColor: disableButtonStyle?.color ?? defaultApperance.buttonColor.inactive,
     },
-  });
+  };
+}
 
-  return defaultStyles;
-};
+  return {getDefaultStyle}
+}
