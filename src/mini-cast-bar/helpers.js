@@ -40,7 +40,7 @@ export const getTitleFromVideoInfo = ({title, castingTo}) => {
    */
   export function getApperanceColor(isDark) {
 
-    if (isDark){
+    if (!isDark){
       return {
         viewBackgroundColor: "#FFFFFF",
         progressViewBackgroundColor:"#000000",

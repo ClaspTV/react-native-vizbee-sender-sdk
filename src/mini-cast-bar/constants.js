@@ -13,3 +13,5 @@ export const Images = {
     PAUSE: "pause",
     STOP: "stop",
   };
+
+  export const LOG_TAG = "MiniPlayer"

@@ -1,43 +1,39 @@
-
-import {useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   VizbeeManager,
   VizbeePlayerState,
-} from "react-native-vizbee-sender-sdk";
-import { ButtonType } from "react-native-vizbee-sender-sdk/VizbeeMiniCastBar/constants";
+} from "../../../";
+import { ButtonType } from "../constants";
+import { LOG_TAG } from "../constants";
 
 export const useMiniPlayerMediaStatusListenerHook = ({
   isVisible,
   setIsVisible,
-    playActionButtonType,
-    shouldDisablePlayPauseButtonForLive,
-    buttonImgPlay,
-    buttonImgPause,
-    buttonImgStop
+  playActionButtonType,
+  shouldDisablePlayPauseButtonForLive,
+  buttonImgPlay,
+  buttonImgPause,
+  buttonImgStop,
 }) => {
-
-     // Define state
+  // Define state
   const [mediaStatus, setMediaStatus] = useState({});
   const [isButtonDisabled, setButtonDisabled] = useState(true);
   const [buttonImg, setButtonImg] = useState(null);
   const [buttonType, setButtonType] = useState(null);
 
-    // useEffect hook
+  // useEffect hook
   useEffect(() => {
-    console.debug("Add VZB_MEDIA_STATUS Listener");
+    console.debug(LOG_TAG, "Add VZB_MEDIA_STATUS Listener");
     const mediaStatusListener = VizbeeManager.addListener(
       "VZB_MEDIA_STATUS",
       videoPlayerStatusCallback
     );
 
     return () => {
-      console.debug("Remove VZB_MEDIA_STATUS Listener");
-      VizbeeManager.removeListener(mediaStatusListener);
+      console.debug(LOG_TAG, "Remove VZB_MEDIA_STATUS Listener");
+      VizbeeManager.removeAllListeners(mediaStatusListener);
     };
   }, []);
-
-
-
 
   /**
    * Update the state of the mini player controls
@@ -46,6 +42,7 @@ export const useMiniPlayerMediaStatusListenerHook = ({
    * @returns {void}
    */
   const updatePlayerState = (newMediaStatus) => {
+    console.debug(LOG_TAG, `New Media Status = ${newMediaStatus}`);
     if (newMediaStatus?.playerState === VizbeePlayerState.Playing) {
       setButtonDisabled(false);
 
@@ -63,7 +60,7 @@ export const useMiniPlayerMediaStatusListenerHook = ({
       return;
     }
 
-    if (newMediaStatus?.playerState === VizbeePlayerState.Paused) {
+    if (newMediaStatus?.playerState === VizbeePlayerState.Paused || newMediaStatus?.playerState === VizbeePlayerState.Loading || newMediaStatus?.playerState === VizbeePlayerState.Buffering) {
       if (newMediaStatus.isLive && shouldDisablePlayPauseButtonForLive) {
         setButtonDisabled(true);
       } else {
@@ -87,6 +84,7 @@ export const useMiniPlayerMediaStatusListenerHook = ({
    */
   const videoPlayerStatusCallback = (newMediaStatus) => {
     console.debug(
+      LOG_TAG,
       `Media status current state :: ${newMediaStatus.playerState}`
     );
     if (newMediaStatus?.guid && newMediaStatus?.guid?.length != 0) {
@@ -96,7 +94,7 @@ export const useMiniPlayerMediaStatusListenerHook = ({
         case VizbeePlayerState.Stopped:
         case VizbeePlayerState.Stopped_On_Disconnect:
         case VizbeePlayerState.Ended:
-         // Receiving started event with empty title and subtitle so remo
+        // Receiving started event with empty title and subtitle so remo
         case VizbeePlayerState.Started:
           resetStateToDefault();
           break;
@@ -107,16 +105,24 @@ export const useMiniPlayerMediaStatusListenerHook = ({
     }
   };
 
-  /** 
+  /**
    * Resets states to default
-   */ 
-  const resetStateToDefault = () =>{
+   */
+  const resetStateToDefault = () => {
+    console.debug(LOG_TAG, "Reset to default state");
     setIsVisible(false);
     setButtonDisabled(true);
     setMediaStatus({});
     setButtonType(null);
     setButtonImg(null);
-  }
+  };
 
-  return {isVisible,setIsVisible, mediaStatus, isButtonDisabled, buttonImg, buttonType}
-}
+  return {
+    isVisible,
+    setIsVisible,
+    mediaStatus,
+    isButtonDisabled,
+    buttonImg,
+    buttonType,
+  };
+};

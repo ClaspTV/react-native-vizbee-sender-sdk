@@ -2,6 +2,8 @@ package tv.vizbee.rnsender;
 
 import android.app.Application;
 
+import androidx.annotation.StyleRes;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -74,4 +76,11 @@ public class VizbeeBootstrap {
       VizbeeContext.getInstance().init(applicationContext, vizbeeAppId, new VizbeeAppAdapter(), options);
   }
 
+   //----------------
+    // Set Theme
+    //----------------
+
+    public void setAppTheme(@StyleRes int theme) {
+        VizbeeContext.getInstance().setTheme(theme);
+    }
 }

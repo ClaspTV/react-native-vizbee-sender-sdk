@@ -1,25 +1,24 @@
-
 import { useEffect, useState } from "react";
-import {VizbeeManager} from "react-native-vizbee-sender-sdk";
+import { VizbeeManager } from "../../../";
+import { LOG_TAG } from "../constants";
 
 export const useMiniPlayerSessionListenerHook = () => {
-
   // Define state
   const [isVisible, setIsVisible] = useState(false);
 
   // useEffect hook
-  useEffect(()=>{
-    console.debug("Add VZB_SESSION_STATUS Listener");
+  useEffect(() => {
+    console.debug(LOG_TAG, "Add VZB_SESSION_STATUS Listener");
     const sessionStatusListener = VizbeeManager.addListener(
       "VZB_SESSION_STATUS",
       sessionStatusCallback
     );
 
     return () => {
-      console.debug("Remove VZB_SESSION_STATUS Listener");
-      VizbeeManager.removeListener(sessionStatusListener);
+      console.debug(LOG_TAG, "Remove VZB_SESSION_STATUS Listener");
+      VizbeeManager.removeAllListeners(sessionStatusListener);
     };
-  },[])
+  }, []);
 
   /**
    * Update the state of the mini player controls
@@ -28,16 +27,14 @@ export const useMiniPlayerSessionListenerHook = () => {
    * @returns {void}
    */
   const sessionStatusCallback = (sessionStatus) => {
-    global.console.info(
-      `HomeScreen::_handleVizbeeSessionStatusChange - ${JSON.stringify(
-        sessionStatus
-      )}`
+    console.debug(
+      LOG_TAG,
+      `Vizbee Session Status Change - ${JSON.stringify(sessionStatus)}`
     );
     if (sessionStatus?.connectionState !== "CONNECTED") {
-        setIsVisible(false)
+      setIsVisible(false);
     }
   };
 
-
-  return {isVisible,setIsVisible}
-}
+  return { isVisible, setIsVisible };
+};
