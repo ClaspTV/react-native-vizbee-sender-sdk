@@ -1,9 +1,19 @@
 import { useEffect } from "react";
 
 /**
- * Define default styles for the SDK component
+ * Custom hook to define default styles for the SDK component.
+ *
+ * @param {Object} props - Props passed to the hook.
+ * @param {Object} props.backgroundLayerStyle - Style for the background layer.
+ * @param {Object} props.progressViewStyle - Style for the progress view.
+ * @param {Object} props.titleStyle - Style for the title text.
+ * @param {Object} props.subTitleStyle - Style for the subtitle text.
+ * @param {Object} props.buttonStyle - Style for the buttons.
+ * @param {Object} props.disableButtonStyle - Style for the disabled buttons.
+ * @param {Object} props.defaultApperance - Default appearance object containing colors and styles.
+ * @returns {Object} Object containing default styles for the SDK component.
  */
-export const useMiniPlayerStyleHook = ({
+export const useMiniCastBarStyleHook = ({
   backgroundLayerStyle,
   progressViewStyle,
   titleStyle,
@@ -16,6 +26,11 @@ export const useMiniPlayerStyleHook = ({
     getDefaultStyle();
   }, [defaultApperance]);
 
+  /**
+   * Get the default styles for the SDK component.
+   *
+   * @returns {Object} Default styles for the SDK component.
+   */
   const getDefaultStyle = () => {
     return {
       backgroundLayer: {
@@ -25,7 +40,7 @@ export const useMiniPlayerStyleHook = ({
         backgroundColor:
           backgroundLayerStyle?.backgroundColor ??
           defaultApperance.viewBackgroundColor,
-        minHeight:64
+        minHeight: 64,
       },
       progressBarBackground: {
         backgroundColor:
