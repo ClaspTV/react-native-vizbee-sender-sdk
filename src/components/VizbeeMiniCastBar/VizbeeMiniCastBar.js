@@ -60,7 +60,7 @@ const VizbeeMiniCastBar = ({
 
   const { castingTo } = useMiniCastBarSessionInfoHook({ isVisible });
 
-  const { onMiniPlayerViewPress, onButtonPress } = useMiniCastBarActionsHook();
+  const { onMiniCastBarViewPress, onButtonPress } = useMiniCastBarActionsHook();
 
   const { title, subTitle, imageURL, streamPosition, streamDuration, isLive } =
     mediaStatus;
@@ -71,7 +71,7 @@ const VizbeeMiniCastBar = ({
   return isVisible ? (
     <TouchableOpacity
       style={defaultStyles.backgroundLayer}
-      onPress={onMiniPlayerViewPress}
+      onPress={onMiniCastBarViewPress}
     >
       {!isLive ? (
         <View style={defaultStyles.progressBarBackground}>
@@ -98,7 +98,9 @@ const VizbeeMiniCastBar = ({
         </View>
         {buttonImg && buttonType ? (
           <TouchableOpacity
-            onPress={() => onButtonPress(buttonType)}
+            onPress={() => {
+              onButtonPress(buttonType)
+            }}
             style={
               isButtonDisabled
                 ? defaultStyles.disableButton
