@@ -75,12 +75,4 @@ public class VizbeeBootstrap {
   public void initialize(Application applicationContext, String vizbeeAppId, VizbeeOptions options) {
       VizbeeContext.getInstance().init(applicationContext, vizbeeAppId, new VizbeeAppAdapter(), options);
   }
-
-   //----------------
-    // Set Theme
-    //----------------
-
-    public void setAppTheme(@StyleRes int theme) {
-        VizbeeContext.getInstance().setTheme(theme);
-    }
 }

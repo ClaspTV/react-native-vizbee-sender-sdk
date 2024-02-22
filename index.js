@@ -1,5 +1,5 @@
 import { requireNativeComponent } from "react-native";
-import {VizbeeMiniCastBar } from "./src/components/VizbeeMiniCastBar";
+import { VizbeeMiniCastBar } from "./src/components/VizbeeMiniCastBar";
 
 export { default as VizbeeManager } from "./VizbeeManager";
 export { default as VizbeeSignInDelegate } from "./VizbeeSignInDelegate";
@@ -12,4 +12,4 @@ export {
 export { default as VizbeeTrackStatus } from "./VizbeeTrackStatus";
 export { default as VizbeeTrackInfo } from "./VizbeeTrackInfo";
 export const VizbeeCastButton = requireNativeComponent("VizbeeCastButtonView");
-export { VizbeeMiniCastBar };
+export { default as VizbeeMiniCastBar } from "./src/components/VizbeeMiniCastBar";
