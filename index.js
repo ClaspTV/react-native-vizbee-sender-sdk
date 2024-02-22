@@ -1,5 +1,4 @@
 import { requireNativeComponent } from "react-native";
-import { VizbeeMiniCastBar } from "./src/components/VizbeeMiniCastBar";
 
 export { default as VizbeeManager } from "./VizbeeManager";
 export { default as VizbeeSignInDelegate } from "./VizbeeSignInDelegate";
