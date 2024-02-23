@@ -40,7 +40,6 @@ export const useMiniCastBarStyleHook = ({
         backgroundColor:
           backgroundLayerStyle?.backgroundColor ??
           defaultApperance.viewBackgroundColor,
-        minHeight: 64,
       },
       progressBarBackground: {
         backgroundColor:
