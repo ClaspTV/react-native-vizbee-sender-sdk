@@ -10,7 +10,7 @@ import { useEffect } from "react";
  * @param {Object} props.subTitleStyle - Style for the subtitle text.
  * @param {Object} props.buttonStyle - Style for the buttons.
  * @param {Object} props.disableButtonStyle - Style for the disabled buttons.
- * @param {Object} props.defaultApperance - Default appearance object containing colors and styles.
+ * @param {Object} props.defaultAppearance - Default appearance object containing colors and styles.
  * @returns {Object} Object containing default styles for the SDK component.
  */
 export const useMiniCastBarStyleHook = ({
@@ -20,11 +20,11 @@ export const useMiniCastBarStyleHook = ({
   subTitleStyle,
   buttonStyle,
   disableButtonStyle,
-  defaultApperance,
+  defaultAppearance,
 }) => {
   useEffect(() => {
     getDefaultStyle();
-  }, [defaultApperance]);
+  }, [defaultAppearance]);
 
   /**
    * Get the default styles for the SDK component.
@@ -39,18 +39,18 @@ export const useMiniCastBarStyleHook = ({
         width: backgroundLayerStyle?.width ?? "100%",
         backgroundColor:
           backgroundLayerStyle?.backgroundColor ??
-          defaultApperance.viewBackgroundColor,
+          defaultAppearance.viewBackgroundColor,
       },
       progressBarBackground: {
         backgroundColor:
           progressViewStyle?.backgroundColor ??
-          defaultApperance.progressViewBackgroundColor,
+          defaultAppearance.progressViewBackgroundColor,
         height: progressViewStyle?.height ?? 2,
         width: "100%",
       },
       progressBar: {
         backgroundColor:
-          progressViewStyle?.color ?? defaultApperance.progressBarColor,
+          progressViewStyle?.color ?? defaultAppearance.progressBarColor,
         height: progressViewStyle?.height ?? 2,
       },
       contentView: {
@@ -72,12 +72,12 @@ export const useMiniCastBarStyleHook = ({
         paddingRight: 10,
       },
       titleText: {
-        color: defaultApperance.titleTextColor,
+        color: defaultAppearance.titleTextColor,
         fontSize: 14,
         ...titleStyle,
       },
       subTitleText: {
-        color: defaultApperance.subtitleTextColor,
+        color: defaultAppearance.subtitleTextColor,
         fontSize: 12,
         ...subTitleStyle,
       },
@@ -88,11 +88,11 @@ export const useMiniCastBarStyleHook = ({
       buttonImg: {
         aspectRatio: 1,
         height: "100%",
-        tintColor: buttonStyle?.color ?? defaultApperance.buttonColor.active,
+        tintColor: buttonStyle?.color ?? defaultAppearance.buttonColor.active,
       },
       disableButton: {
         margin: 5,
-        backgroundColor: defaultApperance.buttonColor.inactiveBackground,
+        backgroundColor: defaultAppearance.buttonColor.inactiveBackground,
         borderRadius: 25,
         ...disableButtonStyle,
       },
@@ -100,7 +100,7 @@ export const useMiniCastBarStyleHook = ({
         aspectRatio: 1,
         height: "100%",
         tintColor:
-          disableButtonStyle?.color ?? defaultApperance.buttonColor.inactive,
+          disableButtonStyle?.color ?? defaultAppearance.buttonColor.inactive,
       },
     };
   };

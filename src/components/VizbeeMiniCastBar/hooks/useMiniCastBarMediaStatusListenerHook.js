@@ -97,7 +97,7 @@ export const useMiniCastBarMediaStatusListenerHook = ({
     console.debug(
       `${LOG_TAG} Media status current state :: ${newMediaStatus.playerState}`
     );
-    if (newMediaStatus?.guid && newMediaStatus?.guid?.length != 0) {
+    if (newMediaStatus?.guid?.length != 0) {
       setMediaStatus(newMediaStatus);
       switch (newMediaStatus.playerState) {
         case VizbeePlayerState.Error:

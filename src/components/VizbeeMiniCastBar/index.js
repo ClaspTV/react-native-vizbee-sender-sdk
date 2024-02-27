@@ -10,7 +10,7 @@ import {
 import {
   getTitleFromVideoInfo,
   getSubTitleFromVideoInfo,
-  getApperanceColor,
+  getAppearanceColor,
 } from "./helpers";
 import PropTypes from "prop-types";
 import { Images } from "./constants";
@@ -31,7 +31,7 @@ const VizbeeMiniCastBar = ({
 }) => {
   const isDark = Appearance.getColorScheme() === "dark";
 
-  const defaultApperance = getApperanceColor(isDark);
+  const defaultAppearance = getAppearanceColor(isDark);
 
   const { getDefaultStyle } = useMiniCastBarStyleHook({
     backgroundLayerStyle,
@@ -40,7 +40,7 @@ const VizbeeMiniCastBar = ({
     subTitleStyle,
     buttonStyle,
     disableButtonStyle,
-    defaultApperance,
+    defaultAppearance,
   });
 
   const defaultStyles = getDefaultStyle();
@@ -99,7 +99,7 @@ const VizbeeMiniCastBar = ({
         {buttonImg && buttonType ? (
           <TouchableOpacity
             onPress={() => {
-              onButtonPress(buttonType)
+              onButtonPress(buttonType);
             }}
             style={
               isButtonDisabled
