@@ -2,6 +2,8 @@ package tv.vizbee.rnsender;
 
 import android.app.Application;
 
+import androidx.annotation.StyleRes;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -73,5 +75,4 @@ public class VizbeeBootstrap {
   public void initialize(Application applicationContext, String vizbeeAppId, VizbeeOptions options) {
       VizbeeContext.getInstance().init(applicationContext, vizbeeAppId, new VizbeeAppAdapter(), options);
   }
-
 }
