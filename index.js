@@ -1,10 +1,14 @@
-import {requireNativeComponent} from 'react-native';
+import { requireNativeComponent } from "react-native";
 
-export {default as VizbeeManager} from './VizbeeManager';
-export {default as VizbeeSignInDelegate} from './VizbeeSignInDelegate';
-export {default as VizbeeSignInInfo} from './VizbeeSignInInfo';
-export {default as VizbeeVideo} from './VizbeeVideo';
-export {default as VizbeeVideoStatus, VizbeePlayerState} from './VizbeeVideoStatus';
-export {default as VizbeeTrackStatus} from './VizbeeTrackStatus';
-export {default as VizbeeTrackInfo} from './VizbeeTrackInfo';
-export const VizbeeCastButton = requireNativeComponent('VizbeeCastButtonView');
+export { default as VizbeeManager } from "./src/VizbeeManager";
+export { default as VizbeeSignInDelegate } from "./src/VizbeeSignInDelegate";
+export { default as VizbeeSignInInfo } from "./src/VizbeeSignInInfo";
+export { default as VizbeeVideo } from "./src/VizbeeVideo";
+export {
+  default as VizbeeVideoStatus,
+  VizbeePlayerState,
+} from "./src/VizbeeVideoStatus";
+export { default as VizbeeTrackStatus } from "./src/VizbeeTrackStatus";
+export { default as VizbeeTrackInfo } from "./src/VizbeeTrackInfo";
+export const VizbeeCastButton = requireNativeComponent("VizbeeCastButtonView");
+export { default as VizbeeMiniCastBar } from "./src/VizbeeCastBarWrapper";
