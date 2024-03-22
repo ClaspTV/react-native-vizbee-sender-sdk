@@ -4,7 +4,12 @@ import PropTypes from "prop-types";
 
 const VizbeeCastBarView = requireNativeComponent("VizbeeCastBarView");
 
-const VizbeeCastBarWrapper = ({ height, onVisibilityChange }) => {
+const VizbeeCastBarWrapper = ({
+  height,
+  onVisibilityChange,
+  getMinHeight,
+  getActive,
+}) => {
   const [viewHeight, setViewHeight] = useState(0);
 
   const onChange = (event) => {
@@ -13,13 +18,20 @@ const VizbeeCastBarWrapper = ({ height, onVisibilityChange }) => {
   };
 
   return (
-    <VizbeeCastBarView height={viewHeight} onVisibilityChange={onChange} />
+    <VizbeeCastBarView
+      height={viewHeight}
+      onVisibilityChange={onChange}
+      getMinHeight={getMinHeight}
+      getActive={getActive}
+    />
   );
 };
 
 VizbeeCastBarWrapper.propTypes = {
   height: PropTypes.number,
   onVisibilityChange: PropTypes.func,
+  getMinHeight: PropTypes.func,
+  getActive: PropTypes.func,
 };
 
 export default VizbeeCastBarWrapper;

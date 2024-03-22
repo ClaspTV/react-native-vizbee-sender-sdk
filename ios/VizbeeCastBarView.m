@@ -21,6 +21,7 @@
         [self.castBarController.view removeFromSuperview];
         self.castBarController = nil;
         self.heightConstraint = nil;
+        self.clipsToBounds = true;
     }
     return self;
 }
