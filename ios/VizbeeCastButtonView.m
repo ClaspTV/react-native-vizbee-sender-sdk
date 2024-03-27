@@ -17,6 +17,8 @@
 
 @synthesize tintColor = _tintColor;
 
+@synthesize enabled = _enabled;
+
 - (NSString *)tintColor {
     return _tintColor;
 }
@@ -33,6 +35,17 @@
     _tintColor = tintColor;
 }
 
+-(void)setEnabled:(BOOL)enabled{
+    if(self.castButton){
+        [self.castButton setEnabled:enabled];
+    }
+    _enabled = enabled;
+}
+
+-(void)simulateButtonClick{
+    [self.castButton sendActionsForControlEvents:UIControlEventAllTouchEvents];
+}
+
 - (void)layoutSubviews {
     // Apply any layout logic, set background color, text, etc.
     // 1. Create VZBCastButton
@@ -43,6 +56,8 @@
     if(nil != self.tintColor){
         [self setTintColor:self.tintColor];
     }
+    [self.castButton setEnabled:self.enabled];
+
     [self addSubview:self.castButton];
     
     // 3. Add autolayout constraints
