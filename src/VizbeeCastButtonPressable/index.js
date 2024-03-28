@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import {
   NativeModules,
   findNodeHandle,
-  Pressable,
+  TouchableWithoutFeedback,
   Platform,
   UIManager,
 } from "react-native";
@@ -35,14 +35,14 @@ const VizbeeCastButtonPressable = ({ style }) => {
 
   let styles = { height: style.height || 24, width: style.width || 24 };
   return (
-    <Pressable onPress={handlePress} style={style}>
+    <TouchableWithoutFeedback onPress={handlePress} style={style}>
       <VizbeeCastButton
         ref={buttonRef}
         style={styles}
         tintColor={style.tintColor}
         enabled={false}
       />
-    </Pressable>
+    </TouchableWithoutFeedback>
   );
 };
 
