@@ -11,6 +11,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) NSString *tintColor;
 
+@property (nonatomic, assign) BOOL enabled;
+
+-(void)simulateButtonClick;
+
 @end
 
 NS_ASSUME_NONNULL_END
