@@ -56,7 +56,9 @@
     if(nil != self.tintColor){
         [self setTintColor:self.tintColor];
     }
-    [self.castButton setEnabled:self.enabled];
+    if (nil != self.enabled){
+        [self.castButton setEnabled:self.enabled];
+    }
 
     [self addSubview:self.castButton];
     
