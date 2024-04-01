@@ -2,6 +2,7 @@ import { NativeModules, NativeEventEmitter, Platform } from "react-native";
 import VizbeeConstants from "./VizbeeConstants";
 import VizbeeSignInInfo from "./VizbeeSignInInfo";
 import VizbeeSignInDelegate from "./VizbeeSignInDelegate";
+import VizbeeSmartPromptOptions from "./VizbeeSmartPromptOptions";
 
 const VizbeeNativeManager = NativeModules.VizbeeNativeManager || {};
 const VizbeeNativeEmitter = new NativeEventEmitter(VizbeeNativeManager);
@@ -24,8 +25,9 @@ class VizbeeManager {
         VizbeeNativeManager.smartPrompt();
     }
 
-    smartCast() {
-        VizbeeNativeManager.smartCast();
+    smartPromptWithOptions(smartPromptOptions) {
+        console.log("VizbeeSmartPromptOptions" + smartPromptOptions);
+        VizbeeNativeManager.smartPromptWithOptions(smartPromptOptions);
     }
 
     smartPlay(vizbeeVideo, didPlayOnTVCallback, doPlayOnPhoneCallback) {
