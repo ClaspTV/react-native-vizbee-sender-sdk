@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 
+## [1.1.20] - 2024-04-02
+### Added 
+    Updated Android SDK to 6.5.3
+
 ## [1.1.19] - 2023-12-20
 ### Added 
     Default UIWindowLevel set to UIWindowLevel + 3 for Vizbee iOS SDK to show all of Vizbee UI cards on it's own UIWindow.
