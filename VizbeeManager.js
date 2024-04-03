@@ -26,7 +26,7 @@ class VizbeeManager {
     }
 
     smartPromptWithOptions(smartPromptOptions) {
-        console.log("VizbeeSmartPromptOptions" + smartPromptOptions);
+        console.log(`VizbeeSmartPromptOptions ${smartPromptOptions}`);
         VizbeeNativeManager.smartPromptWithOptions(smartPromptOptions);
     }
 

@@ -89,7 +89,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
     }
 
     @ReactMethod
-    public void smartPromptWithOptions(int smartPromptOptions) {
+    public void smartPromptWithOptions(ReadableMap smartPromptOptions) {
 
         Log.v(LOG_TAG, "Invoking smartPrompt with options " + smartPromptOptions);
 
@@ -100,8 +100,10 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
         }
 
         SmartHelpOptions smartHelpOptions = new SmartHelpOptions();
-        smartHelpOptions.enable(smartPromptOptions);
-
+        if (smartPromptOptions.hasKey("enabledSubflows")) {
+            smartHelpOptions.enabledSubflows = smartPromptOptions.getInt("enabledSubflows");
+        }
+    
         // Renamed old smartHelp API to new smartPrompt
         VizbeeContext.getInstance().smartHelp(smartHelpOptions, activity);
     }

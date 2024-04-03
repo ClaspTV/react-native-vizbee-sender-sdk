@@ -115,10 +115,9 @@ RCT_EXPORT_METHOD(smartPrompt) {
     }];
 }
 
-// TODO: Take map object as an argument for scalability
-RCT_EXPORT_METHOD(smartPromptWithOptions:(NSInteger)smartPromptOptions) {
+RCT_EXPORT_METHOD(smartPromptWithOptions:(NSDictionary*) smartPromptOptions) {
 
-    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::smartPrompt - Invoking smartPrompt with options %lu", smartPromptOptions);
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::smartPrompt - Invoking smartPrompt with options %@", smartPromptOptions);
     [self topViewControllerThreadSafe:^(UIViewController* vc) {
         
         if (nil == vc) {
@@ -127,7 +126,7 @@ RCT_EXPORT_METHOD(smartPromptWithOptions:(NSInteger)smartPromptOptions) {
         }
         
         VZBSmartHelpOptions* smartHelpOptions = [VZBSmartHelpOptions new];
-        [smartHelpOptions enable:smartPromptOptions];
+        smartHelpOptions.enabledSubflows = [[smartPromptOptions objectForKey:@"enabledSubflows"]intValue];
         [Vizbee smartHelpWithOptions:smartHelpOptions presentingViewController:vc];
     }];
 }
