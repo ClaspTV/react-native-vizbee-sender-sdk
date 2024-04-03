@@ -30,6 +30,10 @@ class VizbeeManager {
         VizbeeNativeManager.smartPromptWithOptions(smartPromptOptions);
     }
 
+    smartCast() {
+        VizbeeNativeManager.smartCast();
+    }
+    
     smartPlay(vizbeeVideo, didPlayOnTVCallback, doPlayOnPhoneCallback) {
         VizbeeNativeManager.smartPlay(vizbeeVideo, didPlayOnTVCallback, doPlayOnPhoneCallback);
     }
