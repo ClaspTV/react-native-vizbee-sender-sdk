@@ -14,19 +14,6 @@ RCT_EXPORT_VIEW_PROPERTY(tintColor, NSString)
 
 RCT_EXPORT_VIEW_PROPERTY(enabled, BOOL)
 
-RCT_EXPORT_METHOD(simulateButtonClick:(nonnull NSNumber *)viewTag)
-{
-  dispatch_async(dispatch_get_main_queue(), ^{
-    UIView *view = [self.bridge.uiManager viewForReactTag:viewTag];
-    if ([view isKindOfClass:[VizbeeCastButtonView class]]) {
-      VizbeeCastButtonView *castButtonView = (VizbeeCastButtonView *)view;
-      [castButtonView simulateButtonClick];
-    } else {
-      RCTLogInfo(@"[RNVZBSDK] VizbeeCastButtonViewManager::view with tag %@ is not a VizbeeCastButtonView", viewTag);
-    }
-  });
-}
-
 /*
  Do not attempt to set the frame or backgroundColor properties on the UIView instance that is exposed through the -view method.
  React Native will overwrite the values set by your custom class in order to match your JavaScript component's layout props.

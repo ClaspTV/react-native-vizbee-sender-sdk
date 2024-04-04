@@ -42,10 +42,6 @@
     _enabled = enabled;
 }
 
--(void)simulateButtonClick{
-    [self.castButton sendActionsForControlEvents:UIControlEventAllTouchEvents];
-}
-
 - (void)layoutSubviews {
     // Apply any layout logic, set background color, text, etc.
     // 1. Create VZBCastButton
