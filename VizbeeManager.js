@@ -2,7 +2,6 @@ import { NativeModules, NativeEventEmitter, Platform } from "react-native";
 import VizbeeConstants from "./VizbeeConstants";
 import VizbeeSignInInfo from "./VizbeeSignInInfo";
 import VizbeeSignInDelegate from "./VizbeeSignInDelegate";
-import VizbeeSmartPromptOptions from "./VizbeeSmartPromptOptions";
 
 const VizbeeNativeManager = NativeModules.VizbeeNativeManager || {};
 const VizbeeNativeEmitter = new NativeEventEmitter(VizbeeNativeManager);
