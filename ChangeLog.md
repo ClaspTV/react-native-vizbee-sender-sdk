@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 
+## [1.1.20] - 2024-04-04
+### Added 
+    Updated Android SDK to 6.5.4
+
 ## [1.1.20] - 2024-04-02
 ### Added 
     Updated Android SDK to 6.5.3
