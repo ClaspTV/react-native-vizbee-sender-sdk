@@ -91,11 +91,11 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
     @ReactMethod
     public void smartPromptWithOptions(ReadableMap smartPromptOptions) {
 
-        Log.v(LOG_TAG, "Invoking smartPrompt with options " + smartPromptOptions);
+        Log.v(LOG_TAG, "Invoking smartPromptWithOptions " + smartPromptOptions);
 
         Activity activity = this.reactContext.getCurrentActivity();
         if (activity == null) {
-            Log.e(LOG_TAG, "SmartPrompt - null activity");
+            Log.e(LOG_TAG, "smartPromptWithOptions - null activity");
             return;
         }
 

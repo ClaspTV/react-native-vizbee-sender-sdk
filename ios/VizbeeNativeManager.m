@@ -117,11 +117,11 @@ RCT_EXPORT_METHOD(smartPrompt) {
 
 RCT_EXPORT_METHOD(smartPromptWithOptions:(NSDictionary*) smartPromptOptions) {
 
-    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::smartPrompt - Invoking smartPrompt with options %@", smartPromptOptions);
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::smartPromptWithOptions - Invoking smartPrompt with options %@", smartPromptOptions);
     [self topViewControllerThreadSafe:^(UIViewController* vc) {
         
         if (nil == vc) {
-            RCTLogError(@"[RNVZBSDK] VizbeeNativeManager::smartPrompt - nil viewcontroller");
+            RCTLogError(@"[RNVZBSDK] VizbeeNativeManager::smartPromptWithOptions - nil viewcontroller");
             return;
         }
         
