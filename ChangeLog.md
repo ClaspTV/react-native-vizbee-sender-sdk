@@ -14,7 +14,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 
-## [1.1.20] - 2024-04-04
+## [1.1.22] - 2024-04-10
+### Added 
+    Enhanced smartPrompt API to enable specific subflows
+
+## [1.1.21] - 2024-04-04
 ### Added 
     Updated Android SDK to 6.5.4
 
