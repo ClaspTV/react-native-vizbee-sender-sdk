@@ -18,12 +18,30 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        [self.castBarController.view removeFromSuperview];
-        self.castBarController = nil;
-        self.heightConstraint = nil;
-        self.clipsToBounds = true;
+        [self setup];
     }
     return self;
+}
+
+- (void)setup {
+    [self.castBarController.view removeFromSuperview];
+    self.castBarController = nil;
+    self.heightConstraint = nil;
+    self.clipsToBounds = true;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(applicationDidBecomeActive:)
+                                                 name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)applicationDidBecomeActive:(NSNotification *)notification {
+    BOOL shouldAppear = self.castBarController.active;
+    [self handleVisibilityChange:shouldAppear];
 }
 
 - (void)layoutSubviews {
@@ -59,6 +77,10 @@
 }
 
 - (void)miniCastViewController:(VZBCastBarViewController *)miniCastViewController shouldAppear:(BOOL)shouldAppear {
+    [self handleVisibilityChange:shouldAppear];
+}
+
+- (void)handleVisibilityChange:(BOOL)shouldAppear {
     self.hidden = !shouldAppear;
     if (self.onVisibilityChange) {
         self.onVisibilityChange(@{@"shouldAppear": @(shouldAppear)});
