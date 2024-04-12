@@ -115,6 +115,22 @@ RCT_EXPORT_METHOD(smartPrompt) {
     }];
 }
 
+RCT_EXPORT_METHOD(smartPromptWithOptions:(NSDictionary*) smartPromptOptions) {
+
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::smartPromptWithOptions - Invoking smartPrompt with options %@", smartPromptOptions);
+    [self topViewControllerThreadSafe:^(UIViewController* vc) {
+        
+        if (nil == vc) {
+            RCTLogError(@"[RNVZBSDK] VizbeeNativeManager::smartPromptWithOptions - nil viewcontroller");
+            return;
+        }
+        
+        VZBSmartHelpOptions* smartHelpOptions = [VZBSmartHelpOptions new];
+        smartHelpOptions.enabledSubflows = [[smartPromptOptions objectForKey:@"enabledSubflows"]intValue];
+        [Vizbee smartHelpWithOptions:smartHelpOptions presentingViewController:vc];
+    }];
+}
+
 RCT_EXPORT_METHOD(smartCast) {
     
     RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::smartCast - Invoking smartCast");

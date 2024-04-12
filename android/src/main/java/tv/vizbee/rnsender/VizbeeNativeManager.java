@@ -37,6 +37,7 @@ import org.json.JSONObject;
 
 import tv.vizbee.api.VideoTrackInfo;
 import tv.vizbee.api.VizbeeContext;
+import tv.vizbee.api.SmartHelpOptions;
 import tv.vizbee.api.VizbeeRequest;
 import tv.vizbee.api.RequestCallback;
 import tv.vizbee.api.VizbeeStatus;
@@ -85,6 +86,26 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
 
         // Renamed old smartHelp API to new smartPrompt
         VizbeeContext.getInstance().smartHelp(activity);
+    }
+
+    @ReactMethod
+    public void smartPromptWithOptions(ReadableMap smartPromptOptions) {
+
+        Log.v(LOG_TAG, "Invoking smartPromptWithOptions " + smartPromptOptions);
+
+        Activity activity = this.reactContext.getCurrentActivity();
+        if (activity == null) {
+            Log.e(LOG_TAG, "smartPromptWithOptions - null activity");
+            return;
+        }
+
+        SmartHelpOptions smartHelpOptions = new SmartHelpOptions();
+        if (smartPromptOptions.hasKey("enabledSubflows")) {
+            smartHelpOptions.enabledSubflows = smartPromptOptions.getInt("enabledSubflows");
+        }
+    
+        // Renamed old smartHelp API to new smartPrompt
+        VizbeeContext.getInstance().smartHelp(smartHelpOptions, activity);
     }
 
     @ReactMethod
