@@ -32,8 +32,8 @@ public class VizbeeCastButtonViewManager extends SimpleViewManager<VizbeeCastBut
         view.setTintColor(tintColor);
     }
 
-     @ReactProp(name = "enabled")
-    public void setEnabled(VizbeeCastButtonView view, boolean clickable) {
-        view.setEnabled(clickable);
+     @ReactProp(name = "disabled")
+    public void setDisabled(VizbeeCastButtonView view, boolean disabled) {
+        view.setDisabled(disabled);
     }
 }

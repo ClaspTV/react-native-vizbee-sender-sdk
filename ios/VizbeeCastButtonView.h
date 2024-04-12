@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) NSString *tintColor;
 
-@property (nonatomic, assign) BOOL enabled;
+@property (nonatomic, assign) BOOL disabled;
 
 @end
 

@@ -27,7 +27,7 @@ const VizbeeCastButtonPressable = ({ style }) => {
       <VizbeeCastButton
         style={styles}
         tintColor={style.tintColor}
-        enabled={false}
+        disabled={true}
       />
     </TouchableHighlight>
   );

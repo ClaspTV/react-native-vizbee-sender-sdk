@@ -17,7 +17,7 @@
 
 @synthesize tintColor = _tintColor;
 
-@synthesize enabled = _enabled;
+@synthesize disabled = _disabled;
 
 - (NSString *)tintColor {
     return _tintColor;
@@ -35,11 +35,11 @@
     _tintColor = tintColor;
 }
 
--(void)setEnabled:(BOOL)enabled{
+-(void)setDisabled:(BOOL)disabled{
     if(self.castButton){
-        [self.castButton setEnabled:enabled];
+        [self.castButton setEnabled:!disabled];
     }
-    _enabled = enabled;
+    _disabled = disabled;
 }
 
 - (void)layoutSubviews {
@@ -52,10 +52,10 @@
     if(nil != self.tintColor){
         [self setTintColor:self.tintColor];
     }
-    if(self.enabled == false){
-        [self.castButton setEnabled:self.enabled];
+    if(self.disabled == true){
+        [self.castButton setEnabled:!self.disabled];
     }
-    
+
     [self addSubview:self.castButton];
     
     // 3. Add autolayout constraints

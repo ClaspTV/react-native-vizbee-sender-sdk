@@ -31,12 +31,12 @@ public class VizbeeCastButtonView extends LinearLayout implements LifecycleEvent
         }
     }
 
-     public void setEnabled(boolean clickable) {
-        Log.v(LOG_TAG, "setEnabled - " + clickable);
+     public void setDisabled(boolean disabled) {
+        Log.v(LOG_TAG, "setDisabled - " + disabled);
         if (m_button != null) {
-            m_button.setEnabled(clickable);
+            m_button.setEnabled(!disabled);
         } else {
-            Log.w(LOG_TAG, "setEnabled - Remote button is not initialized");
+            Log.w(LOG_TAG, "setDisabled - Remote button is not initialized");
         }
     }
     
