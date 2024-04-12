@@ -24,10 +24,14 @@ class VizbeeManager {
         VizbeeNativeManager.smartPrompt();
     }
 
+    smartPromptWithOptions(smartPromptOptions) {
+        VizbeeNativeManager.smartPromptWithOptions(smartPromptOptions);
+    }
+
     smartCast() {
         VizbeeNativeManager.smartCast();
     }
-
+    
     smartPlay(vizbeeVideo, didPlayOnTVCallback, doPlayOnPhoneCallback) {
         VizbeeNativeManager.smartPlay(vizbeeVideo, didPlayOnTVCallback, doPlayOnPhoneCallback);
     }
