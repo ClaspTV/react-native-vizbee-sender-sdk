@@ -52,10 +52,10 @@
     if(nil != self.tintColor){
         [self setTintColor:self.tintColor];
     }
-    if (nil != self.enabled){
+    if(self.enabled == false){
         [self.castButton setEnabled:self.enabled];
     }
-
+    
     [self addSubview:self.castButton];
     
     // 3. Add autolayout constraints

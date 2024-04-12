@@ -19,7 +19,11 @@ const VizbeeCastButtonPressable = ({ style }) => {
   let styles = { height: style.height || 24, width: style.width || 24 };
 
   return (
-    <TouchableHighlight onPress={handlePress} style={containerHeight}>
+    <TouchableHighlight
+      onPress={handlePress}
+      style={containerHeight}
+      underlayColor={"transparent"}
+    >
       <VizbeeCastButton
         style={styles}
         tintColor={style.tintColor}
