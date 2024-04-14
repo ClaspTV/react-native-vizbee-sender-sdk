@@ -588,7 +588,6 @@ RCT_EXPORT_METHOD(unmute) {
             return @"PLAY_ON_PHONE_SELECTED";
         case VZBAnalyticsEventTypePlayOnTVSelected:
             return @"PLAY_ON_TV_SELECTED";
-            break;
         default:
             return @"UNKNOWN";
     }

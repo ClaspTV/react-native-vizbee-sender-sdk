@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONObject;
+import org.json.JSONException;
 
 import tv.vizbee.api.VideoTrackInfo;
 import tv.vizbee.api.VizbeeContext;
@@ -41,6 +42,9 @@ import tv.vizbee.api.SmartHelpOptions;
 import tv.vizbee.api.VizbeeRequest;
 import tv.vizbee.api.RequestCallback;
 import tv.vizbee.api.VizbeeStatus;
+import tv.vizbee.api.analytics.VizbeeAnalyticsListener;
+import tv.vizbee.api.analytics.VizbeeAnalyticsManager;
+import tv.vizbee.api.analytics.VizbeeAnalyticsManager.VZBAnalyticsEventType;
 import tv.vizbee.api.session.SessionState;
 import tv.vizbee.api.session.SessionStateListener;
 import tv.vizbee.api.session.VideoTrackStatus;
@@ -391,6 +395,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
     public void onHostResume() {
         Log.v(LOG_TAG, "onHostResume");
         this.addSessionStateListener();
+        this.addAnalyticsListener();
     }
 
     @Override
@@ -402,6 +407,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
     public void onHostDestroy() {
         Log.v(LOG_TAG, "onHostDestroy");
         this.removeSessionStateListener();
+        this.removeAnalyticsListener();
     }
 
     private SessionStateListener sessionStateListener;
@@ -516,6 +522,86 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
         Log.v(LOG_TAG, "Sending signin info trigger ...");
         WritableMap signInInfoMap = Arguments.createMap();
         this.sendEvent(VizbeeConstants.VZB_INVOKE_GET_SIGNIN_INFO, signInInfoMap);
+    }
+
+    //----------------
+    // Analytics listener
+    //----------------
+
+    private VizbeeAnalyticsListener analyticsListener;
+
+    private void addAnalyticsListener() {
+
+        // sanity
+        this.removeAnalyticsListener();
+
+        VizbeeAnalyticsManager analyticsManager = VizbeeContext.getInstance().getAnalyticsManager();
+        if (null != analyticsManager) {
+
+            Log.i(LOG_TAG, "Adding analytics listener");
+            this.analyticsListener = (event, properties) -> {
+
+                VizbeeNativeManager.this.notifyAnalyticsEvent(event, properties);
+            };
+            analyticsManager.addAnalyticsListener(this.analyticsListener);
+        } else {
+            Log.i(LOG_TAG, "Adding analytics listener - Failed to add, analyticsManager is null");
+        }
+    }
+
+    private void removeAnalyticsListener() {
+
+        VizbeeAnalyticsManager analyticsManager = VizbeeContext.getInstance().getAnalyticsManager();
+        if (null != analyticsManager && null != analyticsListener) {
+            Log.i(LOG_TAG, "Removing analytics listener");
+            analyticsManager.removeAnalyticsListener(this.analyticsListener);
+        } else {
+            Log.i(LOG_TAG, "Removing analytics listener - Failed to remove, analyticsManager or analyticsListener is null");
+        }
+        this.sessionStateListener = null;
+    }
+
+    private void notifyAnalyticsEvent(VZBAnalyticsEventType eventType, JSONObject properties) {
+
+        String eventName = this.getAnalyticsEventNameString(eventType);
+        WritableMap eventMap = Arguments.createMap();
+        eventMap.putString("event", eventName);
+
+        if (null != properties) {
+            try {
+                WritableMap propertiesMap = RNJSONConverter.convertJsonToMap(properties);
+                eventMap.putMap("properties", propertiesMap);
+            } catch (JSONException e) {
+                Log.w(LOG_TAG, "Exception while converting event properties to WritableMap");
+            }
+            
+        }
+
+        this.sendEvent("VZB_ANALYTICS_EVENT", eventMap);
+    }
+
+    private String getAnalyticsEventNameString(VZBAnalyticsEventType eventType) {
+
+        switch (eventType) {
+            case VZBAnalyticsEventTypeCastIntroductionCardShown:
+                return "CAST_INTRODUCTION_CARD_SHOWN";
+            case VZBAnalyticsEventTypeSmartInstallCardShown:
+                return "SMART_INSTALL_CARD_SHOWN";
+            case VZBAnalyticsEventTypeCastIconDeviceSelectionCardShown:
+                return "CAST_ICON_DEVICE_SELECTION_CARD_SHOWN";
+            case VZBAnalyticsEventTypeSmartPlayDeviceSelectionCardShown:
+                return "SMART_PLAY_DEVICE_SELECTION_CARD_SHOWN";
+            case VZBAnalyticsEventTypeSmartNotificationDeviceSelectionCardShown:
+                return "SMART_NOTIFICATION_DEVICE_SELECTION_CARD_SHOWN";
+            case VZBAnalyticsEventTypeScreenDeviceSelected:
+                return "SCREEN_DEVICE_SELECTED";
+            case VZBAnalyticsEventTypePlayOnPhoneSelected:
+                return "PLAY_ON_PHONE_SELECTED";
+            case VZBAnalyticsEventTypePlayOnTVSelected:
+                return "PLAY_ON_TV_SELECTED";
+            default:
+                return "UNKNOWN";
+        }
     }
 
     //----------------
