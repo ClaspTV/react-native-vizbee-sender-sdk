@@ -69,7 +69,7 @@ RCT_EXPORT_MODULE(VizbeeNativeManager)
 }
 
 -(NSArray<NSString*>*) supportedEvents {
-    return @[@"VZB_SESSION_STATUS", VZB_INVOKE_GET_SIGNIN_INFO, @"VZB_MEDIA_STATUS", @"VZB_VOLUME_STATUS"];
+    return @[@"VZB_SESSION_STATUS", @"VZB_ANALYTICS_EVENT", VZB_INVOKE_GET_SIGNIN_INFO, @"VZB_MEDIA_STATUS", @"VZB_VOLUME_STATUS"];
 }
 
 // will be called when this module's first listener is added.
@@ -398,13 +398,21 @@ RCT_EXPORT_METHOD(unmute) {
 //----------------
 
 -(void) onApplicationDidBecomeActive:(NSNotification*)notification {
+    
     RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::onApplicationDidBecomeActive - adding session state listener");
     [self addSessionStateListener];
+    
+    // add analytics listener
+    [self addAnalyticsListener];
 }
 
 -(void) onApplicationWillResignActive:(NSNotification*)notification {
+
     RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::onApplicationWillResignActive - removing session state listener");
     [self removeSessionStateListener];
+    
+    // remove analytics listener
+    [self removeAnalyticsListener];
 }
 
 -(void) onSessionStateChanged:(VZBSessionState)newState {
@@ -509,6 +517,81 @@ RCT_EXPORT_METHOD(unmute) {
     [map setValue:screen.screenInfo.friendlyName forKey:@"connectedDeviceFriendlyName"];
     [map setValue:screen.screenInfo.model forKey:@"connectedDeviceModel"];
     return map;
+}
+
+//----------------
+#pragma mark - Analytics listener
+//----------------
+
+-(void) addAnalyticsListener {
+
+    // sanity
+    [self removeAnalyticsListener];
+    
+    VZBAnalyticsManager* analyticsManager = [Vizbee getAnalyticsManager];
+    if (nil != analyticsManager) {
+        
+        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::addAnalyticsListener - Adding analytics listener");
+        [analyticsManager addAnalyticsDelegate:self];
+    } else {
+        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::addAnalyticsListener - Failed to add analytics listener, analyticsManager is nil");
+    }
+}
+
+-(void) removeAnalyticsListener {
+
+    VZBAnalyticsManager* analyticsManager = [Vizbee getAnalyticsManager];
+    if (nil != analyticsManager) {
+        
+        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::addAnalyticsListener - Removing analytics listener");
+        [analyticsManager removeAnalyticsDelegate:self];
+    } else {
+        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::addAnalyticsListener - Failed to remove analytics listener, analyticsManager is nil");
+    }
+}
+
+// ----------------------------
+# pragma mark - VZBAnalyticsDelegate
+// ----------------------------
+
+-(void) onAnalyticsEvent:(VZBAnalyticsEventType) event withAttrs:(NSDictionary*) attrs {
+
+    NSString* eventName = [self getAnalyticsEventString:event];
+    NSMutableDictionary* eventMap = [NSMutableDictionary new];
+    [eventMap setValue:eventName forKey:@"event"];
+
+    if (nil != attrs  ) {
+        [eventMap setValue:attrs forKey:@"properties"];
+    }
+
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::onAnalyticsEvent - Sending event %@", eventMap);
+    [self sendEvent:@"VZB_ANALYTICS_EVENT" withBody:eventMap];
+}
+
+-(NSString*) getAnalyticsEventString:(VZBAnalyticsEventType) event {
+
+    switch(event) {
+            
+        case VZBAnalyticsEventTypeCastIntroductionCardShown:
+            return @"CAST_INTRODUCTION_CARD_SHOWN";
+        case VZBAnalyticsEventTypeSmartInstallCardShown:
+            return @"SMART_INSTALL_CARD_SHOWN";
+        case VZBAnalyticsEventTypeCastIconDeviceSelectionCardShown:
+            return @"CAST_ICON_DEVICE_SELECTION_CARD_SHOWN";
+        case VZBAnalyticsEventTypeSmartPlayDeviceSelectionCardShown:
+            return @"SMART_PLAY_DEVICE_SELECTION_CARD_SHOWN";
+        case VZBAnalyticsEventTypeSmartNotificationDeviceSelectionCardShown:
+            return @"SMART_NOTIFICATION_DEVICE_SELECTION_CARD_SHOWN";
+        case VZBAnalyticsEventTypeScreenDeviceSelected:
+            return @"SCREEN_DEVICE_SELECTED";
+        case VZBAnalyticsEventTypePlayOnPhoneSelected:
+            return @"PLAY_ON_PHONE_SELECTED";
+        case VZBAnalyticsEventTypePlayOnTVSelected:
+            return @"PLAY_ON_TV_SELECTED";
+            break;
+        default:
+            return @"UNKNOWN";
+    }
 }
 
 //----------------
