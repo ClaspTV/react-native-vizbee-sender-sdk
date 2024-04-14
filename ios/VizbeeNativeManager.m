@@ -560,7 +560,7 @@ RCT_EXPORT_METHOD(unmute) {
     NSMutableDictionary* eventMap = [NSMutableDictionary new];
     [eventMap setValue:eventName forKey:@"event"];
 
-    if (nil != attrs  ) {
+    if (nil != attrs) {
         [eventMap setValue:attrs forKey:@"properties"];
     }
 

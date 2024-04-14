@@ -540,7 +540,6 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
 
             Log.i(LOG_TAG, "Adding analytics listener");
             this.analyticsListener = (event, properties) -> {
-
                 VizbeeNativeManager.this.notifyAnalyticsEvent(event, properties);
             };
             analyticsManager.addAnalyticsListener(this.analyticsListener);
@@ -558,15 +557,17 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
         } else {
             Log.i(LOG_TAG, "Removing analytics listener - Failed to remove, analyticsManager or analyticsListener is null");
         }
-        this.sessionStateListener = null;
+        this.analyticsListener = null;
     }
 
     private void notifyAnalyticsEvent(VZBAnalyticsEventType eventType, JSONObject properties) {
 
+        // add event
         String eventName = this.getAnalyticsEventNameString(eventType);
         WritableMap eventMap = Arguments.createMap();
         eventMap.putString("event", eventName);
 
+        // add properties
         if (null != properties) {
             try {
                 WritableMap propertiesMap = RNJSONConverter.convertJsonToMap(properties);
@@ -574,7 +575,6 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
             } catch (JSONException e) {
                 Log.w(LOG_TAG, "Exception while converting event properties to WritableMap");
             }
-            
         }
 
         this.sendEvent("VZB_ANALYTICS_EVENT", eventMap);
