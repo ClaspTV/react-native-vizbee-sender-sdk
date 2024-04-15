@@ -1,15 +1,39 @@
-import React from "react";
-import { NativeModules, TouchableHighlight } from "react-native";
+import React, { useRef } from "react";
+import {
+  NativeModules,
+  findNodeHandle,
+  TouchableHighlight,
+  Platform,
+  UIManager,
+} from "react-native";
 import { VizbeeCastButton } from "../../";
 
-const VizbeeNativeManager = NativeModules.VizbeeNativeManager || {};
+const VizbeeCastButtonViewManager = NativeModules.VizbeeCastButtonView || {};
 
 const VizbeeCastButtonPressable = ({ style }) => {
+  const buttonRef = useRef();
+
   const handlePress = () => {
-    VizbeeNativeManager.smartCast();
+    // Get the view tag using findNodeHandle
+    const viewTag = findNodeHandle(buttonRef.current);
+
+    if (viewTag != null) {
+      // Call the method with the view tag
+      if (Platform.OS === "ios") {
+        VizbeeCastButtonViewManager.simulateButtonClick(viewTag);
+      } else {
+        // Call the native method to simulate button press
+        UIManager.dispatchViewManagerCommand(
+          viewTag,
+          UIManager.getViewManagerConfig("VizbeeCastButtonView").Commands
+            .simulateButtonClick,
+          []
+        );
+      }
+    }
   };
 
-  let containerHeight = Object.keys(style)
+  let containerStyle = Object.keys(style)
     .filter((objKey) => objKey !== "height" && objKey !== "width")
     .reduce((newObj, key) => {
       newObj[key] = style[key];
@@ -21,10 +45,11 @@ const VizbeeCastButtonPressable = ({ style }) => {
   return (
     <TouchableHighlight
       onPress={handlePress}
-      style={containerHeight}
+      style={containerStyle}
       underlayColor={"transparent"}
     >
       <VizbeeCastButton
+        ref={buttonRef}
         style={styles}
         tintColor={style.tintColor}
         disabled={true}

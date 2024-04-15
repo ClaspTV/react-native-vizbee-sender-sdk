@@ -39,7 +39,20 @@ public class VizbeeCastButtonView extends LinearLayout implements LifecycleEvent
             Log.w(LOG_TAG, "setDisabled - Remote button is not initialized");
         }
     }
-    
+
+    public void simulateButtonClick() {
+        // Check if the remote button is initialized
+        if (m_button != null && m_button.getVisibility() == VISIBLE) {
+            Log.v(LOG_TAG, "simulateButtonClick - Remote button is visible " + m_button.getVisibility());
+            // Programmatically perform a click on the remote button
+            m_button.performClick();
+        } else if (m_button != null && m_button.getVisibility() == VISIBLE){
+            Log.v(LOG_TAG, "simulateButtonClick - Remote button is not visible");
+        } else {
+            Log.w(LOG_TAG, "simulateButtonClick - Remote button is not initialized");
+        }
+    }
+
     // PROBLEM: 
     // If a sub view 'm_button' of native view's visibility is set to GONE (`setVisibility(GONE))`
     // before it render on the screen and later if we set it's visibility to VISIBLE (`setVisibility(VISIBLE)`) 

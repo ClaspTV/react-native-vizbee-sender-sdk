@@ -42,6 +42,10 @@
     _disabled = disabled;
 }
 
+-(void)simulateButtonClick{
+    [self.castButton sendActionsForControlEvents:UIControlEventAllTouchEvents];
+}
+
 - (void)layoutSubviews {
     // Apply any layout logic, set background color, text, etc.
     // 1. Create VZBCastButton
@@ -52,7 +56,7 @@
     if(nil != self.tintColor){
         [self setTintColor:self.tintColor];
     }
-    if(self.disabled == true){
+        if(self.disabled == true){
         [self.castButton setEnabled:!self.disabled];
     }
 

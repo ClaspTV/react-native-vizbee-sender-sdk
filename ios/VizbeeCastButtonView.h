@@ -13,6 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign) BOOL disabled;
 
+-(void)simulateButtonClick;
+
 @end
 
 NS_ASSUME_NONNULL_END
