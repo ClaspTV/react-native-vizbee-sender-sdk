@@ -21,7 +21,7 @@ const VizbeeCastButtonPressable = ({ style }) => {
       // Call the method with the view tag
       if (Platform.OS === "ios") {
         VizbeeCastButtonViewManager.simulateButtonClick(viewTag);
-      } else {
+      } else if (Platform.OS === "android") {
         // Call the native method to simulate button press
         UIManager.dispatchViewManagerCommand(
           viewTag,
@@ -29,6 +29,8 @@ const VizbeeCastButtonPressable = ({ style }) => {
             .simulateButtonClick,
           []
         );
+      } else {
+        console.error("Not a supported platform");
       }
     }
   };

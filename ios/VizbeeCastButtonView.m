@@ -37,13 +37,18 @@
 
 -(void)setDisabled:(BOOL)disabled{
     if(self.castButton){
-        [self.castButton setEnabled:!disabled];
+        [self setUserInteractionEnabled:!disabled];
     }
     _disabled = disabled;
 }
 
 -(void)simulateButtonClick{
-    [self.castButton sendActionsForControlEvents:UIControlEventAllTouchEvents];
+    if (!self.castButton.hidden) {
+        RCTLogTrace(@"[RNVZBSDK] VizbeeCastButtonViewManager:: simulateButtonClick - Cast button is visible %d", self.castButton.hidden);
+        [self.castButton sendActionsForControlEvents:UIControlEventTouchDown];
+    }else{
+        RCTLogTrace(@"[RNVZBSDK] VizbeeCastButtonViewManager:: simulateButtonClick - Cast button is not visible");
+    }
 }
 
 - (void)layoutSubviews {
@@ -56,12 +61,13 @@
     if(nil != self.tintColor){
         [self setTintColor:self.tintColor];
     }
-        if(self.disabled == true){
-        [self.castButton setEnabled:!self.disabled];
+    
+    if(self.disabled == true){
+        [self setUserInteractionEnabled:!self.disabled];
     }
 
     [self addSubview:self.castButton];
-    
+   
     // 3. Add autolayout constraints
     self.castButton.translatesAutoresizingMaskIntoConstraints = false;
     [NSLayoutConstraint constraintWithItem:self.castButton
