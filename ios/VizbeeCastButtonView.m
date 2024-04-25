@@ -44,7 +44,7 @@
 
 -(void)simulateButtonClick{
     if (!self.castButton.hidden) {
-        RCTLogTrace(@"[RNVZBSDK] VizbeeCastButtonViewManager:: simulateButtonClick - Cast button is visible %d", self.castButton.hidden);
+        RCTLogTrace(@"[RNVZBSDK] VizbeeCastButtonViewManager:: simulateButtonClick - Cast button is visible"));
         [self.castButton sendActionsForControlEvents:UIControlEventTouchDown];
     }else{
         RCTLogTrace(@"[RNVZBSDK] VizbeeCastButtonViewManager:: simulateButtonClick - Cast button is not visible");
