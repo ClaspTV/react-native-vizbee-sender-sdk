@@ -1,4 +1,3 @@
-
 package tv.vizbee.rnsender;
 
 import java.util.Arrays;
@@ -24,6 +23,9 @@ public class RNVizbeeSenderSdkPackage implements ReactPackage {
 
     @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
-      return Arrays.<ViewManager>asList(new VizbeeCastButtonViewManager());
+      return Arrays.<ViewManager>asList(
+          new VizbeeCastButtonViewManager(),
+          new VizbeeCastBarViewManager() // Add VizbeeCastBarViewManager here
+      );
     }
 }
