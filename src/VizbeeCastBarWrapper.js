@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { requireNativeComponent } from "react-native";
+import { requireNativeComponent, Platform } from "react-native";
 import PropTypes from "prop-types";
 
 const VizbeeCastBarView = requireNativeComponent("VizbeeCastBarView");
@@ -10,7 +10,9 @@ const VizbeeCastBarWrapper = ({
   getMinHeight,
   getActive,
 }) => {
-  const [viewHeight, setViewHeight] = useState(0);
+  const iosHeight = Platform.OS === "ios" ? height : undefined;
+
+  const [viewHeight, setViewHeight] = useState(iosHeight);
 
   const onChange = (event) => {
     setViewHeight(event.nativeEvent.shouldAppear ? height || 64 : 0);
@@ -28,7 +30,7 @@ const VizbeeCastBarWrapper = ({
 };
 
 VizbeeCastBarWrapper.propTypes = {
-  height: PropTypes.number,
+  height: Platform.OS === "ios" ? PropTypes.number : PropTypes.undefined,
   onVisibilityChange: PropTypes.func,
   getMinHeight: PropTypes.func,
   getActive: PropTypes.func,
