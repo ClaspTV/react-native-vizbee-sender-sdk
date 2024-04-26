@@ -1,7 +1,6 @@
 #import "VizbeeNativeManager.h"
 #import "VizbeeConstants.h"
 #import "VizbeeVideo.h"
-#import <VizbeeKit/VizbeeKit.h>
 #import <React/RCTLog.h>
 
 @interface VizbeeNativeManager()

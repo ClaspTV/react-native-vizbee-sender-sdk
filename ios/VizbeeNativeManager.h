@@ -5,7 +5,7 @@
 #endif
 
 #import <React/RCTEventEmitter.h>
-#import <VizbeeKit/VZBSessionManager.h>
+#import <VizbeeKit/VizbeeKit.h>
 
 @interface VizbeeNativeManager : RCTEventEmitter <RCTBridgeModule, VZBSessionStateDelegate, VZBAnalyticsDelegate, VZBVideoStatusUpdateDelegate, VZBVolumeStatusDelegate>
 
