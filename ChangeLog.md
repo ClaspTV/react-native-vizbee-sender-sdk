@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 
+## [1.1.24] - 2024-04-25
+### Added 
+    Fix for the iOS build error
+
 ## [1.1.23] - 2024-04-22
 ### Added 
     Analytics support to send a few events
