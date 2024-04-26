@@ -1,39 +1,90 @@
-import React, { useState } from "react";
-import { requireNativeComponent, Platform } from "react-native";
+import React, { useState, useRef, useEffect } from "react";
+import {
+  requireNativeComponent,
+  Platform,
+  View,
+  Dimensions,
+  PixelRatio,
+  findNodeHandle,
+  UIManager,
+} from "react-native";
 import PropTypes from "prop-types";
 
-const VizbeeCastBarView = requireNativeComponent("VizbeeCastBarView");
+// Require the native component
+const VizbeeMiniCastBar = requireNativeComponent("VizbeeMiniCastBarView");
 
-const VizbeeCastBarWrapper = ({
-  height,
-  onVisibilityChange,
-  getMinHeight,
-  getActive,
-}) => {
-  const iosHeight = Platform.OS === "ios" ? height : undefined;
+/**
+ * Wrapper component for the Vizbee Mini Cast Bar View.
+ * This component manages the height and visibility of the mini cast bar view.
+ *
+ * @param {number} height - The height of the mini cast bar view.
+ * @param {function} onVisibilityChange - Callback function triggered when the visibility of the mini cast bar changes.
+ * @returns {JSX.Element} - React element representing the Vizbee Mini Cast Bar Wrapper.
+ */
+const VizbeeCastBarWrapper = ({ height = 64, onVisibilityChange }) => {
+  const [viewHeight, setViewHeight] = useState(0);
+  const ref = useRef(null);
+  const screenWidth = Dimensions.get("window").width;
 
-  const [viewHeight, setViewHeight] = useState(iosHeight);
+  useEffect(() => {
+    // Create fragment for Android platform
+    if (Platform.OS === "android") {
+      const viewId = findNodeHandle(ref.current);
+      createFragment(viewId);
+    }
+  }, []);
 
+  // Function to create fragment for Android platform
+  const createFragment = (viewId) =>
+    UIManager.dispatchViewManagerCommand(
+      viewId,
+      UIManager.getViewManagerConfig(
+        "VizbeeMiniCastBarView"
+      ).Commands.create.toString(),
+      [viewId]
+    );
+
+  // Event handler for visibility change
   const onChange = (event) => {
-    setViewHeight(event.nativeEvent.shouldAppear ? height || 64 : 0);
+    setViewHeight(event.nativeEvent.shouldAppear ? height : 0);
     onVisibilityChange && onVisibilityChange(event.nativeEvent.shouldAppear);
   };
 
   return (
-    <VizbeeCastBarView
-      height={viewHeight}
-      onVisibilityChange={onChange}
-      getMinHeight={getMinHeight}
-      getActive={getActive}
-    />
+    <View
+      style={{
+        height: viewHeight,
+        width: screenWidth,
+        overflow: "hidden",
+      }}
+    >
+      {/* Render the VizbeeMiniCastBar component */}
+      {Platform.OS === "ios" ? (
+        <VizbeeMiniCastBar
+          height={viewHeight}
+          onVisibilityChange={onChange}
+          ref={ref}
+        />
+      ) : Platform.OS === "android" ? (
+        <VizbeeMiniCastBar
+          style={{
+            height: PixelRatio.getPixelSizeForLayoutSize(height), // Converts dpi to px, provide desired height
+            width: PixelRatio.getPixelSizeForLayoutSize(screenWidth), // Converts dpi to px, provide desired width
+          }}
+          ref={ref}
+          onVisibilityChange={onChange}
+        />
+      ) : (
+        <></>
+      )}
+    </View>
   );
 };
 
+// Prop types validation
 VizbeeCastBarWrapper.propTypes = {
-  height: Platform.OS === "ios" ? PropTypes.number : PropTypes.undefined,
+  height: PropTypes.number,
   onVisibilityChange: PropTypes.func,
-  getMinHeight: PropTypes.func,
-  getActive: PropTypes.func,
 };
 
 export default VizbeeCastBarWrapper;

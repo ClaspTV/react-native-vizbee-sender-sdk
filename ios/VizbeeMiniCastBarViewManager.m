@@ -1,28 +1,28 @@
 //
-//  VizbeeCastBarViewManager.m
+//  VizbeeMiniCastBarViewManager.m
 //  RNVizbeeSenderSdk
 //
 
 #import <React/RCTViewManager.h>
-#import "VizbeeCastBarView.h"
+#import "VizbeeMiniCastBarView.h"
 #import <React/RCTUIManager.h>
 
-@interface VizbeeCastBarViewManager : RCTViewManager
+@interface VizbeeMiniCastBarViewManager : RCTViewManager
 
 @end
 
-@implementation VizbeeCastBarViewManager
+@implementation VizbeeMiniCastBarViewManager
 
-RCT_EXPORT_MODULE(VizbeeCastBarView)
+RCT_EXPORT_MODULE(VizbeeMiniCastBarView)
 
 - (UIView *)view {
-    return [[VizbeeCastBarView alloc] init];
+    return [[VizbeeMiniCastBarView alloc] init];
 }
 
 RCT_EXPORT_METHOD(getActive:(nonnull NSNumber *)reactTag callback:(RCTResponseSenderBlock)callback) {
     UIView *view = [self.bridge.uiManager viewForReactTag:reactTag];
-    if ([view isKindOfClass:[VizbeeCastBarView class]]) {
-        BOOL isActive = [(VizbeeCastBarView *)view isActive];
+    if ([view isKindOfClass:[VizbeeMiniCastBarView class]]) {
+        BOOL isActive = [(VizbeeMiniCastBarView *)view isActive];
         callback(@[[NSNumber numberWithBool:isActive]]);
     } else {
         callback(@[@(NO)]);
@@ -31,8 +31,8 @@ RCT_EXPORT_METHOD(getActive:(nonnull NSNumber *)reactTag callback:(RCTResponseSe
 
 RCT_EXPORT_METHOD(getMinHeight:(nonnull NSNumber *)reactTag callback:(RCTResponseSenderBlock)callback) {
     UIView *view = [self.bridge.uiManager viewForReactTag:reactTag];
-    if ([view isKindOfClass:[VizbeeCastBarView class]]) {
-        CGFloat minHeight = [(VizbeeCastBarView *)view getMinHeight];
+    if ([view isKindOfClass:[VizbeeMiniCastBarView class]]) {
+        CGFloat minHeight = [(VizbeeMiniCastBarView *)view getMinHeight];
         callback(@[[NSNumber numberWithFloat:minHeight]]);
     } else {
         callback(@[@(0)]);
