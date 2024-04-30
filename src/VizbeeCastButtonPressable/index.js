@@ -11,11 +11,10 @@ import { VizbeeCastButton } from "../../";
 const VizbeeCastButtonViewManager = NativeModules.VizbeeCastButtonView || {};
 
 const VizbeeCastButtonPressable = ({ style }) => {
-  const buttonRef = useRef();
-
+  const castButtonRef = useRef();
   const handlePress = () => {
     // Get the view tag using findNodeHandle
-    const viewTag = findNodeHandle(buttonRef.current);
+    const viewTag = findNodeHandle(castButtonRef.current);
 
     if (viewTag != null) {
       // Call the method with the view tag
@@ -35,24 +34,26 @@ const VizbeeCastButtonPressable = ({ style }) => {
     }
   };
 
-  let containerStyle = Object.keys(style)
+  let castButtonWrapperStyle = Object.keys(style)
     .filter((objKey) => objKey !== "height" && objKey !== "width")
     .reduce((newObj, key) => {
       newObj[key] = style[key];
       return newObj;
     }, {});
-
-  let styles = { height: style.height || 24, width: style.width || 24 };
+  let castButtonStyles = {
+    height: style.height || 24,
+    width: style.width || 24,
+  };
 
   return (
     <TouchableHighlight
       onPress={handlePress}
-      style={containerStyle}
+      style={castButtonWrapperStyle}
       underlayColor={"transparent"}
     >
       <VizbeeCastButton
-        ref={buttonRef}
-        style={styles}
+        ref={castButtonRef}
+        style={castButtonStyles}
         tintColor={style.tintColor}
         disabled={true}
       />
