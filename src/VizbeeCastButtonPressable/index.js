@@ -10,6 +10,10 @@ import { VizbeeCastButton } from "../../";
 
 const VizbeeCastButtonViewManager = NativeModules.VizbeeCastButtonView || {};
 
+// Usage:
+// Everything in ViewStyle Interface is supported in the style props
+// Eg: <VizbeeCastButtonPressable style={{"height": 24, width: "24"}}/>
+
 const VizbeeCastButtonPressable = ({ style }) => {
   const castButtonRef = useRef();
   const handlePress = () => {
