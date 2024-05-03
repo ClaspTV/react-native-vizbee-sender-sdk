@@ -17,6 +17,8 @@
 
 @synthesize tintColor = _tintColor;
 
+@synthesize disabled = _disabled;
+
 - (NSString *)tintColor {
     return _tintColor;
 }
@@ -33,6 +35,22 @@
     _tintColor = tintColor;
 }
 
+-(void)setDisabled:(BOOL)disabled{
+    if(self.castButton){
+        [self setUserInteractionEnabled:!disabled];
+    }
+    _disabled = disabled;
+}
+
+-(void)simulateButtonClick{
+    if (!self.castButton.hidden) {
+        RCTLogTrace(@"[RNVZBSDK] VizbeeCastButtonViewManager:: simulateButtonClick - Cast button is visible");
+        [self.castButton sendActionsForControlEvents:UIControlEventTouchDown];
+    }else{
+        RCTLogTrace(@"[RNVZBSDK] VizbeeCastButtonViewManager:: simulateButtonClick - Cast button is not visible");
+    }
+}
+
 - (void)layoutSubviews {
     // Apply any layout logic, set background color, text, etc.
     // 1. Create VZBCastButton
@@ -43,8 +61,13 @@
     if(nil != self.tintColor){
         [self setTintColor:self.tintColor];
     }
-    [self addSubview:self.castButton];
     
+    if(self.disabled == true){
+        [self setUserInteractionEnabled:!self.disabled];
+    }
+
+    [self addSubview:self.castButton];
+   
     // 3. Add autolayout constraints
     self.castButton.translatesAutoresizingMaskIntoConstraints = false;
     [NSLayoutConstraint constraintWithItem:self.castButton

@@ -9,3 +9,4 @@ export {default as VizbeeVideoStatus, VizbeePlayerState} from './VizbeeVideoStat
 export {default as VizbeeTrackStatus} from './VizbeeTrackStatus';
 export {default as VizbeeTrackInfo} from './VizbeeTrackInfo';
 export const VizbeeCastButton = requireNativeComponent('VizbeeCastButtonView');
+export {default as VizbeeCastButtonPressable} from "./src/VizbeeCastButtonPressable"
