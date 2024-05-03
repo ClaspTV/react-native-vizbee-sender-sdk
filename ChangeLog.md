@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 
+## [1.1.25] - 2024-05-03
+### Added
+    React Native Wrapper component over native cast button
+
 ## [1.1.24] - 2024-04-25
 ### Added 
     Fix for the iOS build error
