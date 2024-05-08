@@ -15,6 +15,11 @@
 
 @implementation VizbeeMiniCastBarView
 
+@synthesize associatedViewController;
+@synthesize delegate;
+@synthesize minHeight;
+@synthesize active;
+
 // Initialize the view and set up necessary components
 - (instancetype)init {
     self = [super init];
