@@ -34,12 +34,28 @@
     [self.castBarController.view removeFromSuperview];
     self.castBarController = nil;
     self.heightConstraint = nil;
+    self.castBarController = [Vizbee createCastBarController];
+    self.castBarController.delegate = self;
+    [self addSubview:self.castBarController.view];
+    
     self.clipsToBounds = true;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(applicationDidBecomeActive:)
                                                  name:UIApplicationDidBecomeActiveNotification
                                                object:nil];
+
+    self.heightConstraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:64]; // Default height constraint
+    [self.heightConstraint setActive:YES];
+    
+    // Add constraints
+    self.castBarController.view.translatesAutoresizingMaskIntoConstraints = NO;
+    [NSLayoutConstraint activateConstraints:@[
+        [self.castBarController.view.topAnchor constraintEqualToAnchor:self.topAnchor],
+        [self.castBarController.view.bottomAnchor constraintEqualToAnchor:self.bottomAnchor],
+        [self.castBarController.view.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
+        [self.castBarController.view.trailingAnchor constraintEqualToAnchor:self.trailingAnchor]
+    ]];
 }
 
 // Deallocate any resources when the view is deallocated
@@ -51,26 +67,6 @@
 - (void)applicationDidBecomeActive:(NSNotification *)notification {
     BOOL shouldAppear = self.castBarController.active;
     [self handleVisibilityChange:shouldAppear];
-}
-
-// Override layoutSubviews to set up castBarController
-- (void)layoutSubviews {
-    self.castBarController = [Vizbee createCastBarController];
-    self.castBarController.delegate = self;
-    
-    self.heightConstraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:64]; // Default height constraint
-    [self.heightConstraint setActive:YES];
-    
-    [self addSubview:self.castBarController.view];
-    
-    // Add constraints
-    self.castBarController.view.translatesAutoresizingMaskIntoConstraints = NO;
-    [NSLayoutConstraint activateConstraints:@[
-        [self.castBarController.view.topAnchor constraintEqualToAnchor:self.topAnchor],
-        [self.castBarController.view.bottomAnchor constraintEqualToAnchor:self.bottomAnchor],
-        [self.castBarController.view.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
-        [self.castBarController.view.trailingAnchor constraintEqualToAnchor:self.trailingAnchor]
-    ]];
 }
 
 // Setter for the height property
