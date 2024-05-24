@@ -11,6 +11,8 @@
 		360B02A82574494300B13A87 /* VizbeeBootstrap.m in Sources */ = {isa = PBXBuildFile; fileRef = 360B02A72574494300B13A87 /* VizbeeBootstrap.m */; };
 		36247D96257EF0850090041C /* VizbeeAppAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 36247D95257EF0850090041C /* VizbeeAppAdapter.m */; };
 		36247D99257EF3650090041C /* VizbeeVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = 36247D98257EF3650090041C /* VizbeeVideo.m */; };
+		84DBE7972B988A6900B41C97 /* VizbeeCastBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84DBE7952B988A6900B41C97 /* VizbeeCastBarView.m */; };
+		84DBE7982B988A6900B41C97 /* VizbeeCastBarViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 84DBE7962B988A6900B41C97 /* VizbeeCastBarViewManager.m */; };
 		84D86C662BB59DCD0093ADDF /* VizbeeCastButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84D86C652BB59DCD0093ADDF /* VizbeeCastButtonView.m */; };
 		B3E7B58A1CC2AC0600A0062D /* VizbeeNativeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* VizbeeNativeManager.m */; };
 /* End PBXBuildFile section */
@@ -36,6 +38,10 @@
 		36247D95257EF0850090041C /* VizbeeAppAdapter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VizbeeAppAdapter.m; sourceTree = "<group>"; };
 		36247D97257EF3650090041C /* VizbeeVideo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VizbeeVideo.h; sourceTree = "<group>"; };
 		36247D98257EF3650090041C /* VizbeeVideo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VizbeeVideo.m; sourceTree = "<group>"; };
+		84DBE7952B988A6900B41C97 /* VizbeeCastBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VizbeeCastBarView.m; sourceTree = "<group>"; };
+		84DBE7962B988A6900B41C97 /* VizbeeCastBarViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VizbeeCastBarViewManager.m; sourceTree = "<group>"; };
+		84DBE7992B988A7000B41C97 /* VizbeeCastBarView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VizbeeCastBarView.h; sourceTree = "<group>"; };
+		84DBE79A2B988A7E00B41C97 /* VizbeeConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VizbeeConstants.h; sourceTree = "<group>"; };
 		84D86C642BB59DCD0093ADDF /* VizbeeCastButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VizbeeCastButtonView.h; sourceTree = "<group>"; };
 		84D86C652BB59DCD0093ADDF /* VizbeeCastButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VizbeeCastButtonView.m; sourceTree = "<group>"; };
 		B3E7B5881CC2AC0600A0062D /* VizbeeNativeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VizbeeNativeManager.h; sourceTree = "<group>"; };
@@ -64,6 +70,7 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
+				84DBE79A2B988A7E00B41C97 /* VizbeeConstants.h */,
 				36247D97257EF3650090041C /* VizbeeVideo.h */,
 				36247D98257EF3650090041C /* VizbeeVideo.m */,
 				36247D94257EF0850090041C /* VizbeeAppAdapter.h */,
@@ -73,6 +80,9 @@
 				84D86C642BB59DCD0093ADDF /* VizbeeCastButtonView.h */,
 				84D86C652BB59DCD0093ADDF /* VizbeeCastButtonView.m */,
 				360B02A32574436700B13A87 /* VizbeeCastButtonViewManager.m */,
+				84DBE7992B988A7000B41C97 /* VizbeeCastBarView.h */,
+				84DBE7952B988A6900B41C97 /* VizbeeCastBarView.m */,
+				84DBE7962B988A6900B41C97 /* VizbeeCastBarViewManager.m */,
 				B3E7B5881CC2AC0600A0062D /* VizbeeNativeManager.h */,
 				B3E7B5891CC2AC0600A0062D /* VizbeeNativeManager.m */,
 				134814211AA4EA7D00B7C361 /* Products */,
@@ -136,6 +146,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84DBE7972B988A6900B41C97 /* VizbeeCastBarView.m in Sources */,
+				84DBE7982B988A6900B41C97 /* VizbeeCastBarViewManager.m in Sources */,
 				36247D96257EF0850090041C /* VizbeeAppAdapter.m in Sources */,
 				360B02A42574436700B13A87 /* VizbeeCastButtonViewManager.m in Sources */,
 				84D86C662BB59DCD0093ADDF /* VizbeeCastButtonView.m in Sources */,
