@@ -1,11 +1,11 @@
 //
-//  VizbeeMiniCastBarView.h
+//  VizbeeCastBarView.h
 //  RNVizbeeSenderSdk
 //
 
 #import <UIKit/UIKit.h>
 
-@interface VizbeeMiniCastBarView : UIView
+@interface VizbeeCastBarView : UIView
 
 /// Callback block invoked when visibility changes
 @property (nonatomic, copy) void (^onVisibilityChange)(NSDictionary *info);

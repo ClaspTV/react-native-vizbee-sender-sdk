@@ -3,17 +3,17 @@
 //  RNVizbeeSenderSdk
 //
 
-#import "VizbeeMiniCastBarView.h"
+#import "VizbeeCastBarView.h"
 #import <VizbeeKit/VizbeeKit.h>
 
-@interface VizbeeMiniCastBarView () <VZBUIMiniCastViewDelegate>
+@interface VizbeeCastBarView () <VZBUIMiniCastViewDelegate>
 
 @property (nonatomic, strong) VZBCastBarViewController *castBarController;
 @property (nonatomic, strong) NSLayoutConstraint *heightConstraint;
 
 @end
 
-@implementation VizbeeMiniCastBarView
+@implementation VizbeeCastBarView
 
 // Initialize the view and set up necessary components
 - (instancetype)init {

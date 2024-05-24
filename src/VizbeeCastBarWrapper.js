@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import {
   requireNativeComponent,
   Platform,
@@ -8,18 +8,16 @@ import {
 import PropTypes from "prop-types";
 
 // Require the native component
-const VizbeeMiniCastBar =
-  Platform.OS === "ios"
-    ? requireNativeComponent("VizbeeMiniCastBarView")
-    : null;
+const VizbeeCastBar =
+  Platform.OS === "ios" ? requireNativeComponent("VizbeeCastBarView") : null;
 
 /**
- * Wrapper component for the Vizbee Mini Cast Bar View.
- * This component manages the height and visibility of the mini cast bar view.
+ * Wrapper component for the Vizbee Cast Bar View.
+ * This component manages the height and visibility of the cast bar view.
  *
- * @param {number} height - The height of the mini cast bar view.
- * @param {function} onVisibilityChange - Callback function triggered when the visibility of the mini cast bar changes.
- * @returns {JSX.Element|null} - React element representing the Vizbee Mini Cast Bar Wrapper or null if not on iOS.
+ * @param {number} height - The height of the cast bar view.
+ * @param {function} onVisibilityChange - Callback function triggered when the visibility of the cast bar changes.
+ * @returns {JSX.Element|null} - React element representing the Vizbee Cast Bar Wrapper or null if not on iOS.
  */
 const VizbeeCastBarWrapper = ({ height = 64, onVisibilityChange }) => {
   if (Platform.OS !== "ios") {
@@ -27,7 +25,6 @@ const VizbeeCastBarWrapper = ({ height = 64, onVisibilityChange }) => {
   }
 
   const [viewHeight, setViewHeight] = useState(0);
-  const ref = useRef(null);
   const screenWidth = Dimensions.get("window").width;
 
   // Event handler for visibility change
@@ -44,12 +41,8 @@ const VizbeeCastBarWrapper = ({ height = 64, onVisibilityChange }) => {
         overflow: "hidden",
       }}
     >
-      {/* Render the VizbeeMiniCastBar component */}
-      <VizbeeMiniCastBar
-        height={viewHeight}
-        onVisibilityChange={onChange}
-        ref={ref}
-      />
+      {/* Render the VizbeeCastBar component */}
+      <VizbeeCastBar height={viewHeight} onVisibilityChange={onChange} />
     </View>
   );
 };
