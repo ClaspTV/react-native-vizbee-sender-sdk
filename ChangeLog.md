@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 
+## [1.1.27] - 2024-05-29
+### Fixed
+    Downgrading Android Native Library to version 6.5.5.
+    
 ## [1.1.26] - 2024-05-24
 ### Added
     React Native Wrapper component over ios native cast bar.
