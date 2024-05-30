@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
 
   s.dependency "React"
   s.dependency 'VizbeeKit'
-  s.dependency 'google-cast-sdk-no-bluetooth-dynamic', '~> 4.8.0'
+  s.dependency 'google-cast-sdk-no-bluetooth-dynamic', '4.8.0'
 end
 
   
