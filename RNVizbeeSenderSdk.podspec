@@ -18,7 +18,8 @@ Pod::Spec.new do |s|
   s.source_files  = "ios/**/*.{h,m}"
 
   s.dependency "React"
-  s.dependency 'VizbeeKit'
+  s.dependency 'VizbeeKit', '6.5.9'
+  s.dependency 'google-cast-sdk-no-bluetooth-dynamic', '4.8.0'
 
 end
 

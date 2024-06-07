@@ -24,7 +24,8 @@ public class RNVizbeeSenderSdkPackage implements ReactPackage {
     @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
       return Arrays.<ViewManager>asList(
-          new VizbeeCastButtonViewManager()
+          new VizbeeCastButtonViewManager(),
+          new VizbeeCastBarViewManager(reactContext)
       );
     }
 }
