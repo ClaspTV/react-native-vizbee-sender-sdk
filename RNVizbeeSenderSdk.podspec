@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
   s.author        = { "Vizbee" => "info@vizbee.tv" }
   s.homepage     = "https://vizbee.tv"
   s.license      = "MIT"
-  s.platform     = :ios, "9.0"
+  s.platform     = :ios, "12.0"
   s.requires_arc = true
   s.source       = { :git => "https://github.com/author/RNVizbeeSenderSdk.git", :tag => "master" }
   s.source_files  = "ios/**/*.{h,m}"

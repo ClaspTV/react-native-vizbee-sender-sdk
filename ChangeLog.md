@@ -14,6 +14,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 
+## [1.1.29] - 2024-06-10
+### Fixed
+    Fixed paths in index.web.js 
+
+## [1.1.28] - 2024-05-29
+### Updated
+    Analytics events with card dismissed event
+    Android SDK to 6.6.0
+
 ## [1.1.27] - 2024-05-29
 ### Fixed
     Downgrading Android Native Library to version 6.5.5.

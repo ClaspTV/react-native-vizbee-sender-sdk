@@ -599,6 +599,8 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
                 return "PLAY_ON_PHONE_SELECTED";
             case VZBAnalyticsEventTypePlayOnTVSelected:
                 return "PLAY_ON_TV_SELECTED";
+            case VZBAnalyticsEventTypeCardDismissed:
+                return "CARD_DISMISSED";
             default:
                 return "UNKNOWN";
         }
