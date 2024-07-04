@@ -24,7 +24,23 @@ const VizbeeCastBar = requireNativeComponent("VizbeeCastBarView");
 const VizbeeCastBarWrapper = ({ height = 64, onVisibilityChange }) => {
   const [viewHeight, setViewHeight] = useState(0);
   const ref = useRef(null);
-  const screenWidth = Dimensions.get("window").width;
+  const [screenWidth, setScreenWidth] = useState(
+    Dimensions.get("window").width
+  );
+
+  useEffect(() => {
+    const handleOrientationChange = () => {
+      const { width } = Dimensions.get("window");
+      setScreenWidth(width);
+    };
+
+    Dimensions.addEventListener("change", handleOrientationChange);
+
+    // Clean up the event listener on component unmount
+    return () => {
+      Dimensions.removeEventListener("change", handleOrientationChange);
+    };
+  }, []);
 
   useEffect(() => {
     // Create fragment for Android platform
