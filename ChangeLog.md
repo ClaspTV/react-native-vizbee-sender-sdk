@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 
+## [1.1.31] - 2024-07-25
+### Fixed
+    Crash on Cast Bar Wrapper component unmount.
+    
 ## [1.1.30] - 2024-07-08
 ### Added
     React Native Wrapper component over android native cast bar.
