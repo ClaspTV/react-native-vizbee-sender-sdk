@@ -34,11 +34,14 @@ const VizbeeCastBarWrapper = ({ height = 64, onVisibilityChange }) => {
       setScreenWidth(width);
     };
 
-    Dimensions.addEventListener("change", handleOrientationChange);
+    const dimensionsSubscription = Dimensions.addEventListener(
+      "change",
+      handleOrientationChange
+    );
 
     // Clean up the event listener on component unmount
     return () => {
-      Dimensions.removeEventListener("change", handleOrientationChange);
+      dimensionsSubscription?.remove();
     };
   }, []);
 
