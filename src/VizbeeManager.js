@@ -120,6 +120,14 @@ class VizbeeManager {
     }
     
     //------------------
+    // Analytics
+    //------------------
+
+    addAnalyticsAttributes(attributes) {
+        VizbeeNativeManager.addAnalyticsAttributes(attributes);
+    }
+    
+    //------------------
     // Listeners
     //------------------
 

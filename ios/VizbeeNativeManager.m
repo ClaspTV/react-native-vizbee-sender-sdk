@@ -392,6 +392,14 @@ RCT_EXPORT_METHOD(unmute) {
     }
 }
 
+// ----------------------------
+# pragma mark - Analytics
+// ----------------------------
+
+RCT_EXPORT_METHOD(addAnalyticsAttributes:(NSDictionary*) attributes) {
+    [Vizbee addCustomEventAttributes:attributes];
+}
+
 //----------------
 #pragma mark - App & session lifecycle
 //----------------

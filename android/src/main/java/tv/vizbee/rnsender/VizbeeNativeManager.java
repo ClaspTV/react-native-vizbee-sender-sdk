@@ -388,6 +388,21 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
     }
 
     //----------------
+    // Analytics
+    //----------------
+
+    @ReactMethod
+    public void addAnalyticsAttributes(ReadableMap attributes) {
+
+        try {
+            JSONObject attributesJSON = RNJSONConverter.convertMapToJson(attributes);
+            VizbeeContext.getInstance().addCustomEventAttributes(attributesJSON);
+        } catch (Exception e) {
+            Log.w(LOG_TAG, "Exception while converting analytics attributes to JSON");
+        }
+    }
+
+    //----------------
     // App & session lifecycle
     //----------------
 
@@ -605,7 +620,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
                 return "UNKNOWN";
         }
     }
-
+    
     //----------------
     // Video client listener
     //----------------
