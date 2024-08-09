@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 
+## [1.1.32] - 2024-08-09
+### Added
+    An API to add analytics attributes.
+
 ## [1.1.31] - 2024-07-25
 ### Fixed
     Crash on Cast Bar Wrapper component unmount.
