@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 
+## [1.1.33] - 2024-08-16
+### Added
+    An API getSignInInfoAsync to fetch signInInfo.
+
 ## [1.1.32] - 2024-08-09
 ### Added
     An API to add analytics attributes.
