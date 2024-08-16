@@ -165,6 +165,9 @@ class VizbeeManager {
     
     _invokeAndHandleGetSignInInfo() {
         if (this.signInDelegate) {
+            // To maintain backward compatibility, 
+            // we first check if the signInDelegate has the synchronous getSignInInfo method
+            // implemented. If not, we call the asynchronous getSignInInfoAsync method.
             let signInInfo = this.signInDelegate.getSignInInfo();
             if (signInInfo instanceof VizbeeSignInInfo) {
                 VizbeeNativeManager.onGetSignInInfo(signInInfo);
