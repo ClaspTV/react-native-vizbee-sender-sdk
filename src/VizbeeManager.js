@@ -168,6 +168,12 @@ class VizbeeManager {
             let signInInfo = this.signInDelegate.getSignInInfo();
             if (signInInfo instanceof VizbeeSignInInfo) {
                 VizbeeNativeManager.onGetSignInInfo(signInInfo);
+            } else {
+                this.signInDelegate.getSignInInfoAsync((signInInfoFromDelegate) => {
+                    if (signInInfoFromDelegate instanceof VizbeeSignInInfo) {
+                        VizbeeNativeManager.onGetSignInInfo(signInInfoFromDelegate);
+                    }
+                });
             }
         }
     }
