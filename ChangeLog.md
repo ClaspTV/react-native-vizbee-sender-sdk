@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 
+## [1.1.34] - 2024-08-29
+### Added
+    Updaeted Android SDK to 6.6.9
+
 ## [1.1.33] - 2024-08-16
 ### Added
     An API getSignInInfoAsync to fetch signInInfo.
