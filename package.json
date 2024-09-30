@@ -4,7 +4,8 @@
   "description": "React Native SDK for Vizbee Sender",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "generate-docs": "jsdoc -c jsdoc.json"
   },
   "keywords": [
     "react-native"
@@ -21,5 +22,13 @@
   "bugs": {
     "url": "https://github.com/ClaspTV/react-native-vizbee-sender-sdk/issues"
   },
-  "homepage": "https://github.com/ClaspTV/react-native-vizbee-sender-sdk#readme"
+  "homepage": "https://github.com/ClaspTV/react-native-vizbee-sender-sdk#readme",
+  "devDependencies": {
+    "esdoc": "^1.1.0",
+    "esdoc-lint-plugin": "^1.0.2",
+    "esdoc-publish-html-plugin": "^1.1.2",
+    "esdoc-react-plugin": "^1.0.1",
+    "esdoc-standard-plugin": "^1.0.0",
+    "jsdoc": "^4.0.3"
+  }
 }

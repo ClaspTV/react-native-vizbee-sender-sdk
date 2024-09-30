@@ -1,0 +1,47 @@
+{
+  "coverage": "87.3%",
+  "expectCount": 63,
+  "actualCount": 55,
+  "files": {
+    "src/VizbeeConstants.js": {
+      "expectCount": 2,
+      "actualCount": 0,
+      "undocumentLines": [
+        1,
+        2
+      ]
+    },
+    "src/VizbeeManager.js": {
+      "expectCount": 35,
+      "actualCount": 29,
+      "undocumentLines": [
+        6,
+        7,
+        19,
+        20,
+        22,
+        321
+      ]
+    },
+    "src/VizbeeSignInDelegate.js": {
+      "expectCount": 3,
+      "actualCount": 3,
+      "undocumentLines": []
+    },
+    "src/VizbeeSignInInfo.js": {
+      "expectCount": 8,
+      "actualCount": 8,
+      "undocumentLines": []
+    },
+    "src/VizbeeSmartPromptOptions.js": {
+      "expectCount": 4,
+      "actualCount": 4,
+      "undocumentLines": []
+    },
+    "src/VizbeeVideo.js": {
+      "expectCount": 11,
+      "actualCount": 11,
+      "undocumentLines": []
+    }
+  }
+}

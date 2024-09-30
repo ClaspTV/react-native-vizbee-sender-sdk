@@ -1,0 +1,2463 @@
+[
+  {
+    "__docId__": 1,
+    "kind": "external",
+    "name": "Infinity",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Infinity",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Infinity",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 2,
+    "kind": "external",
+    "name": "NaN",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~NaN",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 3,
+    "kind": "external",
+    "name": "undefined",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~undefined",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 4,
+    "kind": "external",
+    "name": "null",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~null",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 5,
+    "kind": "external",
+    "name": "Object",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Object",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 6,
+    "kind": "external",
+    "name": "object",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~object",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 7,
+    "kind": "external",
+    "name": "Function",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Function",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 8,
+    "kind": "external",
+    "name": "function",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~function",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 9,
+    "kind": "external",
+    "name": "Boolean",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Boolean",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 10,
+    "kind": "external",
+    "name": "boolean",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~boolean",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 11,
+    "kind": "external",
+    "name": "Symbol",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Symbol",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 12,
+    "kind": "external",
+    "name": "Error",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Error",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 13,
+    "kind": "external",
+    "name": "EvalError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/EvalError",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~EvalError",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 14,
+    "kind": "external",
+    "name": "InternalError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/InternalError",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~InternalError",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 15,
+    "kind": "external",
+    "name": "RangeError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RangeError",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~RangeError",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 16,
+    "kind": "external",
+    "name": "ReferenceError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~ReferenceError",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 17,
+    "kind": "external",
+    "name": "SyntaxError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~SyntaxError",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 18,
+    "kind": "external",
+    "name": "TypeError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~TypeError",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 19,
+    "kind": "external",
+    "name": "URIError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/URIError",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~URIError",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 20,
+    "kind": "external",
+    "name": "Number",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Number",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 21,
+    "kind": "external",
+    "name": "number",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~number",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 22,
+    "kind": "external",
+    "name": "Date",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Date",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 23,
+    "kind": "external",
+    "name": "String",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~String",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 24,
+    "kind": "external",
+    "name": "string",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~string",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 25,
+    "kind": "external",
+    "name": "RegExp",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~RegExp",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 26,
+    "kind": "external",
+    "name": "Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 27,
+    "kind": "external",
+    "name": "Int8Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int8Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Int8Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 28,
+    "kind": "external",
+    "name": "Uint8Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Uint8Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 29,
+    "kind": "external",
+    "name": "Uint8ClampedArray",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8ClampedArray",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Uint8ClampedArray",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 30,
+    "kind": "external",
+    "name": "Int16Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int16Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Int16Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 31,
+    "kind": "external",
+    "name": "Uint16Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint16Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Uint16Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 32,
+    "kind": "external",
+    "name": "Int32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int32Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Int32Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 33,
+    "kind": "external",
+    "name": "Uint32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint32Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Uint32Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 34,
+    "kind": "external",
+    "name": "Float32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float32Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Float32Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 35,
+    "kind": "external",
+    "name": "Float64Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float64Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Float64Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 36,
+    "kind": "external",
+    "name": "Map",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Map",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 37,
+    "kind": "external",
+    "name": "Set",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Set",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 38,
+    "kind": "external",
+    "name": "WeakMap",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~WeakMap",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 39,
+    "kind": "external",
+    "name": "WeakSet",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~WeakSet",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 40,
+    "kind": "external",
+    "name": "ArrayBuffer",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~ArrayBuffer",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 41,
+    "kind": "external",
+    "name": "DataView",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~DataView",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 42,
+    "kind": "external",
+    "name": "JSON",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~JSON",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 43,
+    "kind": "external",
+    "name": "Promise",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Promise",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 44,
+    "kind": "external",
+    "name": "Generator",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Generator",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 45,
+    "kind": "external",
+    "name": "GeneratorFunction",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~GeneratorFunction",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 46,
+    "kind": "external",
+    "name": "Reflect",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Reflect",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 47,
+    "kind": "external",
+    "name": "Proxy",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Proxy",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 48,
+    "kind": "file",
+    "name": "src/VizbeeConstants.js",
+    "content": "export default class VizbeeConstants {\n    static get VZB_INVOKE_GET_SIGNIN_INFO() {\n        return \"VZB_INVOKE_GET_SIGNIN_INFO\";\n    }\n}",
+    "static": true,
+    "longname": "/Users/shiva/Documents/workspace/vizbee/react-native-vizbee-sender-sdk/src/VizbeeConstants.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 49,
+    "kind": "class",
+    "name": "VizbeeConstants",
+    "memberof": "src/VizbeeConstants.js",
+    "static": true,
+    "longname": "src/VizbeeConstants.js~VizbeeConstants",
+    "access": "public",
+    "export": true,
+    "importPath": "react-native-vizbee-sender-sdk/src/VizbeeConstants.js",
+    "importStyle": "VizbeeConstants",
+    "description": null,
+    "lineNumber": 1,
+    "undocument": true,
+    "interface": false
+  },
+  {
+    "__docId__": 50,
+    "kind": "get",
+    "name": "VZB_INVOKE_GET_SIGNIN_INFO",
+    "memberof": "src/VizbeeConstants.js~VizbeeConstants",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/VizbeeConstants.js~VizbeeConstants.VZB_INVOKE_GET_SIGNIN_INFO",
+    "access": "public",
+    "description": null,
+    "lineNumber": 2,
+    "undocument": true,
+    "type": {
+      "types": [
+        "string"
+      ]
+    }
+  },
+  {
+    "__docId__": 51,
+    "kind": "file",
+    "name": "src/VizbeeManager.js",
+    "content": "import { NativeModules, NativeEventEmitter, Platform } from \"react-native\";\nimport VizbeeConstants from \"./VizbeeConstants\";\nimport VizbeeSignInInfo from \"./VizbeeSignInInfo\";\nimport VizbeeSignInDelegate from \"./VizbeeSignInDelegate\";\n\nconst VizbeeNativeManager = NativeModules.VizbeeNativeManager || {};\nconst VizbeeNativeEmitter = new NativeEventEmitter(VizbeeNativeManager);\n\n/**\n * @class VizbeeManager\n * @description Manages Vizbee functionality including smart prompts, casting, video control, and sign-in operations.\n */\nclass VizbeeManager {\n    /**\n     * @constructor\n     * @description Initializes the VizbeeManager and sets up sign-in listeners.\n     */\n    constructor() {\n        this.subs = {}\n        this.sub_id = 0\n\n        this.signInDelegate = undefined;\n        this._registerSignInListeners();\n    }\n\n    //------------------\n    // Flow APIs\n    //------------------\n\n    /**\n     * @method smartPrompt\n     * @description Triggers a smart prompt.\n     */\n    smartPrompt() {\n        VizbeeNativeManager.smartPrompt();\n    }\n\n    /**\n     * @method smartPromptWithOptions\n     * @param {Object} smartPromptOptions - Options for the smart prompt.\n     * @description Triggers a smart prompt with specified options.\n     */\n    smartPromptWithOptions(smartPromptOptions) {\n        VizbeeNativeManager.smartPromptWithOptions(smartPromptOptions);\n    }\n\n    /**\n     * @method smartCast\n     * @description Initiates a smart cast operation.\n     */\n    smartCast() {\n        VizbeeNativeManager.smartCast();\n    }\n    \n    /**\n     * @method smartPlay\n     * @param {Object} vizbeeVideo - The video object to be played.\n     * @param {Function} didPlayOnTVCallback - Callback function when video plays on TV.\n     * @param {Function} doPlayOnPhoneCallback - Callback function to play video on phone.\n     * @description Initiates smart play functionality for a given video.\n     */\n    smartPlay(vizbeeVideo, didPlayOnTVCallback, doPlayOnPhoneCallback) {\n        VizbeeNativeManager.smartPlay(vizbeeVideo, didPlayOnTVCallback, doPlayOnPhoneCallback);\n    }\n\n    //------------------\n    // Session APIs\n    //------------------\n\n    /**\n     * @method getSessionState\n     * @returns {Promise} A promise that resolves with the current session state.\n     * @description Asynchronously retrieves the current session state.\n     */\n    async getSessionState() {\n        return VizbeeNativeManager.getSessionState();\n    }\n\n    /**\n     * @method getSessionConnectedDevice\n     * @returns {Promise} A promise that resolves with the connected device information.\n     * @description Asynchronously retrieves information about the connected device.\n     */\n    async getSessionConnectedDevice() {\n        return VizbeeNativeManager.getSessionConnectedDevice();\n    }\n\n    /**\n     * @method disconnect\n     * @description Disconnects the current session.\n     */\n    disconnect() {\n        VizbeeNativeManager.disconnect();\n    }\n\n    //------------------\n    // Sign in APIs\n    //------------------\n\n    /**\n     * @method setSignInDelegate\n     * @param {VizbeeSignInDelegate} signInDelegate - The sign-in delegate to be set.\n     * @description Sets the sign-in delegate if it's an instance of VizbeeSignInDelegate.\n     */\n    setSignInDelegate(signInDelegate) {\n        if (signInDelegate instanceof VizbeeSignInDelegate) {\n            this.signInDelegate = signInDelegate;\n        }\n    }\n\n    /**\n     * @method removeSignInDelegate\n     * @description Removes the current sign-in delegate.\n     */\n    removeSignInDelegate() {\n        this.signInDelegate = undefined;\n    }\n\n    /**\n     * @method getSignInDelegate\n     * @returns {VizbeeSignInDelegate|undefined} The current sign-in delegate.\n     * @description Retrieves the current sign-in delegate.\n     */\n    getSignInDelegate() {\n        return this.signInDelegate;\n    }\n\n    //------------------\n    // Video APIs\n    //------------------\n\n    /**\n     * @method play\n     * @description Starts or resumes video playback.\n     */\n    play() {\n        VizbeeNativeManager.play();\n    }\n\n    /**\n     * @method pause\n     * @description Pauses video playback.\n     */\n    pause() {\n        VizbeeNativeManager.pause();\n    }\n\n    /**\n     * @method seek\n     * @param {number} position - The position to seek to in the video.\n     * @description Seeks to a specific position in the video.\n     */\n    seek(position) {\n        VizbeeNativeManager.seek(position);\n    }\n\n    /**\n     * @method stop\n     * @description Stops video playback.\n     */\n    stop() {\n        VizbeeNativeManager.stop();\n    }\n\n    /**\n     * @method setActiveTrack\n     * @param {Object} trackInfo - Information about the track to be set as active.\n     * @description Sets the active track for the video.\n     */\n    setActiveTrack(trackInfo) {\n        VizbeeNativeManager.setActiveTrack(trackInfo);\n    }\n\n    /**\n     * @method resetActiveTrack\n     * @description Resets the active track to default.\n     */\n    resetActiveTrack() {\n        VizbeeNativeManager.resetActiveTrack();\n    }\n\n    /**\n     * @method supportsVolumeControl\n     * @param {Function} callback - Callback function to receive the result.\n     * @description Checks if volume control is supported.\n     */\n    supportsVolumeControl(callback) {\n        VizbeeNativeManager.supportsVolumeControl(callback);\n    }\n\n    /**\n     * @method setVolume\n     * @param {number} volume - Volume level to set (between 0 and 1).\n     * @description Sets the volume level.\n     */\n    setVolume(volume) {\n        VizbeeNativeManager.setVolume(volume);\n    }\n\n    /**\n     * @method getVolume\n     * @param {Function} callback - Callback function to receive the current volume.\n     * @description Retrieves the current volume level.\n     */\n    getVolume(callback) {\n        VizbeeNativeManager.getVolume(callback);\n    }\n\n    /**\n     * @method mute\n     * @description Mutes the audio.\n     */\n    mute() {\n        VizbeeNativeManager.mute();\n    }\n\n    /**\n     * @method unmute\n     * @description Unmutes the audio.\n     */\n    unmute() {\n        VizbeeNativeManager.unmute();\n    }\n    \n    //------------------\n    // Analytics\n    //------------------\n\n    /**\n     * @method addAnalyticsAttributes\n     * @param {Object} attributes - Analytics attributes to add.\n     * @description Adds analytics attributes.\n     */\n    addAnalyticsAttributes(attributes) {\n        VizbeeNativeManager.addAnalyticsAttributes(attributes);\n    }\n    \n    //------------------\n    // Listeners\n    //------------------\n\n    /**\n     * @method addListener\n     * @param {string} eventName - Name of the event to listen for.\n     * @param {Function} callback - Callback function to handle the event.\n     * @param {Object} [context] - Context in which to call the callback.\n     * @returns {number} Subscription ID for the listener.\n     * @description Adds an event listener.\n     */\n    addListener(eventName, callback, context) {\n        this.subs[this.sub_id] = VizbeeNativeEmitter.addListener(eventName, function (map) {\n            callback.call(context || null, map)\n        })\n        return this.sub_id++\n    }\n\n    /**\n     * @method removeListener\n     * @param {number} subscription - Subscription ID of the listener to remove.\n     * @description Removes a specific event listener.\n     */\n    removeListener(subscription) {\n        let sub = this.subs[subscription]\n        if (sub != null) {\n            VizbeeNativeEmitter.removeSubscription(sub);\n        }\n        delete this.subs[subscription]\n    }\n\n    /**\n     * @method removeAllListeners\n     * @param {string} eventName - Name of the event to remove all listeners for.\n     * @description Removes all listeners for a specific event.\n     */\n    removeAllListeners(eventName) {\n        VizbeeNativeEmitter.removeAllListeners(eventName)\n    }\n\n    //------------------\n    // Sign in Helpers\n    //------------------\n\n    /**\n     * @private\n     * @method _registerSignInListeners\n     * @description Registers listeners for sign-in events.\n     */\n    _registerSignInListeners() {\n        // listen for sign in events\n        this.addListener(\n            VizbeeConstants.VZB_INVOKE_GET_SIGNIN_INFO,\n            this._invokeAndHandleGetSignInInfo,\n            this\n        );\n    }\n    \n    /**\n     * @private\n     * @method _invokeAndHandleGetSignInInfo\n     * @description Invokes and handles the get sign-in info process.\n     */\n    _invokeAndHandleGetSignInInfo() {\n        if (this.signInDelegate) {\n            // To maintain backward compatibility, \n            // we first check if the signInDelegate has the synchronous getSignInInfo method\n            // implemented. If not, we call the asynchronous getSignInInfoAsync method.\n            let signInInfo = this.signInDelegate.getSignInInfo();\n            if (signInInfo instanceof VizbeeSignInInfo) {\n                VizbeeNativeManager.onGetSignInInfo(signInInfo);\n            } else {\n                this.signInDelegate.getSignInInfoAsync((signInInfoFromDelegate) => {\n                    if (signInInfoFromDelegate instanceof VizbeeSignInInfo) {\n                        VizbeeNativeManager.onGetSignInInfo(signInInfoFromDelegate);\n                    }\n                });\n            }\n        }\n    }\n}\n\nexport default new VizbeeManager()",
+    "static": true,
+    "longname": "/Users/shiva/Documents/workspace/vizbee/react-native-vizbee-sender-sdk/src/VizbeeManager.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 52,
+    "kind": "variable",
+    "name": "VizbeeNativeManager",
+    "memberof": "src/VizbeeManager.js",
+    "static": true,
+    "longname": "src/VizbeeManager.js~VizbeeNativeManager",
+    "access": "public",
+    "export": false,
+    "importPath": "react-native-vizbee-sender-sdk/src/VizbeeManager.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 6,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    },
+    "ignore": true
+  },
+  {
+    "__docId__": 53,
+    "kind": "variable",
+    "name": "VizbeeNativeEmitter",
+    "memberof": "src/VizbeeManager.js",
+    "static": true,
+    "longname": "src/VizbeeManager.js~VizbeeNativeEmitter",
+    "access": "public",
+    "export": false,
+    "importPath": "react-native-vizbee-sender-sdk/src/VizbeeManager.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 7,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    },
+    "ignore": true
+  },
+  {
+    "__docId__": 54,
+    "kind": "class",
+    "name": "VizbeeManager",
+    "memberof": "src/VizbeeManager.js",
+    "static": true,
+    "longname": "src/VizbeeManager.js~VizbeeManager",
+    "access": "public",
+    "export": true,
+    "importPath": "react-native-vizbee-sender-sdk/src/VizbeeManager.js",
+    "importStyle": null,
+    "description": "",
+    "lineNumber": 13,
+    "pseudoExport": true,
+    "unknown": [
+      {
+        "tagName": "@class",
+        "tagValue": "VizbeeManager"
+      },
+      {
+        "tagName": "@description",
+        "tagValue": "Manages Vizbee functionality including smart prompts, casting, video control, and sign-in operations."
+      }
+    ],
+    "interface": false
+  },
+  {
+    "__docId__": 55,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/VizbeeManager.js~VizbeeManager",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/VizbeeManager.js~VizbeeManager#constructor",
+    "access": "public",
+    "description": "",
+    "lineNumber": 18,
+    "unknown": [
+      {
+        "tagName": "@constructor",
+        "tagValue": ""
+      },
+      {
+        "tagName": "@description",
+        "tagValue": "Initializes the VizbeeManager and sets up sign-in listeners."
+      }
+    ]
+  },
+  {
+    "__docId__": 56,
+    "kind": "member",
+    "name": "subs",
+    "memberof": "src/VizbeeManager.js~VizbeeManager",
+    "static": false,
+    "longname": "src/VizbeeManager.js~VizbeeManager#subs",
+    "access": "public",
+    "description": null,
+    "lineNumber": 19,
+    "undocument": true,
+    "type": {
+      "types": [
+        "{}"
+      ]
+    }
+  },
+  {
+    "__docId__": 57,
+    "kind": "member",
+    "name": "sub_id",
+    "memberof": "src/VizbeeManager.js~VizbeeManager",
+    "static": false,
+    "longname": "src/VizbeeManager.js~VizbeeManager#sub_id",
+    "access": "public",
+    "description": null,
+    "lineNumber": 20,
+    "undocument": true,
+    "type": {
+      "types": [
+        "number"
+      ]
+    }
+  },
+  {
+    "__docId__": 58,
+    "kind": "member",
+    "name": "signInDelegate",
+    "memberof": "src/VizbeeManager.js~VizbeeManager",
+    "static": false,
+    "longname": "src/VizbeeManager.js~VizbeeManager#signInDelegate",
+    "access": "public",
+    "description": null,
+    "lineNumber": 22,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 59,
+    "kind": "method",
+    "name": "smartPrompt",
+    "memberof": "src/VizbeeManager.js~VizbeeManager",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/VizbeeManager.js~VizbeeManager#smartPrompt",
+    "access": "public",
+    "description": "",
+    "lineNumber": 34,
+    "unknown": [
+      {
+        "tagName": "@method",
+        "tagValue": "smartPrompt"
+      },
+      {
+        "tagName": "@description",
+        "tagValue": "Triggers a smart prompt."
+      }
+    ],
+    "params": [],
+    "return": null
+  },
+  {
+    "__docId__": 60,
+    "kind": "method",
+    "name": "smartPromptWithOptions",
+    "memberof": "src/VizbeeManager.js~VizbeeManager",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/VizbeeManager.js~VizbeeManager#smartPromptWithOptions",
+    "access": "public",
+    "description": "",
+    "lineNumber": 43,
+    "unknown": [
+      {
+        "tagName": "@method",
+        "tagValue": "smartPromptWithOptions"
+      },
+      {
+        "tagName": "@description",
+        "tagValue": "Triggers a smart prompt with specified options."
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "smartPromptOptions",
+        "description": "Options for the smart prompt."
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 61,
+    "kind": "method",
+    "name": "smartCast",
+    "memberof": "src/VizbeeManager.js~VizbeeManager",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/VizbeeManager.js~VizbeeManager#smartCast",
+    "access": "public",
+    "description": "",
+    "lineNumber": 51,
+    "unknown": [
+      {
+        "tagName": "@method",
+        "tagValue": "smartCast"
+      },
+      {
+        "tagName": "@description",
+        "tagValue": "Initiates a smart cast operation."
+      }
+    ],
+    "params": [],
+    "return": null
+  },
+  {
+    "__docId__": 62,
+    "kind": "method",
+    "name": "smartPlay",
+    "memberof": "src/VizbeeManager.js~VizbeeManager",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/VizbeeManager.js~VizbeeManager#smartPlay",
+    "access": "public",
+    "description": "",
+    "lineNumber": 62,
+    "unknown": [
+      {
+        "tagName": "@method",
+        "tagValue": "smartPlay"
+      },
+      {
+        "tagName": "@description",
+        "tagValue": "Initiates smart play functionality for a given video."
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "vizbeeVideo",
+        "description": "The video object to be played."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Function"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "didPlayOnTVCallback",
+        "description": "Callback function when video plays on TV."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Function"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "doPlayOnPhoneCallback",
+        "description": "Callback function to play video on phone."
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 63,
+    "kind": "method",
+    "name": "getSessionState",
+    "memberof": "src/VizbeeManager.js~VizbeeManager",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/VizbeeManager.js~VizbeeManager#getSessionState",
+    "access": "public",
+    "description": "",
+    "lineNumber": 75,
+    "unknown": [
+      {
+        "tagName": "@method",
+        "tagValue": "getSessionState"
+      },
+      {
+        "tagName": "@returns",
+        "tagValue": "{Promise} A promise that resolves with the current session state."
+      },
+      {
+        "tagName": "@description",
+        "tagValue": "Asynchronously retrieves the current session state."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Promise"
+      ],
+      "spread": false,
+      "description": "A promise that resolves with the current session state."
+    },
+    "params": []
+  },
+  {
+    "__docId__": 64,
+    "kind": "method",
+    "name": "getSessionConnectedDevice",
+    "memberof": "src/VizbeeManager.js~VizbeeManager",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/VizbeeManager.js~VizbeeManager#getSessionConnectedDevice",
+    "access": "public",
+    "description": "",
+    "lineNumber": 84,
+    "unknown": [
+      {
+        "tagName": "@method",
+        "tagValue": "getSessionConnectedDevice"
+      },
+      {
+        "tagName": "@returns",
+        "tagValue": "{Promise} A promise that resolves with the connected device information."
+      },
+      {
+        "tagName": "@description",
+        "tagValue": "Asynchronously retrieves information about the connected device."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Promise"
+      ],
+      "spread": false,
+      "description": "A promise that resolves with the connected device information."
+    },
+    "params": []
+  },
+  {
+    "__docId__": 65,
+    "kind": "method",
+    "name": "disconnect",
+    "memberof": "src/VizbeeManager.js~VizbeeManager",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/VizbeeManager.js~VizbeeManager#disconnect",
+    "access": "public",
+    "description": "",
+    "lineNumber": 92,
+    "unknown": [
+      {
+        "tagName": "@method",
+        "tagValue": "disconnect"
+      },
+      {
+        "tagName": "@description",
+        "tagValue": "Disconnects the current session."
+      }
+    ],
+    "params": [],
+    "return": null
+  },
+  {
+    "__docId__": 66,
+    "kind": "method",
+    "name": "setSignInDelegate",
+    "memberof": "src/VizbeeManager.js~VizbeeManager",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/VizbeeManager.js~VizbeeManager#setSignInDelegate",
+    "access": "public",
+    "description": "",
+    "lineNumber": 105,
+    "unknown": [
+      {
+        "tagName": "@method",
+        "tagValue": "setSignInDelegate"
+      },
+      {
+        "tagName": "@description",
+        "tagValue": "Sets the sign-in delegate if it's an instance of VizbeeSignInDelegate."
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "VizbeeSignInDelegate"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "signInDelegate",
+        "description": "The sign-in delegate to be set."
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 68,
+    "kind": "method",
+    "name": "removeSignInDelegate",
+    "memberof": "src/VizbeeManager.js~VizbeeManager",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/VizbeeManager.js~VizbeeManager#removeSignInDelegate",
+    "access": "public",
+    "description": "",
+    "lineNumber": 115,
+    "unknown": [
+      {
+        "tagName": "@method",
+        "tagValue": "removeSignInDelegate"
+      },
+      {
+        "tagName": "@description",
+        "tagValue": "Removes the current sign-in delegate."
+      }
+    ],
+    "params": [],
+    "return": null
+  },
+  {
+    "__docId__": 70,
+    "kind": "method",
+    "name": "getSignInDelegate",
+    "memberof": "src/VizbeeManager.js~VizbeeManager",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/VizbeeManager.js~VizbeeManager#getSignInDelegate",
+    "access": "public",
+    "description": "",
+    "lineNumber": 124,
+    "unknown": [
+      {
+        "tagName": "@method",
+        "tagValue": "getSignInDelegate"
+      },
+      {
+        "tagName": "@returns",
+        "tagValue": "{VizbeeSignInDelegate|undefined} The current sign-in delegate."
+      },
+      {
+        "tagName": "@description",
+        "tagValue": "Retrieves the current sign-in delegate."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "VizbeeSignInDelegate",
+        "undefined"
+      ],
+      "spread": false,
+      "description": "The current sign-in delegate."
+    },
+    "params": []
+  },
+  {
+    "__docId__": 71,
+    "kind": "method",
+    "name": "play",
+    "memberof": "src/VizbeeManager.js~VizbeeManager",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/VizbeeManager.js~VizbeeManager#play",
+    "access": "public",
+    "description": "",
+    "lineNumber": 136,
+    "unknown": [
+      {
+        "tagName": "@method",
+        "tagValue": "play"
+      },
+      {
+        "tagName": "@description",
+        "tagValue": "Starts or resumes video playback."
+      }
+    ],
+    "params": [],
+    "return": null
+  },
+  {
+    "__docId__": 72,
+    "kind": "method",
+    "name": "pause",
+    "memberof": "src/VizbeeManager.js~VizbeeManager",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/VizbeeManager.js~VizbeeManager#pause",
+    "access": "public",
+    "description": "",
+    "lineNumber": 144,
+    "unknown": [
+      {
+        "tagName": "@method",
+        "tagValue": "pause"
+      },
+      {
+        "tagName": "@description",
+        "tagValue": "Pauses video playback."
+      }
+    ],
+    "params": [],
+    "return": null
+  },
+  {
+    "__docId__": 73,
+    "kind": "method",
+    "name": "seek",
+    "memberof": "src/VizbeeManager.js~VizbeeManager",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/VizbeeManager.js~VizbeeManager#seek",
+    "access": "public",
+    "description": "",
+    "lineNumber": 153,
+    "unknown": [
+      {
+        "tagName": "@method",
+        "tagValue": "seek"
+      },
+      {
+        "tagName": "@description",
+        "tagValue": "Seeks to a specific position in the video."
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "position",
+        "description": "The position to seek to in the video."
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 74,
+    "kind": "method",
+    "name": "stop",
+    "memberof": "src/VizbeeManager.js~VizbeeManager",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/VizbeeManager.js~VizbeeManager#stop",
+    "access": "public",
+    "description": "",
+    "lineNumber": 161,
+    "unknown": [
+      {
+        "tagName": "@method",
+        "tagValue": "stop"
+      },
+      {
+        "tagName": "@description",
+        "tagValue": "Stops video playback."
+      }
+    ],
+    "params": [],
+    "return": null
+  },
+  {
+    "__docId__": 75,
+    "kind": "method",
+    "name": "setActiveTrack",
+    "memberof": "src/VizbeeManager.js~VizbeeManager",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/VizbeeManager.js~VizbeeManager#setActiveTrack",
+    "access": "public",
+    "description": "",
+    "lineNumber": 170,
+    "unknown": [
+      {
+        "tagName": "@method",
+        "tagValue": "setActiveTrack"
+      },
+      {
+        "tagName": "@description",
+        "tagValue": "Sets the active track for the video."
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "trackInfo",
+        "description": "Information about the track to be set as active."
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 76,
+    "kind": "method",
+    "name": "resetActiveTrack",
+    "memberof": "src/VizbeeManager.js~VizbeeManager",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/VizbeeManager.js~VizbeeManager#resetActiveTrack",
+    "access": "public",
+    "description": "",
+    "lineNumber": 178,
+    "unknown": [
+      {
+        "tagName": "@method",
+        "tagValue": "resetActiveTrack"
+      },
+      {
+        "tagName": "@description",
+        "tagValue": "Resets the active track to default."
+      }
+    ],
+    "params": [],
+    "return": null
+  },
+  {
+    "__docId__": 77,
+    "kind": "method",
+    "name": "supportsVolumeControl",
+    "memberof": "src/VizbeeManager.js~VizbeeManager",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/VizbeeManager.js~VizbeeManager#supportsVolumeControl",
+    "access": "public",
+    "description": "",
+    "lineNumber": 187,
+    "unknown": [
+      {
+        "tagName": "@method",
+        "tagValue": "supportsVolumeControl"
+      },
+      {
+        "tagName": "@description",
+        "tagValue": "Checks if volume control is supported."
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Function"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "callback",
+        "description": "Callback function to receive the result."
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 78,
+    "kind": "method",
+    "name": "setVolume",
+    "memberof": "src/VizbeeManager.js~VizbeeManager",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/VizbeeManager.js~VizbeeManager#setVolume",
+    "access": "public",
+    "description": "",
+    "lineNumber": 196,
+    "unknown": [
+      {
+        "tagName": "@method",
+        "tagValue": "setVolume"
+      },
+      {
+        "tagName": "@description",
+        "tagValue": "Sets the volume level."
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "volume",
+        "description": "Volume level to set (between 0 and 1)."
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 79,
+    "kind": "method",
+    "name": "getVolume",
+    "memberof": "src/VizbeeManager.js~VizbeeManager",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/VizbeeManager.js~VizbeeManager#getVolume",
+    "access": "public",
+    "description": "",
+    "lineNumber": 205,
+    "unknown": [
+      {
+        "tagName": "@method",
+        "tagValue": "getVolume"
+      },
+      {
+        "tagName": "@description",
+        "tagValue": "Retrieves the current volume level."
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Function"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "callback",
+        "description": "Callback function to receive the current volume."
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 80,
+    "kind": "method",
+    "name": "mute",
+    "memberof": "src/VizbeeManager.js~VizbeeManager",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/VizbeeManager.js~VizbeeManager#mute",
+    "access": "public",
+    "description": "",
+    "lineNumber": 213,
+    "unknown": [
+      {
+        "tagName": "@method",
+        "tagValue": "mute"
+      },
+      {
+        "tagName": "@description",
+        "tagValue": "Mutes the audio."
+      }
+    ],
+    "params": [],
+    "return": null
+  },
+  {
+    "__docId__": 81,
+    "kind": "method",
+    "name": "unmute",
+    "memberof": "src/VizbeeManager.js~VizbeeManager",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/VizbeeManager.js~VizbeeManager#unmute",
+    "access": "public",
+    "description": "",
+    "lineNumber": 221,
+    "unknown": [
+      {
+        "tagName": "@method",
+        "tagValue": "unmute"
+      },
+      {
+        "tagName": "@description",
+        "tagValue": "Unmutes the audio."
+      }
+    ],
+    "params": [],
+    "return": null
+  },
+  {
+    "__docId__": 82,
+    "kind": "method",
+    "name": "addAnalyticsAttributes",
+    "memberof": "src/VizbeeManager.js~VizbeeManager",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/VizbeeManager.js~VizbeeManager#addAnalyticsAttributes",
+    "access": "public",
+    "description": "",
+    "lineNumber": 234,
+    "unknown": [
+      {
+        "tagName": "@method",
+        "tagValue": "addAnalyticsAttributes"
+      },
+      {
+        "tagName": "@description",
+        "tagValue": "Adds analytics attributes."
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "attributes",
+        "description": "Analytics attributes to add."
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 83,
+    "kind": "method",
+    "name": "addListener",
+    "memberof": "src/VizbeeManager.js~VizbeeManager",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/VizbeeManager.js~VizbeeManager#addListener",
+    "access": "public",
+    "description": "",
+    "lineNumber": 250,
+    "unknown": [
+      {
+        "tagName": "@method",
+        "tagValue": "addListener"
+      },
+      {
+        "tagName": "@returns",
+        "tagValue": "{number} Subscription ID for the listener."
+      },
+      {
+        "tagName": "@description",
+        "tagValue": "Adds an event listener."
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "eventName",
+        "description": "Name of the event to listen for."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Function"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "callback",
+        "description": "Callback function to handle the event."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": true,
+        "name": "context",
+        "description": "Context in which to call the callback."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "number"
+      ],
+      "spread": false,
+      "description": "Subscription ID for the listener."
+    }
+  },
+  {
+    "__docId__": 84,
+    "kind": "method",
+    "name": "removeListener",
+    "memberof": "src/VizbeeManager.js~VizbeeManager",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/VizbeeManager.js~VizbeeManager#removeListener",
+    "access": "public",
+    "description": "",
+    "lineNumber": 262,
+    "unknown": [
+      {
+        "tagName": "@method",
+        "tagValue": "removeListener"
+      },
+      {
+        "tagName": "@description",
+        "tagValue": "Removes a specific event listener."
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "subscription",
+        "description": "Subscription ID of the listener to remove."
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 85,
+    "kind": "method",
+    "name": "removeAllListeners",
+    "memberof": "src/VizbeeManager.js~VizbeeManager",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/VizbeeManager.js~VizbeeManager#removeAllListeners",
+    "access": "public",
+    "description": "",
+    "lineNumber": 275,
+    "unknown": [
+      {
+        "tagName": "@method",
+        "tagValue": "removeAllListeners"
+      },
+      {
+        "tagName": "@description",
+        "tagValue": "Removes all listeners for a specific event."
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "eventName",
+        "description": "Name of the event to remove all listeners for."
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 86,
+    "kind": "method",
+    "name": "_registerSignInListeners",
+    "memberof": "src/VizbeeManager.js~VizbeeManager",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/VizbeeManager.js~VizbeeManager#_registerSignInListeners",
+    "access": "private",
+    "description": "",
+    "lineNumber": 288,
+    "unknown": [
+      {
+        "tagName": "@method",
+        "tagValue": "_registerSignInListeners"
+      },
+      {
+        "tagName": "@description",
+        "tagValue": "Registers listeners for sign-in events."
+      }
+    ],
+    "params": [],
+    "return": null
+  },
+  {
+    "__docId__": 87,
+    "kind": "method",
+    "name": "_invokeAndHandleGetSignInInfo",
+    "memberof": "src/VizbeeManager.js~VizbeeManager",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/VizbeeManager.js~VizbeeManager#_invokeAndHandleGetSignInInfo",
+    "access": "private",
+    "description": "",
+    "lineNumber": 302,
+    "unknown": [
+      {
+        "tagName": "@method",
+        "tagValue": "_invokeAndHandleGetSignInInfo"
+      },
+      {
+        "tagName": "@description",
+        "tagValue": "Invokes and handles the get sign-in info process."
+      }
+    ],
+    "params": [],
+    "return": null
+  },
+  {
+    "__docId__": 88,
+    "kind": "variable",
+    "name": "vizbeeManager",
+    "memberof": "src/VizbeeManager.js",
+    "static": true,
+    "longname": "src/VizbeeManager.js~vizbeeManager",
+    "access": "public",
+    "export": true,
+    "importPath": "react-native-vizbee-sender-sdk/src/VizbeeManager.js",
+    "importStyle": "vizbeeManager",
+    "description": null,
+    "lineNumber": 321,
+    "undocument": true,
+    "type": {
+      "types": [
+        "src/VizbeeManager.js~VizbeeManager"
+      ]
+    }
+  },
+  {
+    "__docId__": 89,
+    "kind": "file",
+    "name": "src/VizbeeSignInDelegate.js",
+    "content": "/**\n * @class VizbeeSignInDelegate\n * @description Delegate class for handling Vizbee sign-in operations\n */\nexport default class VizbeeSignInDelegate {\n    /**\n     * @deprecated\n     * @method getSignInInfo\n     * @description Synchronous method to get sign-in information (deprecated)\n     * @returns {void}\n     */\n    getSignInInfo() {}\n\n    /**\n     * @method getSignInInfoAsync\n     * @description Asynchronous method to get sign-in information\n     * @param {function} signInfoCallback - Callback function to receive sign-in information\n     */\n    getSignInInfoAsync(signInfoCallback) {\n        if(typeof signInfoCallback == 'function') {\n            signInfoCallback();\n        }\n    }\n}",
+    "static": true,
+    "longname": "/Users/shiva/Documents/workspace/vizbee/react-native-vizbee-sender-sdk/src/VizbeeSignInDelegate.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 90,
+    "kind": "class",
+    "name": "VizbeeSignInDelegate",
+    "memberof": "src/VizbeeSignInDelegate.js",
+    "static": true,
+    "longname": "src/VizbeeSignInDelegate.js~VizbeeSignInDelegate",
+    "access": "public",
+    "export": true,
+    "importPath": "react-native-vizbee-sender-sdk/src/VizbeeSignInDelegate.js",
+    "importStyle": "VizbeeSignInDelegate",
+    "description": "",
+    "lineNumber": 5,
+    "unknown": [
+      {
+        "tagName": "@class",
+        "tagValue": "VizbeeSignInDelegate"
+      },
+      {
+        "tagName": "@description",
+        "tagValue": "Delegate class for handling Vizbee sign-in operations"
+      }
+    ],
+    "interface": false
+  },
+  {
+    "__docId__": 91,
+    "kind": "method",
+    "name": "getSignInInfo",
+    "memberof": "src/VizbeeSignInDelegate.js~VizbeeSignInDelegate",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/VizbeeSignInDelegate.js~VizbeeSignInDelegate#getSignInInfo",
+    "access": "public",
+    "description": "",
+    "lineNumber": 12,
+    "deprecated": true,
+    "unknown": [
+      {
+        "tagName": "@method",
+        "tagValue": "getSignInInfo"
+      },
+      {
+        "tagName": "@description",
+        "tagValue": "Synchronous method to get sign-in information (deprecated)"
+      },
+      {
+        "tagName": "@returns",
+        "tagValue": "{void}"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "void"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "params": []
+  },
+  {
+    "__docId__": 92,
+    "kind": "method",
+    "name": "getSignInInfoAsync",
+    "memberof": "src/VizbeeSignInDelegate.js~VizbeeSignInDelegate",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/VizbeeSignInDelegate.js~VizbeeSignInDelegate#getSignInInfoAsync",
+    "access": "public",
+    "description": "",
+    "lineNumber": 19,
+    "unknown": [
+      {
+        "tagName": "@method",
+        "tagValue": "getSignInInfoAsync"
+      },
+      {
+        "tagName": "@description",
+        "tagValue": "Asynchronous method to get sign-in information"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "function"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "signInfoCallback",
+        "description": "Callback function to receive sign-in information"
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 93,
+    "kind": "file",
+    "name": "src/VizbeeSignInInfo.js",
+    "content": "/**\n * @class VizbeeSignInInfo\n * @description Class representing sign-in information for Vizbee\n */\nexport default class VizbeeSignInInfo {\n    /**\n     * @constructor\n     * @description Initializes a new instance of VizbeeSignInInfo\n     */\n    constructor() {\n        /**\n         * @property {string|undefined} userId - The user's ID\n         */\n        this.userId = undefined;\n\n        /**\n         * @property {string|undefined} userLogin - The user's login\n         */\n        this.userLogin = undefined;\n\n        /**\n         * @property {string|undefined} userFullName - The user's full name\n         */\n        this.userFullName = undefined;\n\n        /**\n         * @property {string|undefined} accessToken - The access token\n         */\n        this.accessToken = undefined;\n\n        /**\n         * @property {string|undefined} refreshToken - The refresh token\n         */\n        this.refreshToken = undefined;\n\n        /**\n         * @property {Object} customData - Custom data associated with the sign-in\n         */\n        this.customData = {};\n    }\n}",
+    "static": true,
+    "longname": "/Users/shiva/Documents/workspace/vizbee/react-native-vizbee-sender-sdk/src/VizbeeSignInInfo.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 94,
+    "kind": "class",
+    "name": "VizbeeSignInInfo",
+    "memberof": "src/VizbeeSignInInfo.js",
+    "static": true,
+    "longname": "src/VizbeeSignInInfo.js~VizbeeSignInInfo",
+    "access": "public",
+    "export": true,
+    "importPath": "react-native-vizbee-sender-sdk/src/VizbeeSignInInfo.js",
+    "importStyle": "VizbeeSignInInfo",
+    "description": "",
+    "lineNumber": 5,
+    "unknown": [
+      {
+        "tagName": "@class",
+        "tagValue": "VizbeeSignInInfo"
+      },
+      {
+        "tagName": "@description",
+        "tagValue": "Class representing sign-in information for Vizbee"
+      }
+    ],
+    "interface": false
+  },
+  {
+    "__docId__": 95,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/VizbeeSignInInfo.js~VizbeeSignInInfo",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/VizbeeSignInInfo.js~VizbeeSignInInfo#constructor",
+    "access": "public",
+    "description": "",
+    "lineNumber": 10,
+    "unknown": [
+      {
+        "tagName": "@constructor",
+        "tagValue": ""
+      },
+      {
+        "tagName": "@description",
+        "tagValue": "Initializes a new instance of VizbeeSignInInfo"
+      }
+    ]
+  },
+  {
+    "__docId__": 96,
+    "kind": "member",
+    "name": "userId",
+    "memberof": "src/VizbeeSignInInfo.js~VizbeeSignInInfo",
+    "static": false,
+    "longname": "src/VizbeeSignInInfo.js~VizbeeSignInInfo#userId",
+    "access": "public",
+    "description": "",
+    "lineNumber": 14,
+    "properties": [
+      {
+        "nullable": null,
+        "types": [
+          "string",
+          "undefined"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "userId",
+        "description": "The user's ID"
+      }
+    ],
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 97,
+    "kind": "member",
+    "name": "userLogin",
+    "memberof": "src/VizbeeSignInInfo.js~VizbeeSignInInfo",
+    "static": false,
+    "longname": "src/VizbeeSignInInfo.js~VizbeeSignInInfo#userLogin",
+    "access": "public",
+    "description": "",
+    "lineNumber": 19,
+    "properties": [
+      {
+        "nullable": null,
+        "types": [
+          "string",
+          "undefined"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "userLogin",
+        "description": "The user's login"
+      }
+    ],
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 98,
+    "kind": "member",
+    "name": "userFullName",
+    "memberof": "src/VizbeeSignInInfo.js~VizbeeSignInInfo",
+    "static": false,
+    "longname": "src/VizbeeSignInInfo.js~VizbeeSignInInfo#userFullName",
+    "access": "public",
+    "description": "",
+    "lineNumber": 24,
+    "properties": [
+      {
+        "nullable": null,
+        "types": [
+          "string",
+          "undefined"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "userFullName",
+        "description": "The user's full name"
+      }
+    ],
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 99,
+    "kind": "member",
+    "name": "accessToken",
+    "memberof": "src/VizbeeSignInInfo.js~VizbeeSignInInfo",
+    "static": false,
+    "longname": "src/VizbeeSignInInfo.js~VizbeeSignInInfo#accessToken",
+    "access": "public",
+    "description": "",
+    "lineNumber": 29,
+    "properties": [
+      {
+        "nullable": null,
+        "types": [
+          "string",
+          "undefined"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "accessToken",
+        "description": "The access token"
+      }
+    ],
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 100,
+    "kind": "member",
+    "name": "refreshToken",
+    "memberof": "src/VizbeeSignInInfo.js~VizbeeSignInInfo",
+    "static": false,
+    "longname": "src/VizbeeSignInInfo.js~VizbeeSignInInfo#refreshToken",
+    "access": "public",
+    "description": "",
+    "lineNumber": 34,
+    "properties": [
+      {
+        "nullable": null,
+        "types": [
+          "string",
+          "undefined"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "refreshToken",
+        "description": "The refresh token"
+      }
+    ],
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 101,
+    "kind": "member",
+    "name": "customData",
+    "memberof": "src/VizbeeSignInInfo.js~VizbeeSignInInfo",
+    "static": false,
+    "longname": "src/VizbeeSignInInfo.js~VizbeeSignInInfo#customData",
+    "access": "public",
+    "description": "",
+    "lineNumber": 39,
+    "properties": [
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "customData",
+        "description": "Custom data associated with the sign-in"
+      }
+    ],
+    "type": {
+      "types": [
+        "{}"
+      ]
+    }
+  },
+  {
+    "__docId__": 102,
+    "kind": "file",
+    "name": "src/VizbeeSmartPromptOptions.js",
+    "content": "/**\n * @class VizbeeSmartPromptOptions\n * @description Class representing options for Vizbee smart prompts\n */\nexport default class VizbeeSmartPromptOptions {\n    /**\n     * @constructor\n     * @description Initializes a new instance of VizbeeSmartPromptOptions\n     */\n    constructor() {\n        /**\n         * @property {number} enabledSubflows - Bitwise combination of enabled subflows\n         */\n        this.enabledSubflows = \n            VizbeeSmartPromptSubflow.CastAuthorization | \n            VizbeeSmartPromptSubflow.CastIntroduction | \n            VizbeeSmartPromptSubflow.SmartInstall;\n    }\n}\n\n/**\n * @enum {number}\n * @description Enum representing different subflows for smart prompts\n */\nexport const VizbeeSmartPromptSubflow = {\n    CastAuthorization: 1 << 1,\n    CastIntroduction: 1 << 2,\n    SmartInstall: 1 << 3\n};",
+    "static": true,
+    "longname": "/Users/shiva/Documents/workspace/vizbee/react-native-vizbee-sender-sdk/src/VizbeeSmartPromptOptions.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 103,
+    "kind": "class",
+    "name": "VizbeeSmartPromptOptions",
+    "memberof": "src/VizbeeSmartPromptOptions.js",
+    "static": true,
+    "longname": "src/VizbeeSmartPromptOptions.js~VizbeeSmartPromptOptions",
+    "access": "public",
+    "export": true,
+    "importPath": "react-native-vizbee-sender-sdk/src/VizbeeSmartPromptOptions.js",
+    "importStyle": "VizbeeSmartPromptOptions",
+    "description": "",
+    "lineNumber": 5,
+    "unknown": [
+      {
+        "tagName": "@class",
+        "tagValue": "VizbeeSmartPromptOptions"
+      },
+      {
+        "tagName": "@description",
+        "tagValue": "Class representing options for Vizbee smart prompts"
+      }
+    ],
+    "interface": false
+  },
+  {
+    "__docId__": 104,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/VizbeeSmartPromptOptions.js~VizbeeSmartPromptOptions",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/VizbeeSmartPromptOptions.js~VizbeeSmartPromptOptions#constructor",
+    "access": "public",
+    "description": "",
+    "lineNumber": 10,
+    "unknown": [
+      {
+        "tagName": "@constructor",
+        "tagValue": ""
+      },
+      {
+        "tagName": "@description",
+        "tagValue": "Initializes a new instance of VizbeeSmartPromptOptions"
+      }
+    ]
+  },
+  {
+    "__docId__": 105,
+    "kind": "member",
+    "name": "enabledSubflows",
+    "memberof": "src/VizbeeSmartPromptOptions.js~VizbeeSmartPromptOptions",
+    "static": false,
+    "longname": "src/VizbeeSmartPromptOptions.js~VizbeeSmartPromptOptions#enabledSubflows",
+    "access": "public",
+    "description": "",
+    "lineNumber": 14,
+    "properties": [
+      {
+        "nullable": null,
+        "types": [
+          "number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "enabledSubflows",
+        "description": "Bitwise combination of enabled subflows"
+      }
+    ],
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 106,
+    "kind": "variable",
+    "name": "VizbeeSmartPromptSubflow",
+    "memberof": "src/VizbeeSmartPromptOptions.js",
+    "static": true,
+    "longname": "src/VizbeeSmartPromptOptions.js~VizbeeSmartPromptSubflow",
+    "access": "public",
+    "export": true,
+    "importPath": "react-native-vizbee-sender-sdk/src/VizbeeSmartPromptOptions.js",
+    "importStyle": "{VizbeeSmartPromptSubflow}",
+    "description": "",
+    "lineNumber": 25,
+    "unknown": [
+      {
+        "tagName": "@enum",
+        "tagValue": "{number}"
+      },
+      {
+        "tagName": "@description",
+        "tagValue": "Enum representing different subflows for smart prompts"
+      }
+    ],
+    "type": {
+      "types": [
+        "{\"CastAuthorization\": *, \"CastIntroduction\": *, \"SmartInstall\": *}"
+      ]
+    }
+  },
+  {
+    "__docId__": 107,
+    "kind": "file",
+    "name": "src/VizbeeVideo.js",
+    "content": "/**\n * @class VizbeeVideo\n * @description Class representing a video in the Vizbee system\n */\nexport default class VizbeeVideo {\n    /**\n     * @constructor\n     * @description Initializes a new instance of VizbeeVideo\n     */\n    constructor() {\n        /**\n         * @property {string|null} guid - Globally Unique Identifier for the video\n         */\n        this.guid = null;\n\n        // metadata\n        /**\n         * @property {string} title - The title of the video\n         */\n        this.title = \"\";\n\n        /**\n         * @property {string} subtitle - The subtitle of the video\n         */\n        this.subtitle = \"\";\n\n        /**\n         * @property {string} imageUrl - URL of the video thumbnail or poster\n         */\n        this.imageUrl = \"\";\n\n        /**\n         * @property {boolean} isLive - Indicates if the video is a live stream\n         */\n        this.isLive = false;\n\n        // streamInfo\n        /**\n         * @property {string|null} streamUrl - URL of the video stream\n         */\n        this.streamUrl = null;\n\n        /**\n         * @property {Object} tracks - Object containing track information\n         */\n        this.tracks = {};\n\n        /**\n         * @property {number} startPositionInSeconds - Start position of the video in seconds\n         */\n        this.startPositionInSeconds = 0;\n\n        // custom \n        /**\n         * @property {Object} customProperties - Custom properties associated with the video\n         */\n        this.customProperties = {};\n    }\n}",
+    "static": true,
+    "longname": "/Users/shiva/Documents/workspace/vizbee/react-native-vizbee-sender-sdk/src/VizbeeVideo.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 108,
+    "kind": "class",
+    "name": "VizbeeVideo",
+    "memberof": "src/VizbeeVideo.js",
+    "static": true,
+    "longname": "src/VizbeeVideo.js~VizbeeVideo",
+    "access": "public",
+    "export": true,
+    "importPath": "react-native-vizbee-sender-sdk/src/VizbeeVideo.js",
+    "importStyle": "VizbeeVideo",
+    "description": "",
+    "lineNumber": 5,
+    "unknown": [
+      {
+        "tagName": "@class",
+        "tagValue": "VizbeeVideo"
+      },
+      {
+        "tagName": "@description",
+        "tagValue": "Class representing a video in the Vizbee system"
+      }
+    ],
+    "interface": false
+  },
+  {
+    "__docId__": 109,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/VizbeeVideo.js~VizbeeVideo",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/VizbeeVideo.js~VizbeeVideo#constructor",
+    "access": "public",
+    "description": "",
+    "lineNumber": 10,
+    "unknown": [
+      {
+        "tagName": "@constructor",
+        "tagValue": ""
+      },
+      {
+        "tagName": "@description",
+        "tagValue": "Initializes a new instance of VizbeeVideo"
+      }
+    ]
+  },
+  {
+    "__docId__": 110,
+    "kind": "member",
+    "name": "guid",
+    "memberof": "src/VizbeeVideo.js~VizbeeVideo",
+    "static": false,
+    "longname": "src/VizbeeVideo.js~VizbeeVideo#guid",
+    "access": "public",
+    "description": "",
+    "lineNumber": 14,
+    "properties": [
+      {
+        "nullable": null,
+        "types": [
+          "string",
+          "null"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "guid",
+        "description": "Globally Unique Identifier for the video"
+      }
+    ],
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 111,
+    "kind": "member",
+    "name": "title",
+    "memberof": "src/VizbeeVideo.js~VizbeeVideo",
+    "static": false,
+    "longname": "src/VizbeeVideo.js~VizbeeVideo#title",
+    "access": "public",
+    "description": "",
+    "lineNumber": 20,
+    "properties": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "title",
+        "description": "The title of the video"
+      }
+    ],
+    "type": {
+      "types": [
+        "string"
+      ]
+    }
+  },
+  {
+    "__docId__": 112,
+    "kind": "member",
+    "name": "subtitle",
+    "memberof": "src/VizbeeVideo.js~VizbeeVideo",
+    "static": false,
+    "longname": "src/VizbeeVideo.js~VizbeeVideo#subtitle",
+    "access": "public",
+    "description": "",
+    "lineNumber": 25,
+    "properties": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "subtitle",
+        "description": "The subtitle of the video"
+      }
+    ],
+    "type": {
+      "types": [
+        "string"
+      ]
+    }
+  },
+  {
+    "__docId__": 113,
+    "kind": "member",
+    "name": "imageUrl",
+    "memberof": "src/VizbeeVideo.js~VizbeeVideo",
+    "static": false,
+    "longname": "src/VizbeeVideo.js~VizbeeVideo#imageUrl",
+    "access": "public",
+    "description": "",
+    "lineNumber": 30,
+    "properties": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "imageUrl",
+        "description": "URL of the video thumbnail or poster"
+      }
+    ],
+    "type": {
+      "types": [
+        "string"
+      ]
+    }
+  },
+  {
+    "__docId__": 114,
+    "kind": "member",
+    "name": "isLive",
+    "memberof": "src/VizbeeVideo.js~VizbeeVideo",
+    "static": false,
+    "longname": "src/VizbeeVideo.js~VizbeeVideo#isLive",
+    "access": "public",
+    "description": "",
+    "lineNumber": 35,
+    "properties": [
+      {
+        "nullable": null,
+        "types": [
+          "boolean"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "isLive",
+        "description": "Indicates if the video is a live stream"
+      }
+    ],
+    "type": {
+      "types": [
+        "boolean"
+      ]
+    }
+  },
+  {
+    "__docId__": 115,
+    "kind": "member",
+    "name": "streamUrl",
+    "memberof": "src/VizbeeVideo.js~VizbeeVideo",
+    "static": false,
+    "longname": "src/VizbeeVideo.js~VizbeeVideo#streamUrl",
+    "access": "public",
+    "description": "",
+    "lineNumber": 41,
+    "properties": [
+      {
+        "nullable": null,
+        "types": [
+          "string",
+          "null"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "streamUrl",
+        "description": "URL of the video stream"
+      }
+    ],
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 116,
+    "kind": "member",
+    "name": "tracks",
+    "memberof": "src/VizbeeVideo.js~VizbeeVideo",
+    "static": false,
+    "longname": "src/VizbeeVideo.js~VizbeeVideo#tracks",
+    "access": "public",
+    "description": "",
+    "lineNumber": 46,
+    "properties": [
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "tracks",
+        "description": "Object containing track information"
+      }
+    ],
+    "type": {
+      "types": [
+        "{}"
+      ]
+    }
+  },
+  {
+    "__docId__": 117,
+    "kind": "member",
+    "name": "startPositionInSeconds",
+    "memberof": "src/VizbeeVideo.js~VizbeeVideo",
+    "static": false,
+    "longname": "src/VizbeeVideo.js~VizbeeVideo#startPositionInSeconds",
+    "access": "public",
+    "description": "",
+    "lineNumber": 51,
+    "properties": [
+      {
+        "nullable": null,
+        "types": [
+          "number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "startPositionInSeconds",
+        "description": "Start position of the video in seconds"
+      }
+    ],
+    "type": {
+      "types": [
+        "number"
+      ]
+    }
+  },
+  {
+    "__docId__": 118,
+    "kind": "member",
+    "name": "customProperties",
+    "memberof": "src/VizbeeVideo.js~VizbeeVideo",
+    "static": false,
+    "longname": "src/VizbeeVideo.js~VizbeeVideo#customProperties",
+    "access": "public",
+    "description": "",
+    "lineNumber": 57,
+    "properties": [
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "customProperties",
+        "description": "Custom properties associated with the video"
+      }
+    ],
+    "type": {
+      "types": [
+        "{}"
+      ]
+    }
+  },
+  {
+    "kind": "index",
+    "content": "\n# react-native-vizbee-sender-sdk\n<img src=\"https://static.claspws.tv/images/common/logos/vizbee_logo_tagline.png\" alt=\"vizbee\" width=\"400\"/>\n\n## Overview\n\nVizbee enables streaming apps to deliver great cross-device experiences. This repository provides the React Native SDK for enabling Vizbee's cross-device experiences. You need a [Vizbee account](https://console.vizbee.tv) in order to use this SDK.\n\n## Build setup\n\nSee [build setup instructions](https://gist.github.com/vizbee/48815c9cf8f752507b470ef99c6cc090) for RN Vizbee Sender SDK.\n\n## Developer guide\n\nOnce you are setup, you can get further instructions for integrating this React Native Vizbeee Sender from the [Vizbee console](https://console.vizbee.tv)\n  \n",
+    "longname": "/Users/shiva/Documents/workspace/vizbee/react-native-vizbee-sender-sdk/README.md",
+    "name": "./README.md",
+    "static": true,
+    "access": "public"
+  },
+  {
+    "kind": "packageJSON",
+    "content": "{\n  \"name\": \"react-native-vizbee-sender-sdk\",\n  \"version\": \"1.1.35\",\n  \"description\": \"React Native SDK for Vizbee Sender\",\n  \"main\": \"index.js\",\n  \"scripts\": {\n    \"test\": \"echo \\\"Error: no test specified\\\" && exit 1\",\n    \"generate-docs\": \"jsdoc -c jsdoc.json\"\n  },\n  \"keywords\": [\n    \"react-native\"\n  ],\n  \"author\": \"Vizbee\",\n  \"license\": \"ISC\",\n  \"peerDependencies\": {\n    \"react-native\": \"^0.59.0\"\n  },\n  \"repository\": {\n    \"type\": \"git\",\n    \"url\": \"git+https://github.com/ClaspTV/react-native-vizbee-sender-sdk.git\"\n  },\n  \"bugs\": {\n    \"url\": \"https://github.com/ClaspTV/react-native-vizbee-sender-sdk/issues\"\n  },\n  \"homepage\": \"https://github.com/ClaspTV/react-native-vizbee-sender-sdk#readme\",\n  \"devDependencies\": {\n    \"esdoc\": \"^1.1.0\",\n    \"esdoc-lint-plugin\": \"^1.0.2\",\n    \"esdoc-publish-html-plugin\": \"^1.1.2\",\n    \"esdoc-react-plugin\": \"^1.0.1\",\n    \"esdoc-standard-plugin\": \"^1.0.0\",\n    \"jsdoc\": \"^4.0.3\"\n  }\n}\n",
+    "longname": "/Users/shiva/Documents/workspace/vizbee/react-native-vizbee-sender-sdk/package.json",
+    "name": "package.json",
+    "static": true,
+    "access": "public"
+  }
+]

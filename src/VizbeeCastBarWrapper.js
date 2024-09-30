@@ -1,3 +1,8 @@
+/**
+ * @module VizbeeCastBarWrapper
+ * @description A wrapper component for the Vizbee Cast Bar View, managing height and visibility.
+ */
+
 import React, { useState, useRef, useEffect } from "react";
 import {
   requireNativeComponent,
@@ -14,12 +19,11 @@ import PropTypes from "prop-types";
 const VizbeeCastBar = requireNativeComponent("VizbeeCastBarView");
 
 /**
- * Wrapper component for the Vizbee Cast Bar View.
- * This component manages the height and visibility of the cast bar view.
- *
- * @param {number} height - The height of the cast bar view.
- * @param {function} onVisibilityChange - Callback function triggered when the visibility of the cast bar changes.
- * @returns {JSX.Element|null} - React element representing the Vizbee Cast Bar Wrapper or null if not on iOS.
+ * VizbeeCastBarWrapper component
+ * @param {Object} props - Component props
+ * @param {number} [props.height=64] - The height of the cast bar view
+ * @param {function} props.onVisibilityChange - Callback function triggered when the visibility of the cast bar changes
+ * @returns {JSX.Element|null} React element representing the Vizbee Cast Bar Wrapper or null if not on iOS
  */
 const VizbeeCastBarWrapper = ({ height = 64, onVisibilityChange }) => {
   const [viewHeight, setViewHeight] = useState(0);
@@ -63,7 +67,10 @@ const VizbeeCastBarWrapper = ({ height = 64, onVisibilityChange }) => {
       [viewId]
     );
 
-  // Event handler for visibility change
+  /**
+   * Event handler for visibility change
+   * @param {Object} event - The event object
+   */
   const onChange = (event) => {
     setViewHeight(event.nativeEvent.shouldAppear ? height : 0);
     onVisibilityChange && onVisibilityChange(event.nativeEvent.shouldAppear);

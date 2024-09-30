@@ -1,0 +1,10 @@
+{
+    "source": "./src",
+    "destination": "./docs/esdoc",
+    "plugins": [
+    {"name": "esdoc-standard-plugin"},
+    {"name": "esdoc-lint-plugin"},
+    {"name": "esdoc-publish-html-plugin"},
+    {"name": "esdoc-react-plugin"}
+  ]
+  }
