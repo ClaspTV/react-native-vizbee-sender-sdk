@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "generate-docs": "jsdoc -c jsdoc.json"
+    "docs": "jsdoc -d docs/api --configure jsdoc-conf.json"
   },
   "keywords": [
     "react-native"
@@ -29,6 +29,7 @@
     "esdoc-publish-html-plugin": "^1.1.2",
     "esdoc-react-plugin": "^1.0.1",
     "esdoc-standard-plugin": "^1.0.0",
-    "jsdoc": "^4.0.3"
+    "jsdoc": "^4.0.3",
+    "docdash": "^1.2.0"
   }
 }

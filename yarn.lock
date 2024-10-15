@@ -1852,6 +1852,11 @@
   dependencies:
     "repeating" "^2.0.0"
 
+"docdash@^1.2.0":
+  "integrity" "sha512-IYZbgYthPTspgqYeciRJNPhSwL51yer7HAwDXhF5p+H7mTDbPvY3PCk/QDjNxdPCpWkaJVFC4t7iCNB/t9E5Kw=="
+  "resolved" "https://registry.npmjs.org/docdash/-/docdash-1.2.0.tgz"
+  "version" "1.2.0"
+
 "dom-serializer@~0.1.0", "dom-serializer@0":
   "integrity" "sha512-l0IU0pPzLWSHBcieZbpOKgkIn3ts3vAh7ZuFyXNwJxJXk/c4Gwj9xaTJwIDVQCXawWD0qb3IzMGH5rglQaO0XA=="
   "resolved" "https://registry.npmjs.org/dom-serializer/-/dom-serializer-0.1.1.tgz"
