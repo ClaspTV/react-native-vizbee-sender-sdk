@@ -397,11 +397,14 @@ RCT_EXPORT_METHOD(unmute) {
 // ----------------------------
 # pragma mark - UI
 // ----------------------------
-RCT_EXPORT_METHOD(setUICardConfiguration:(NSDictionary*) cardConfigurationMap cardType:(NSString*) cardType) {
+RCT_EXPORT_METHOD(setUICardConfiguration:(NSDictionary*) cardConfigurationMap forCardType:(NSString*) cardType) {
+
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::setUICardConfiguration - cardConfigurationMap %@ cardType %@", cardConfigurationMap, cardType);
 
     VizbeeUICardConfiguration* uiCardConfiguration = [[VizbeeUICardConfiguration alloc] init:cardConfigurationMap];
     VZBCardConfiguration* cardConfiguration = [uiCardConfiguration getCardConfigurationForType:cardType];
     VZBUIConfiguration* uiConfiguration = [Vizbee getUIConfiguration];
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::setUICardConfiguration - uiConfiguration %@ cardConfiguration %@", uiConfiguration, cardConfiguration);
     [uiConfiguration setCardConfiguration:cardConfiguration forCardType:[self getCardType:cardType]];
 }
 

@@ -1,6 +1,9 @@
 import { requireNativeComponent } from "react-native";
 
 export { default as VizbeeManager } from "./src/VizbeeManager";
+export {default as VizbeeCastIntroductionCardConfiguration } from "./src/uiConfiguration/VizbeeCastIntroductionCardConfiguration";
+export {default as VizbeeUICardType } from "./src/uiConfiguration/VizbeeUICardType";
+export {default as VizbeeUICardConfiguration } from "./src/uiConfiguration/VizbeeUICardConfiguration";
 export { default as VizbeeSignInDelegate } from "./src/VizbeeSignInDelegate";
 export { default as VizbeeSignInInfo } from "./src/VizbeeSignInInfo";
 export {
