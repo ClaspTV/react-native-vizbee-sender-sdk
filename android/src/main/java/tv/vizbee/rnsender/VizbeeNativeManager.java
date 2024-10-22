@@ -388,6 +388,28 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
     }
 
     //----------------
+    // UI
+    //----------------
+
+    @ReactMethod
+    public void setUICardConfiguration(ReadableMap cardConfiguration, forCardType) {
+
+        try {
+            VizbeeCardConfiguration cardConfiguration = new VizbeeCardConfiguration(cardConfiguration);
+            CardConfiguration cardConfiguration = cardConfiguration.getCardConfigurationForCardType(forCardType);
+            VizbeeUICardConfiguration uiCardConfiguration = VizbeeContext.getInstance().getUIConfiguration();
+            uiCardConfiguration.setCardConfiguration(cardConfiguration, getCardType(forCardType));
+        } catch (Exception e) {
+            Log.w(LOG_TAG, "Exception while converting analytics attributes to JSON");
+        }
+    }
+
+    private UICardType getCardType(String cardType) {
+        if (cardType.equals("CAST_INTRODUCTION")) {
+            UICardType.CAST_INTRODUCTION
+        }
+    }
+    //----------------
     // Analytics
     //----------------
 

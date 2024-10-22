@@ -119,6 +119,19 @@ class VizbeeManager {
         VizbeeNativeManager.unmute();
     }
     
+    //-----------------
+    // UI
+    //-----------------
+
+    /**
+     * Sets the card configuration for a specific card type
+     * @param {{VizbeeUICardConfiguration}} cardConfiguration - The configuration to set
+     * @param {VizbeeUICardType} forCardType - The type of card to configure
+     */
+    setUICardConfiguration(cardConfiguration, forCardType) {
+        VizbeeNativeManager.setUICardConfiguration(cardConfiguration, forCardType)
+    }
+
     //------------------
     // Analytics
     //------------------
