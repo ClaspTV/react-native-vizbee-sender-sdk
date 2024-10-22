@@ -54,6 +54,7 @@ import tv.vizbee.api.session.VizbeeSession;
 import tv.vizbee.api.session.VideoClient;
 import tv.vizbee.api.session.VideoStatus;
 import tv.vizbee.api.session.VolumeClient;
+import tv.vizbee.api.uiConfig.CardConfiguration;
 
 public class VizbeeNativeManager extends ReactContextBaseJavaModule implements LifecycleEventListener {
 
@@ -107,7 +108,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
         if (smartPromptOptions.hasKey("enabledSubflows")) {
             smartHelpOptions.enabledSubflows = smartPromptOptions.getInt("enabledSubflows");
         }
-    
+
         // Renamed old smartHelp API to new smartPrompt
         VizbeeContext.getInstance().smartHelp(smartHelpOptions, activity);
     }
@@ -243,7 +244,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
             JSONObject authJSONObject = new JSONObject();
             authJSONObject.put("authInfo", authInfo);
 
-            currentSession.sendEventWithName(VizbeeConstants.VZB_SIGNIN_EVENT, authJSONObject); 
+            currentSession.sendEventWithName(VizbeeConstants.VZB_SIGNIN_EVENT, authJSONObject);
         } catch (Exception e) {
             Log.w(LOG_TAG, "Exception while converting vizbeeSignInInfoMap to JSON");
         }
@@ -392,15 +393,15 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
     //----------------
 
     @ReactMethod
-    public void setUICardConfiguration(ReadableMap cardConfiguration, forCardType) {
+    public void setUICardConfiguration(ReadableMap cardConfigurationMap, String forCardType) {
 
         try {
-            VizbeeCardConfiguration cardConfiguration = new VizbeeCardConfiguration(cardConfiguration);
-            CardConfiguration cardConfiguration = cardConfiguration.getCardConfigurationForCardType(forCardType);
-            VizbeeUICardConfiguration uiCardConfiguration = VizbeeContext.getInstance().getUIConfiguration();
-            uiCardConfiguration.setCardConfiguration(cardConfiguration, getCardType(forCardType));
+            VizbeeUICardConfiguration uiCardConfiguration = new VizbeeUICardConfiguration(cardConfigurationMap);
+            CardConfiguration cardConfiguration = uiCardConfiguration.getCardConfigurationForType(forCardType);
+            UIConfiguration uiConfiguration = VizbeeContext.getInstance().getUIConfiguration();
+            uiConfiguration.setCardConfiguration(cardConfiguration, getCardType(forCardType));
         } catch (Exception e) {
-            Log.w(LOG_TAG, "Exception while converting analytics attributes to JSON");
+            Log.w(LOG_TAG, "Exception while converting card configuration");
         }
     }
 
@@ -409,6 +410,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
             UICardType.CAST_INTRODUCTION
         }
     }
+
     //----------------
     // Analytics
     //----------------
@@ -642,7 +644,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
                 return "UNKNOWN";
         }
     }
-    
+
     //----------------
     // Video client listener
     //----------------

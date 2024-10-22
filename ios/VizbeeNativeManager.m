@@ -1,6 +1,8 @@
 #import "VizbeeNativeManager.h"
 #import "VizbeeConstants.h"
 #import "VizbeeVideo.h"
+#import "VizbeeUICardConfiguration.h"
+
 #import <React/RCTLog.h>
 
 @interface VizbeeNativeManager()
@@ -390,6 +392,24 @@ RCT_EXPORT_METHOD(unmute) {
     } else {
         RCTLogWarn(@"[RNVZBSDK] VizbeeNativeManager::unmute - ignored because volumeClient is null");
     }
+}
+
+// ----------------------------
+# pragma mark - UI
+// ----------------------------
+RCT_EXPORT_METHOD(setUICardConfiguration:(NSDictionary*) cardConfigurationMap cardType:(NSString*) cardType) {
+
+    VizbeeUICardConfiguration* uiCardConfiguration = [[VizbeeUICardConfiguration alloc] init:cardConfigurationMap];
+    VZBCardConfiguration* cardConfiguration = [uiCardConfiguration getCardConfigurationForType:cardType];
+    VZBUIConfiguration* uiConfiguration = [Vizbee getUIConfiguration];
+    [uiConfiguration setCardConfiguration:cardConfiguration forCardType:[self getCardType:cardType]];
+}
+
+-(VZBUICardType) getCardType:(NSString*) cardType {
+    if ([cardType isEqualToString:@"CAST_INTRODUCTION"]) {
+        return VZBCardTypeCastIntroduction;
+    }
+    return VZBCardTypeCastIntroduction;
 }
 
 // ----------------------------
