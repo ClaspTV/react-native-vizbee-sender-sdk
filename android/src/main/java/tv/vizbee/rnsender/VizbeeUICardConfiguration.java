@@ -1,6 +1,10 @@
 package tv.vizbee.rnsender;
 
-import tv.vizbee.api.uiConfig.*;
+import tv.vizbee.api.uiConfig.cardConfig.CardConfiguration;
+import tv.vizbee.api.uiConfig.cardConfig.smartHelp.CastIntroductionCardConfiguration;
+import tv.vizbee.api.uiConfig.cardConfig.smartHelp.SmartInstallCardConfiguration;
+import tv.vizbee.api.uiConfig.cardConfig.smartHelp.GuidedSmartInstallCardConfiguration;
+import tv.vizbee.api.uiConfig.cardConfig.smartHelp.MultiDeviceSmartInstallCardConfiguration;
 
 import com.facebook.react.bridge.ReadableMap;
 
@@ -21,15 +25,23 @@ public class VizbeeUICardConfiguration {
 
     public CardConfiguration getCardConfigurationForType(String cardType) {
 
+        // create a specific card instance and set specific properties
         CardConfiguration cardConfiguration = null;
         if (cardType.equals("CAST_INTRODUCTION")) {
+            cardConfiguration = new CastIntroductionCardConfiguration();
+        } else if (cardType.equals("SMART_INSTALL")) {
+            cardConfiguration = new SmartInstallCardConfiguration();
+        } else if (cardType.equals("GUIDED_SMART_INSTALL")) {
+            cardConfiguration = new GuidedSmartInstallCardConfiguration();
+        } else if (cardType.equals("MULTI_DEVICE_SMART_INSTALL")) {
+            cardConfiguration = new MultiDeviceSmartInstallCardConfiguration();
+        }
 
-            CastIntroductionCardConfiguration ciCardConfiguration = new CastIntroductionCardConfiguration();
-            ciCardConfiguration.title = title;
-            ciCardConfiguration.subtitle = subtitle;
-            ciCardConfiguration.ctaText = ctaText;
-
-            cardConfiguration = ciCardConfiguration;
+        // common attributes
+        if (null != cardConfiguration) {
+            cardConfiguration.setTitle(title);
+            cardConfiguration.setSubtitle(subtitle);
+            cardConfiguration.setCtaText(ctaText);
         }
 
         return cardConfiguration;

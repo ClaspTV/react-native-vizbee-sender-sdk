@@ -403,16 +403,28 @@ RCT_EXPORT_METHOD(setUICardConfiguration:(NSDictionary*) cardConfigurationMap fo
 
     VizbeeUICardConfiguration* uiCardConfiguration = [[VizbeeUICardConfiguration alloc] init:cardConfigurationMap];
     VZBCardConfiguration* cardConfiguration = [uiCardConfiguration getCardConfigurationForType:cardType];
-    VZBUIConfiguration* uiConfiguration = [Vizbee getUIConfiguration];
-    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::setUICardConfiguration - uiConfiguration %@ cardConfiguration %@", uiConfiguration, cardConfiguration);
-    [uiConfiguration setCardConfiguration:cardConfiguration forCardType:[self getCardType:cardType]];
+    if (nil != cardConfiguration) {
+        [Vizbee setUICardConfiguration:cardConfiguration forCardType:[self getCardType:cardType]];
+    } else {
+        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::setUICardConfiguration - received card configuration for unknown card type %@", cardType);
+    }
 }
 
 -(VZBUICardType) getCardType:(NSString*) cardType {
-    if ([cardType isEqualToString:@"CAST_INTRODUCTION"]) {
-        return VZBCardTypeCastIntroduction;
+
+    if ([cardType isEqualToString:@"CAST_AUTHORIZATION"]) {
+        return VZBUICardTypeCastAuthorization;
+    } else if ([cardType isEqualToString:@"CAST_INTRODUCTION"]) {
+        return VZBUICardTypeCastIntroduction;
+    } else if ([cardType isEqualToString:@"SMART_INSTALL"]) {
+        return VZBUICardTypeSmartInstall;
+    } else if ([cardType isEqualToString:@"GUIDED_SMART_INSTALL"]) {
+        return VZBUICardTypeGuidedSmartInstall;
+    } else if ([cardType isEqualToString:@"MULTI_DEVICE_SMART_INSTALL"]) {
+        return VZBUICardTypeMultiDeviceSmartInstall;
     }
-    return VZBCardTypeCastIntroduction;
+
+    return VZBUICardTypeUnknown;
 }
 
 // ----------------------------

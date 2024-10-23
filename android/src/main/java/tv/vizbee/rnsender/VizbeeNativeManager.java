@@ -54,7 +54,8 @@ import tv.vizbee.api.session.VizbeeSession;
 import tv.vizbee.api.session.VideoClient;
 import tv.vizbee.api.session.VideoStatus;
 import tv.vizbee.api.session.VolumeClient;
-import tv.vizbee.api.uiConfig.CardConfiguration;
+import tv.vizbee.api.uiConfig.cardConfig.CardConfiguration;
+import tv.vizbee.api.uiConfig.cardConfig.UICardType;
 
 public class VizbeeNativeManager extends ReactContextBaseJavaModule implements LifecycleEventListener {
 
@@ -398,17 +399,29 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
         try {
             VizbeeUICardConfiguration uiCardConfiguration = new VizbeeUICardConfiguration(cardConfigurationMap);
             CardConfiguration cardConfiguration = uiCardConfiguration.getCardConfigurationForType(forCardType);
-            UIConfiguration uiConfiguration = VizbeeContext.getInstance().getUIConfiguration();
-            uiConfiguration.setCardConfiguration(cardConfiguration, getCardType(forCardType));
+            if (null != cardConfiguration) {
+                VizbeeContext.getInstance().setUICardConfiguration(cardConfiguration, getCardType(forCardType));
+            } else {
+                Log.i(LOG_TAG, "[RNVZBSDK] VizbeeNativeManager::setUICardConfiguration - received card configuration for unknown card type" + forCardType);
+            }
         } catch (Exception e) {
             Log.w(LOG_TAG, "Exception while converting card configuration");
         }
     }
 
     private UICardType getCardType(String cardType) {
+
         if (cardType.equals("CAST_INTRODUCTION")) {
-            UICardType.CAST_INTRODUCTION
-        }
+           return UICardType.CAST_INTRODUCTION;
+        } else if (cardType.equals("SMART_INSTALL")) {
+            return UICardType.SMART_INSTALL;
+         } else if (cardType.equals("GUIDED_SMART_INSTALL")) {
+            return UICardType.GUIDED_SMART_INSTALL;
+         } else if (cardType.equals("MULTI_DEVICE_SMART_INSTALL")) {
+            return UICardType.MULTI_DEVICE_SMART_INSTALL;
+         }
+    
+        return UICardType.UNKNOWN;
     }
 
     //----------------
