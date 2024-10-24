@@ -1,6 +1,8 @@
 #import "VizbeeNativeManager.h"
 #import "VizbeeConstants.h"
 #import "VizbeeVideo.h"
+#import "VizbeeUICardConfiguration.h"
+
 #import <React/RCTLog.h>
 
 @interface VizbeeNativeManager()
@@ -390,6 +392,41 @@ RCT_EXPORT_METHOD(unmute) {
     } else {
         RCTLogWarn(@"[RNVZBSDK] VizbeeNativeManager::unmute - ignored because volumeClient is null");
     }
+}
+
+// ----------------------------
+# pragma mark - UI
+// ----------------------------
+RCT_EXPORT_METHOD(setUICardConfiguration:(NSDictionary*) cardConfigurationMap forCardType:(NSString*) cardTypeString) {
+
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::setUICardConfiguration - cardConfigurationMap %@ cardType %@", cardConfigurationMap, cardTypeString);
+
+    VizbeeUICardConfiguration* uiCardConfiguration = [[VizbeeUICardConfiguration alloc] init:cardConfigurationMap];
+    VZBCardConfiguration* cardConfiguration = [uiCardConfiguration getCardConfigurationForType:cardTypeString];
+    VZBUICardType cardType = [self getCardType:cardTypeString];
+    if (nil != cardConfiguration && cardType != -1) {
+        VZBUIConfiguration* uiConfiguration = [Vizbee getUIConfiguration];
+        [uiConfiguration setCardConfiguration:cardConfiguration forCardType:cardType];
+    } else {
+        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::setUICardConfiguration - received card configuration for unknown card type %@", cardType);
+    }
+}
+
+-(VZBUICardType) getCardType:(NSString*) cardType {
+
+    if ([cardType isEqualToString:@"CAST_AUTHORIZATION"]) {
+        return VZBUICardTypeCastAuthorization;
+    } else if ([cardType isEqualToString:@"CAST_INTRODUCTION"]) {
+        return VZBUICardTypeCastIntroduction;
+    } else if ([cardType isEqualToString:@"SMART_INSTALL"]) {
+        return VZBUICardTypeSmartInstall;
+    } else if ([cardType isEqualToString:@"GUIDED_SMART_INSTALL"]) {
+        return VZBUICardTypeGuidedSmartInstall;
+    } else if ([cardType isEqualToString:@"MULTI_DEVICE_SMART_INSTALL"]) {
+        return VZBUICardTypeMultiDeviceSmartInstall;
+    }
+
+    return -1; // unknown
 }
 
 // ----------------------------
