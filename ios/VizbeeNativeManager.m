@@ -397,14 +397,16 @@ RCT_EXPORT_METHOD(unmute) {
 // ----------------------------
 # pragma mark - UI
 // ----------------------------
-RCT_EXPORT_METHOD(setUICardConfiguration:(NSDictionary*) cardConfigurationMap forCardType:(NSString*) cardType) {
+RCT_EXPORT_METHOD(setUICardConfiguration:(NSDictionary*) cardConfigurationMap forCardType:(NSString*) cardTypeString) {
 
-    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::setUICardConfiguration - cardConfigurationMap %@ cardType %@", cardConfigurationMap, cardType);
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::setUICardConfiguration - cardConfigurationMap %@ cardType %@", cardConfigurationMap, cardTypeString);
 
     VizbeeUICardConfiguration* uiCardConfiguration = [[VizbeeUICardConfiguration alloc] init:cardConfigurationMap];
-    VZBCardConfiguration* cardConfiguration = [uiCardConfiguration getCardConfigurationForType:cardType];
-    if (nil != cardConfiguration) {
-        [Vizbee setUICardConfiguration:cardConfiguration forCardType:[self getCardType:cardType]];
+    VZBCardConfiguration* cardConfiguration = [uiCardConfiguration getCardConfigurationForType:cardTypeString];
+    VZBUICardType cardType = [self getCardType:cardTypeString];
+    if (nil != cardConfiguration && cardType != -1) {
+        VZBUIConfiguration* uiConfiguration = [Vizbee getUIConfiguration];
+        [uiConfiguration setCardConfiguration:cardConfiguration forCardType:cardType];
     } else {
         RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::setUICardConfiguration - received card configuration for unknown card type %@", cardType);
     }
@@ -424,7 +426,7 @@ RCT_EXPORT_METHOD(setUICardConfiguration:(NSDictionary*) cardConfigurationMap fo
         return VZBUICardTypeMultiDeviceSmartInstall;
     }
 
-    return VZBUICardTypeUnknown;
+    return -1; // unknown
 }
 
 // ----------------------------

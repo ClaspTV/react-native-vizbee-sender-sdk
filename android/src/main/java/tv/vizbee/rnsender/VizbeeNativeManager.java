@@ -54,6 +54,7 @@ import tv.vizbee.api.session.VizbeeSession;
 import tv.vizbee.api.session.VideoClient;
 import tv.vizbee.api.session.VideoStatus;
 import tv.vizbee.api.session.VolumeClient;
+import tv.vizbee.api.uiConfig.UIConfiguration;
 import tv.vizbee.api.uiConfig.cardConfig.CardConfiguration;
 import tv.vizbee.api.uiConfig.cardConfig.UICardType;
 
@@ -399,10 +400,14 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
         try {
             VizbeeUICardConfiguration uiCardConfiguration = new VizbeeUICardConfiguration(cardConfigurationMap);
             CardConfiguration cardConfiguration = uiCardConfiguration.getCardConfigurationForType(forCardType);
-            if (null != cardConfiguration) {
-                VizbeeContext.getInstance().setUICardConfiguration(cardConfiguration, getCardType(forCardType));
+            UICardType cardType = getCardType(forCardType);
+            if (null != cardConfiguration && null != cardType) {
+                UIConfiguration uiConfiguration = VizbeeContext.getInstance().getUIConfiguration();
+                if (null != uiConfiguration) {
+                    uiConfiguration.setCardConfiguration(cardConfiguration, cardType);
+                }
             } else {
-                Log.i(LOG_TAG, "[RNVZBSDK] VizbeeNativeManager::setUICardConfiguration - received card configuration for unknown card type" + forCardType);
+                Log.i(LOG_TAG, "[RNVZBSDK] VizbeeNativeManager::setUICardConfiguration - received card configuration for unknown card type" + cardType);
             }
         } catch (Exception e) {
             Log.w(LOG_TAG, "Exception while converting card configuration");
@@ -421,7 +426,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
             return UICardType.MULTI_DEVICE_SMART_INSTALL;
          }
     
-        return UICardType.UNKNOWN;
+        return null;
     }
 
     //----------------

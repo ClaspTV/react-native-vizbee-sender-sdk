@@ -2,6 +2,7 @@ import { NativeModules, NativeEventEmitter, Platform } from "react-native";
 import VizbeeConstants from "./VizbeeConstants";
 import VizbeeSignInInfo from "./VizbeeSignInInfo";
 import VizbeeSignInDelegate from "./VizbeeSignInDelegate";
+import VizbeeUIConfiguration from "./uiConfig/VizbeeUIConfiguration";
 
 const VizbeeNativeManager = NativeModules.VizbeeNativeManager || {};
 const VizbeeNativeEmitter = new NativeEventEmitter(VizbeeNativeManager);
@@ -14,6 +15,8 @@ class VizbeeManager {
 
         this.signInDelegate = undefined;
         this._registerSignInListeners();
+
+        this.uiConfiguration = new VizbeeUIConfiguration();
     }
 
     //------------------
@@ -124,12 +127,13 @@ class VizbeeManager {
     //-----------------
 
     /**
-     * Sets the card configuration for a specific card type
-     * @param {{VizbeeUICardConfiguration}} cardConfiguration - The configuration to set
-     * @param {VizbeeUICardType} forCardType - The type of card to configure
+     * Returns the UI configuration for Vizbee SDK.
+     * This method should only be called after the SDK has been initialized.
+     *
+     * @return UIConfiguration object if SDK is initialized, nil otherwise
      */
-    setUICardConfiguration(cardConfiguration, forCardType) {
-        VizbeeNativeManager.setUICardConfiguration(cardConfiguration, forCardType)
+    getUIConfiguration() {
+        return this.uiConfiguration;
     }
 
     //------------------

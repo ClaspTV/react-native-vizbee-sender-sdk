@@ -1,12 +1,16 @@
 import { requireNativeComponent } from "react-native";
 
 export { default as VizbeeManager } from "./src/VizbeeManager";
-export {default as VizbeeCastIntroductionCardConfiguration } from "./src/uiConfiguration/VizbeeCastIntroductionCardConfiguration";
-export {default as VizbeeSmartInstallCardConfiguration } from "./src/uiConfiguration/VizbeeSmartInstallCardConfiguration";
-export {default as VizbeeGuidedSmartInstallCardConfiguration } from "./src/uiConfiguration/VizbeeGuidedSmartInstallCardConfiguration";
-export {default as VizbeeMultiDeviceSmartInstallCardConfiguration } from "./src/uiConfiguration/VizbeeMultiDeviceSmartInstallCardConfiguration";
-export {default as VizbeeUICardType } from "./src/uiConfiguration/VizbeeUICardType";
-export {default as VizbeeUICardConfiguration } from "./src/uiConfiguration/VizbeeUICardConfiguration";
+
+export {default as VizbeeUIConfiguration } from "./src/uiConfig/VizbeeUIConfiguration";
+export {default as VizbeeUICardConfiguration } from "./src/uiConfig/VizbeeUICardConfiguration";
+export {default as VizbeeCastAuthorizationCardConfiguration } from "./src/uiConfig/VizbeeCastAuthorizationCardConfiguration";
+export {default as VizbeeCastIntroductionCardConfiguration } from "./src/uiConfig/VizbeeCastIntroductionCardConfiguration";
+export {default as VizbeeSmartInstallCardConfiguration } from "./src/uiConfig/VizbeeSmartInstallCardConfiguration";
+export {default as VizbeeGuidedSmartInstallCardConfiguration } from "./src/uiConfig/VizbeeGuidedSmartInstallCardConfiguration";
+export {default as VizbeeMultiDeviceSmartInstallCardConfiguration } from "./src/uiConfig/VizbeeMultiDeviceSmartInstallCardConfiguration";
+export {default as VizbeeUICardType } from "./src/uiConfig/VizbeeUICardType";
+
 export { default as VizbeeSignInDelegate } from "./src/VizbeeSignInDelegate";
 export { default as VizbeeSignInInfo } from "./src/VizbeeSignInInfo";
 export {
