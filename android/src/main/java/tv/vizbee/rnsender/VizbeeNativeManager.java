@@ -414,6 +414,21 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
         }
     }
 
+    @ReactMethod
+    public void removeUICardConfiguration(String cardType) {
+
+        UICardType cardType = getCardType(cardType);
+        if (null == cardType) {
+            Log.i(LOG_TAG, "[RNVZBSDK] VizbeeNativeManager::removeUICardConfiguration - received unknown card type" + cardType);
+            return;
+        }
+
+        UIConfiguration uiConfiguration = VizbeeContext.getInstance().getUIConfiguration();
+        if (null != uiConfiguration) {
+            uiConfiguration.removeCardConfiguration(cardType);
+        }
+    }
+
     private UICardType getCardType(String cardType) {
 
         if (cardType.equals("CAST_INTRODUCTION")) {

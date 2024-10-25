@@ -17,4 +17,13 @@ export default class VizbeeUIConfiguration {
     setCardConfiguration(cardConfiguration, cardType) {
         VizbeeNativeManager.setUICardConfiguration(cardConfiguration, cardType)
     }
+
+    /**
+    * Removes the card configuration for a specific card type.
+    * 
+    * @param {string} cardType - The type of card whose configuration should be removed
+    */
+    removeCardConfiguration(cardType) {
+        VizbeeNativeManager.removeUICardConfiguration(cardType)
+    }
  }

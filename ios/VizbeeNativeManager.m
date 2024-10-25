@@ -412,6 +412,17 @@ RCT_EXPORT_METHOD(setUICardConfiguration:(NSDictionary*) cardConfigurationMap fo
     }
 }
 
+RCT_EXPORT_METHOD(removeUICardConfiguration:(NSString*) cardType) {
+    VZBUICardType cardType = [self getCardType:cardTypeString];
+    if (cardType == -1) {
+        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::removeCardConfiguration - received unknown card type %@", cardType);
+        return;
+    }
+
+    VZBUIConfiguration* uiConfiguration = [Vizbee getUIConfiguration];
+    uiConfiguration removeCardConfiguration:cardType];
+}
+
 -(VZBUICardType) getCardType:(NSString*) cardType {
 
     if ([cardType isEqualToString:@"CAST_AUTHORIZATION"]) {
