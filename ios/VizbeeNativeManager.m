@@ -413,14 +413,14 @@ RCT_EXPORT_METHOD(setUICardConfiguration:(NSDictionary*) cardConfigurationMap fo
 }
 
 RCT_EXPORT_METHOD(removeUICardConfiguration:(NSString*) cardType) {
-    VZBUICardType cardType = [self getCardType:cardTypeString];
-    if (cardType == -1) {
-        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::removeCardConfiguration - received unknown card type %@", cardType);
+    VZBUICardType uiCardType = [self getCardType:cardType];
+    if (uiCardType == -1) {
+        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::removeCardConfiguration - received unknown card type");
         return;
     }
 
     VZBUIConfiguration* uiConfiguration = [Vizbee getUIConfiguration];
-    uiConfiguration removeCardConfiguration:cardType];
+    [uiConfiguration removeCardConfiguration:uiCardType];
 }
 
 -(VZBUICardType) getCardType:(NSString*) cardType {
