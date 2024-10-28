@@ -14,6 +14,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 
+## [1.1.37] - 2024-10-28
+### Added
+    Support for setting card(CA, CI & SI) configuration(title, subtitle etc.) through the API.
+    Updaeted Android SDK to 6.7.5
+
 ## [1.1.36] - 2024-10-15
 ### Added
     Updaeted Android SDK to 6.7.3
