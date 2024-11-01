@@ -6,14 +6,14 @@
  * for card content. API customization should only be used for specific use cases
  * that require dynamic content.
  * 
- * @property {string|null} title - The main title text displayed on the card
- * @property {string|null} subtitle - Supporting text providing additional context
- * @property {string|null} ctaText - Text for the call-to-action button
+ * @property {string|undefined} title - The main title text displayed on the card
+ * @property {string|undefined} subtitle - Supporting text providing additional context
+ * @property {string|undefined} ctaText - Text for the call-to-action button
  */
 export default class VizbeeUICardConfiguration {
     constructor() {
-        this.title = null;
-        this.subtitle = null;
-        this.ctaText = null;
+        this.title = undefined;
+        this.subtitle = undefined;
+        this.ctaText = undefined;
     }
 }

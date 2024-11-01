@@ -13,9 +13,9 @@
     
     self = [super init];
     if (self) {
-        _title = cardConfiguration[@"title"] ?: @"";
-        _subtitle = cardConfiguration[@"subtitle"] ?: @"";
-        _ctaText = cardConfiguration[@"ctaText"] ?: @"";
+        _title = cardConfiguration[@"title"];
+        _subtitle = cardConfiguration[@"subtitle"];
+        _ctaText = cardConfiguration[@"ctaText"];
     }
     return self;
 }
