@@ -18,9 +18,9 @@ public class VizbeeUICardConfiguration {
 
     public VizbeeUICardConfiguration(ReadableMap cardConfiguration) {
 
-        title = cardConfiguration.hasKey("title") ? cardConfiguration.getString("title") : "";
-        subtitle = cardConfiguration.hasKey("subtitle") ? cardConfiguration.getString("subtitle") : "";
-        ctaText = cardConfiguration.hasKey("ctaText") ? cardConfiguration.getString("ctaText") : "";
+        title = cardConfiguration.hasKey("title") ? cardConfiguration.getString("title") : null;
+        subtitle = cardConfiguration.hasKey("subtitle") ? cardConfiguration.getString("subtitle") : null;
+        ctaText = cardConfiguration.hasKey("ctaText") ? cardConfiguration.getString("ctaText") : null;
     }
 
     public CardConfiguration getCardConfigurationForType(String cardType) {
