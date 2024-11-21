@@ -158,7 +158,7 @@ class VizbeeManager {
     removeListener(subscription) {
         let sub = this.subs[subscription]
         if (sub != null) {
-            VizbeeNativeEmitter.removeSubscription(sub);
+            sub.remove();
         }
         delete this.subs[subscription]
     }
