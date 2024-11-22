@@ -158,7 +158,18 @@ class VizbeeManager {
     removeListener(subscription) {
         let sub = this.subs[subscription]
         if (sub != null) {
-            VizbeeNativeEmitter.removeSubscription(sub);
+          // Check if subscription has the modern remove() method
+          if (typeof sub.remove === "function") {
+            sub.remove();
+          } else {
+            // Fallback for older RN versions
+            try {
+              VizbeeNativeEmitter.removeSubscription(sub);
+            } catch (error) {
+              // Handle any potential errors silently
+              console.warn("Error removing subscription:", error);
+            }
+          }
         }
         delete this.subs[subscription]
     }

@@ -14,6 +14,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 
+## [1.1.39] - 2024-11-22
+### Updated
+    Added new remove listener in NativeEventEmitter for supporting latest RN versions.
+
+## [1.1.38] - 2024-11-01
+### Updated
+    Replaced empty string with null and undefined for VizbeeUICardConfiguration.
+
 ## [1.1.37] - 2024-10-28
 ### Added
     Support for setting card(CA, CI & SI) configuration(title, subtitle etc.) through the API.
