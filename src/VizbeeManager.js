@@ -167,7 +167,7 @@ class VizbeeManager {
               VizbeeNativeEmitter.removeSubscription(sub);
             } catch (error) {
               // Handle any potential errors silently
-              console.warn("Error removing subscription:", error);
+              console.info("Error removing subscription:", error);
             }
           }
         }
