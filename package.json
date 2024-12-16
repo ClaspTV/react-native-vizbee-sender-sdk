@@ -1,6 +1,6 @@
 {
   "name": "react-native-vizbee-sender-sdk",
-  "version": "1.1.40-rc1",
+  "version": "1.1.41-rc1",
   "description": "React Native SDK for Vizbee Sender",
   "main": "index.js",
   "scripts": {
