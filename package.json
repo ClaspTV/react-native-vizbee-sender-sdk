@@ -12,7 +12,7 @@
   "author": "Vizbee",
   "license": "ISC",
   "peerDependencies": {
-    "react-native": "^0.59.0"
+    "react-native": ">=0.59.0 <=0.76.5"
   },
   "repository": {
     "type": "git",
