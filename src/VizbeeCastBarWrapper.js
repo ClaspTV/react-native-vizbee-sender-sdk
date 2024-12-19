@@ -19,7 +19,7 @@ const VizbeeCastBar = requireNativeComponent("VizbeeCastBarView");
  *
  * @param {number} height - The height of the cast bar view.
  * @param {function} onVisibilityChange - Callback function triggered when the visibility of the cast bar changes.
- * @returns {JSX.Element|null} - React element representing the Vizbee Cast Bar Wrapper or null if not on iOS.
+ * @returns {JSX.Element|null} - React element representing the Vizbee Cast Bar Wrapper or null.
  */
 const VizbeeCastBarWrapper = ({ height = 64, onVisibilityChange }) => {
   const [viewHeight, setViewHeight] = useState(0);
@@ -47,7 +47,7 @@ const VizbeeCastBarWrapper = ({ height = 64, onVisibilityChange }) => {
 
   useEffect(() => {
     // Create fragment for Android platform
-    if (Platform.OS === "android") {
+    if (Platform.OS === "android" && null != ref.current) {
       const viewId = findNodeHandle(ref.current);
       createFragment(viewId);
     }
@@ -68,6 +68,20 @@ const VizbeeCastBarWrapper = ({ height = 64, onVisibilityChange }) => {
     setViewHeight(event.nativeEvent.shouldAppear ? height : 0);
     onVisibilityChange && onVisibilityChange(event.nativeEvent.shouldAppear);
   };
+
+  const isNewArch = () => {
+    // Check for TurboModules
+    const hasTurboModule = global.__turboModuleProxy != null;
+
+    return hasTurboModule;
+  };
+
+  if (Platform.OS === "android" && isNewArch()) {
+    throw new Error(
+      "VizbeeCastBar is not supported with New Architecture enabled. " +
+        "Please use the old architecture version."
+    );
+  }
 
   return (
     <View
