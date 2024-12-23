@@ -76,7 +76,7 @@ const VizbeeCastBarWrapper = ({ height = 64, onVisibilityChange }) => {
     return hasTurboModule;
   };
 
-  if (Platform.OS === "android" && isNewArch()) {
+  if (isNewArch()) {
     throw new Error(
       "VizbeeCastBar is not supported with New Architecture enabled. " +
         "Please use the old architecture version."
