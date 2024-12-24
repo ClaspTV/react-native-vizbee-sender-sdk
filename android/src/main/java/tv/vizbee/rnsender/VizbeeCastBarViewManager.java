@@ -81,12 +81,11 @@ public class VizbeeCastBarViewManager extends ViewGroupManager < FrameLayout > i
      * Handle "create" command (called from JS) and call createFragment method
      */
     @Override
-    public void receiveCommand(@NonNull FrameLayout root, String commandId, @Nullable ReadableArray args) {
+    public void receiveCommand(@NonNull FrameLayout root, int commandId, @Nullable ReadableArray args) {
         super.receiveCommand(root, commandId, args);
         reactNativeViewId = args.getInt(0);
-        int commandIdInt = Integer.parseInt(commandId);
 
-        switch (commandIdInt) {
+        switch (commandId) {
             case COMMAND_CREATE:
                 createFragment(root, reactNativeViewId);
                 break;

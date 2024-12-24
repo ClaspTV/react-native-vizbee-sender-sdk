@@ -57,9 +57,7 @@ const VizbeeCastBarWrapper = ({ height = 64, onVisibilityChange }) => {
   const createFragment = (viewId) =>
     UIManager.dispatchViewManagerCommand(
       viewId,
-      UIManager.getViewManagerConfig(
-        "VizbeeCastBarView"
-      ).Commands.create.toString(),
+      UIManager.VizbeeCastBarView.Commands.create,
       [viewId]
     );
 
