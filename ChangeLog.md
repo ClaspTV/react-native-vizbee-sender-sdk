@@ -14,9 +14,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 
+## [1.1.41] - 2025-01-02
+### Updated
+    Added minimum and maximum version for the SDK support. Also added condition to use the VizbeeCastBar component only in  old architecture of RN.  
+
 ## [1.1.40] - 2024-12-10
 ### Updated
-    Updaeted Android SDK to 6.7.6
+    Updated Android SDK to 6.7.6
 
 ## [1.1.39] - 2024-11-22
 ### Updated
