@@ -223,6 +223,93 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
     }
 
     //----------------
+    // Event APIs
+    //----------------
+
+    @ReactMethod
+    public void registerEvent(String eventName) {
+        Log.v(LOG_TAG, "Invoking registerEvent with name: " + eventName);
+        
+        VizbeeSessionManager sessionManager = VizbeeContext.getInstance().getSessionManager();
+        if (null == sessionManager) {
+            Log.i(LOG_TAG, "sessionManager is null");
+            return;
+        }
+        
+        VizbeeSession currentSession = sessionManager.getCurrentSession();
+        if (null == currentSession) {
+            Log.i(LOG_TAG, "currentSession is null");
+            return;
+        }
+
+        EventManager eventManager = currentSession.getEventManager();
+        if (null == eventManager) {
+            Log.i(LOG_TAG, "eventManager is null");
+            return;
+        }
+        
+        eventManager.registerForEvent(eventName, this);
+    }
+
+    @ReactMethod
+    public void unregisterEvent(String eventName) {
+        Log.v(LOG_TAG, "Invoking unregisterEvent with name: " + eventName);
+        
+        VizbeeSessionManager sessionManager = VizbeeContext.getInstance().getSessionManager();
+        if (null == sessionManager) {
+            Log.i(LOG_TAG, "sessionManager is null");
+            return;
+        }
+        
+        VizbeeSession currentSession = sessionManager.getCurrentSession();
+        if (null == currentSession) {
+            Log.i(LOG_TAG, "currentSession is null");
+            return;
+        }
+
+        EventManager eventManager = currentSession.getEventManager();
+        if (null == eventManager) {
+            Log.i(LOG_TAG, "eventManager is null");
+            return;
+        }
+        
+        eventManager.unregisterForEvent(eventName, this);
+    }
+
+    @ReactMethod
+    public void sendEvent(String eventName, ReadableMap eventData) {
+        Log.v(LOG_TAG, "Invoking sendEvent with name: " + eventName);
+        
+        VizbeeSessionManager sessionManager = VizbeeContext.getInstance().getSessionManager();
+        if (null == sessionManager) {
+            Log.i(LOG_TAG, "sessionManager is null");
+            return;
+        }
+        
+        VizbeeSession currentSession = sessionManager.getCurrentSession();
+        if (null == currentSession) {
+            Log.i(LOG_TAG, "currentSession is null");
+            return;
+        }
+        
+        try {
+            JSONObject jsonData = RNJSONConverter.convertMapToJson(eventData);
+            currentSession.sendEventWithName(eventName, jsonData);
+        } catch (Exception e) {
+            Log.w(LOG_TAG, "Exception while converting eventData to JSON", e);
+        }
+    }
+
+    public void onEvent(VizbeeEvent event) {
+        Log.v(LOG_TAG, "Received event: " + event.name + " with data: " + event.data);
+
+        WritableMap eventMap = Arguments.createMap();
+        eventMap.putString("eventName", event.name);
+        eventMap.putString("eventData", event.data); 
+        this.sendEvent("VZB_EVENT", eventMap);
+    }
+
+    //----------------
     // SignIn APIs
     //----------------
 

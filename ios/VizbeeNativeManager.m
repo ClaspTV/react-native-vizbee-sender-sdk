@@ -70,7 +70,7 @@ RCT_EXPORT_MODULE(VizbeeNativeManager)
 }
 
 -(NSArray<NSString*>*) supportedEvents {
-    return @[@"VZB_SESSION_STATUS", @"VZB_ANALYTICS_EVENT", VZB_INVOKE_GET_SIGNIN_INFO, @"VZB_MEDIA_STATUS", @"VZB_VOLUME_STATUS"];
+    return @[@"VZB_SESSION_STATUS", @"VZB_ANALYTICS_EVENT", VZB_INVOKE_GET_SIGNIN_INFO, @"VZB_MEDIA_STATUS", @"VZB_VOLUME_STATUS", @"VZB_EVENT"];
 }
 
 // will be called when this module's first listener is added.
@@ -233,6 +233,93 @@ RCT_EXPORT_METHOD(disconnect) {
     RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::disconnect - invoking disconnect");
 
     [[Vizbee getSessionManager] disconnectSession];
+}
+
+//----------------
+#pragma mark - Event APIs
+//----------------
+
+RCT_EXPORT_METHOD(registerEvent:(NSString *)eventName) {
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::registerEvent - invoking with name: %@", eventName);
+    
+    VZBSessionManager* sessionManager = [Vizbee getSessionManager];
+    if (nil == sessionManager) {
+        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::registerEvent - no session manager, session manager is nil");
+        return;
+    }
+    
+    VZBSession* currentSession = [sessionManager getCurrentSession];
+    if (nil == currentSession) {
+        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::registerEvent - no current session, current session is nil");
+        return;
+    }
+
+    VZBEventManager* eventManager = currentSession.eventManager;
+    if (nil == eventManager) {
+        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::registerEvent - no event manager, event manager is nil");
+        return;
+    }
+    
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::registerEvent - invoking registerEventWithName");
+    [eventManager registerForEvent:eventName eventHandler:self];
+}
+
+RCT_EXPORT_METHOD(unregisterEvent:(NSString *)eventName) {
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::unregisterEvent - invoking with name: %@", eventName);
+    
+    VZBSessionManager* sessionManager = [Vizbee getSessionManager];
+    if (nil == sessionManager) {
+        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::unregisterEvent - no session manager, session manager is nil");
+        return;
+    }
+    
+    VZBSession* currentSession = [sessionManager getCurrentSession];
+    if (nil == currentSession) {
+        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::unregisterEvent - no current session, current session is nil");
+        return;
+    }
+
+    VZBEventManager* eventManager = currentSession.eventManager;
+    if (nil == eventManager) {
+        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::unregisterEvent - no event manager, event manager is nil");
+        return;
+    }
+    
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::unregisterEvent - invoking unregisterEventWithName");
+    [eventManager unregisterForEvent:eventName eventHandler:self];
+}
+
+RCT_EXPORT_METHOD(sendEvent:(NSString *)eventName 
+                    data:(NSDictionary *)eventData) {
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::sendEvent - invoking with name: %@ data: %@", 
+               eventName, eventData);
+               
+    VZBSessionManager* sessionManager = [Vizbee getSessionManager];
+    if (nil == sessionManager) {
+        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::sendEvent - no session manager, session manager is nil");
+        return;
+    }
+    
+    VZBSession* currentSession = [sessionManager getCurrentSession];
+    if (nil == currentSession) {
+        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::sendEvent - no current session, current session is nil");
+        return;
+    }
+    
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::sendEvent - invoking sendEventWithName");
+    [currentSession sendEventWithName:eventName andData:eventData];
+}
+
+-(void) onEvent:(VZBEvent *)event {
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::onEvent - invoking with name: %@ data: %@", 
+               event.name, event.data);
+    
+    NSMutableDictionary* eventMap = [NSMutableDictionary new];
+    [eventMap setValue:event.name forKey:@"eventName"];
+    [eventMap setValue:event.data forKey:@"eventData"];
+    
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::onEvent - Sending event %@", eventMap);
+    [self sendEvent:@"VZB_EVENT" withBody:eventMap];
 }
 
 //----------------
