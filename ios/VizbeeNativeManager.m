@@ -240,21 +240,14 @@ RCT_EXPORT_METHOD(disconnect) {
 //----------------
 
 RCT_EXPORT_METHOD(registerForEvent:(NSString *)eventName) {
-    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::registerForEvent - invoking with name: %@", eventName);
-    
-    VZBSessionManager* sessionManager = [Vizbee getSessionManager];
-    if (nil == sessionManager) {
-        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::registerForEvent - no session manager, session manager is nil");
-        return;
-    }
-    
-    VZBSession* currentSession = [sessionManager getCurrentSession];
-    if (nil == currentSession) {
-        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::registerForEvent - no current session, current session is nil");
+    if (nil == eventName) {
+        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::registerForEvent - ignored because eventName is nil");
         return;
     }
 
-    VZBEventManager* eventManager = currentSession.eventManager;
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::registerForEvent - invoking with name: %@", eventName);
+
+    VZBEventManager* eventManager = [self getEventManager];
     if (nil == eventManager) {
         RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::registerForEvent - no event manager, event manager is nil");
         return;
@@ -265,21 +258,14 @@ RCT_EXPORT_METHOD(registerForEvent:(NSString *)eventName) {
 }
 
 RCT_EXPORT_METHOD(unregisterForEvent:(NSString *)eventName) {
-    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::unregisterForEvent - invoking with name: %@", eventName);
-    
-    VZBSessionManager* sessionManager = [Vizbee getSessionManager];
-    if (nil == sessionManager) {
-        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::unregisterForEvent - no session manager, session manager is nil");
-        return;
-    }
-    
-    VZBSession* currentSession = [sessionManager getCurrentSession];
-    if (nil == currentSession) {
-        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::unregisterForEvent - no current session, current session is nil");
+    if (nil == eventName) {
+        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::unregisterForEvent - ignored because eventName is nil");
         return;
     }
 
-    VZBEventManager* eventManager = currentSession.eventManager;
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::unregisterForEvent - invoking with name: %@", eventName);
+    
+    VZBEventManager* eventManager = [self getEventManager];
     if (nil == eventManager) {
         RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::unregisterForEvent - no event manager, event manager is nil");
         return;
@@ -291,22 +277,21 @@ RCT_EXPORT_METHOD(unregisterForEvent:(NSString *)eventName) {
 
 RCT_EXPORT_METHOD(sendEvent:(NSString *)eventName 
                     data:(NSDictionary *)eventData) {
-    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::sendEvent - invoking with name: %@ data: %@", 
-               eventName, eventData);
-               
-    VZBSessionManager* sessionManager = [Vizbee getSessionManager];
-    if (nil == sessionManager) {
-        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::sendEvent - no session manager, session manager is nil");
+
+    if (nil == eventName || [eventName length] == 0) {
+        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::sendEvent - ignored because eventName is nil");
         return;
     }
-    
-    VZBSession* currentSession = [sessionManager getCurrentSession];
-    if (nil == currentSession) {
-        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::sendEvent - no current session, current session is nil");
+    if (nil == eventData || [eventData count] == 0) {
+        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::sendEvent - ignored because eventData is nil");
         return;
     }
 
-    VZBEventManager* eventManager = currentSession.eventManager;
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::sendEvent - invoking with name: %@ data: %@", 
+               eventName, eventData);
+               
+    
+    VZBEventManager* eventManager = [self getEventManager];
     if (nil == eventManager) {
         RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::unregisterForEvent - no event manager, event manager is nil");
         return;
@@ -326,6 +311,20 @@ RCT_EXPORT_METHOD(sendEvent:(NSString *)eventName
     
     RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::onEvent - Sending event %@", eventMap);
     [self sendEvent:@"VZB_EVENT" withBody:eventMap];
+}
+
+-(VZBEventManager*) getEventManager {
+    VZBSessionManager* sessionManager = [Vizbee getSessionManager];
+    if (nil == sessionManager) {
+        return nil;
+    }
+    
+    VZBSession* currentSession = [sessionManager getCurrentSession];
+    if (nil == currentSession) {
+        return nil;
+    }
+    
+    return currentSession.eventManager;
 }
 
 //----------------
