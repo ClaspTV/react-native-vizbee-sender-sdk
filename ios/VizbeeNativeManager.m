@@ -305,9 +305,15 @@ RCT_EXPORT_METHOD(sendEvent:(NSString *)eventName
         RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::sendEvent - no current session, current session is nil");
         return;
     }
+
+    VZBEventManager* eventManager = currentSession.eventManager;
+    if (nil == eventManager) {
+        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::unregisterForEvent - no event manager, event manager is nil");
+        return;
+    }
     
     RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::sendEvent - invoking sendEventWithName");
-    [currentSession sendEventWithName:eventName andData:eventData];
+    [eventManager sendEventWithName:eventName andData:eventData];
 }
 
 -(void) onEvent:(VZBEvent *)event {
