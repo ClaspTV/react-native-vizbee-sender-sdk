@@ -48,6 +48,9 @@ import tv.vizbee.api.analytics.VizbeeAnalyticsManager.VZBAnalyticsEventType;
 import tv.vizbee.api.session.SessionState;
 import tv.vizbee.api.session.SessionStateListener;
 import tv.vizbee.api.session.VideoTrackStatus;
+import tv.vizbee.api.session.VizbeeEvent;
+import tv.vizbee.api.session.VizbeeEventHandler;
+import tv.vizbee.api.session.VizbeeEventManager;
 import tv.vizbee.api.session.VizbeeSessionManager;
 import tv.vizbee.api.session.VizbeeScreen;
 import tv.vizbee.api.session.VizbeeSession;
@@ -58,7 +61,7 @@ import tv.vizbee.api.uiConfig.UIConfiguration;
 import tv.vizbee.api.uiConfig.cardConfig.CardConfiguration;
 import tv.vizbee.api.uiConfig.cardConfig.UICardType;
 
-public class VizbeeNativeManager extends ReactContextBaseJavaModule implements LifecycleEventListener {
+public class VizbeeNativeManager extends ReactContextBaseJavaModule implements LifecycleEventListener, VizbeeEventHandler {
 
     private static final String LOG_TAG = "VZBRNSDK_VizbeeNativeManager";
 
@@ -227,8 +230,8 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
     //----------------
 
     @ReactMethod
-    public void registerEvent(String eventName) {
-        Log.v(LOG_TAG, "Invoking registerEvent with name: " + eventName);
+    public void registerForEvent(String eventName) {
+        Log.v(LOG_TAG, "Invoking registerForEvent with name: " + eventName);
         
         VizbeeSessionManager sessionManager = VizbeeContext.getInstance().getSessionManager();
         if (null == sessionManager) {
@@ -242,7 +245,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
             return;
         }
 
-        EventManager eventManager = currentSession.getEventManager();
+        VizbeeEventManager eventManager = currentSession.getVizbeeEventManager();
         if (null == eventManager) {
             Log.i(LOG_TAG, "eventManager is null");
             return;
@@ -252,8 +255,8 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
     }
 
     @ReactMethod
-    public void unregisterEvent(String eventName) {
-        Log.v(LOG_TAG, "Invoking unregisterEvent with name: " + eventName);
+    public void unregisterForEvent(String eventName) {
+        Log.v(LOG_TAG, "Invoking unregisterForEvent with name: " + eventName);
         
         VizbeeSessionManager sessionManager = VizbeeContext.getInstance().getSessionManager();
         if (null == sessionManager) {
@@ -267,7 +270,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
             return;
         }
 
-        EventManager eventManager = currentSession.getEventManager();
+        VizbeeEventManager eventManager = currentSession.getVizbeeEventManager();
         if (null == eventManager) {
             Log.i(LOG_TAG, "eventManager is null");
             return;
@@ -292,20 +295,30 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
             return;
         }
         
+        VizbeeEventManager eventManager = currentSession.getVizbeeEventManager();
+        if (null == eventManager) {
+            Log.i(LOG_TAG, "eventManager is null");
+            return;
+        }
+
         try {
             JSONObject jsonData = RNJSONConverter.convertMapToJson(eventData);
-            currentSession.sendEventWithName(eventName, jsonData);
+            eventManager.sendEventWithName(eventName, jsonData);
         } catch (Exception e) {
             Log.w(LOG_TAG, "Exception while converting eventData to JSON", e);
         }
     }
 
     public void onEvent(VizbeeEvent event) {
-        Log.v(LOG_TAG, "Received event: " + event.name + " with data: " + event.data);
+        Log.v(LOG_TAG, "Received event: " + event.getName() + " with data: " + event.getData());
 
         WritableMap eventMap = Arguments.createMap();
-        eventMap.putString("eventName", event.name);
-        eventMap.putString("eventData", event.data); 
+        eventMap.putString("eventName", event.getName());
+        try {
+            eventMap.putMap("eventData", RNJSONConverter.convertJsonToMap(event.getData()));
+        } catch (JSONException e) {
+            Log.w(LOG_TAG, "Exception while converting event data to WritableMap", e);
+        }
         this.sendEvent("VZB_EVENT", eventMap);
     }
 

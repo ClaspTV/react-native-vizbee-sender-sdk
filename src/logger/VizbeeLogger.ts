@@ -84,7 +84,7 @@ class VizbeeLogger {
     }
 
     private addPrefixToMessage(message: string): string {
-        return `[${new Date().toISOString()}][VIZBEEHOMESSO] ${message}`;
+        return `[${new Date().toISOString()}][VZBSENDERSDK] ${message}`;
     }
 }
 

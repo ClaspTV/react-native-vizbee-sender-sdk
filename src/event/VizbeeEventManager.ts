@@ -1,8 +1,8 @@
-import logger from '../logger/VizbeeLogger';
-import { VizbeeEventHandler } from './VizbeeEventHandler';
-import { VizbeeEvent } from './VizbeeEvent';
 import { NativeModules } from 'react-native';
+import VizbeeEventHandler from './VizbeeEventHandler';
+import VizbeeEvent from './VizbeeEvent';
 import VizbeeManager from '../VizbeeManager';
+import logger from '../logger/VizbeeLogger';
 
 const VizbeeNativeManager = NativeModules.VizbeeNativeManager || {};
 
@@ -11,7 +11,7 @@ const VizbeeNativeManager = NativeModules.VizbeeNativeManager || {};
  * Provides functionality to register/unregister event handlers, send events,
  * and handle incoming events from the native layer.
  */
-export class VizbeeEventManager {
+export default class VizbeeEventManager {
     private readonly logTag = 'EventManager';
     private eventHandlers: Map<string, Set<VizbeeEventHandler>>;
     private eventSubscription: number | undefined;
@@ -50,12 +50,12 @@ export class VizbeeEventManager {
      */
     private initializeEventHandling(): void {
         this.eventSubscription = VizbeeManager.addListener('VZB_EVENT', 
-            (eventData: { name: string; data: Record<string, any> }) => {
+            (eventData: { eventName: string; eventData: Record<string, any> }) => {
                 logger.debug(
                     this.logTag,
                     `Received VZB_EVENT: ${JSON.stringify(eventData)}`
                 );
-                const vizbeeEvent = new VizbeeEvent(eventData.name, eventData.data);
+                const vizbeeEvent = new VizbeeEvent(eventData.eventName, eventData.eventData);
                 this.onEvent(vizbeeEvent);
             }
         );

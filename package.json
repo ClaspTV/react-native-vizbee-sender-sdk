@@ -1,6 +1,6 @@
 {
   "name": "react-native-vizbee-sender-sdk",
-  "version": "1.1.42-rc.2",
+  "version": "1.1.42-rc.5",
   "description": "React Native SDK for Vizbee Sender. Note: <VizbeeCastBar> component is not supported in React Native's new architecture.",
   "main": "index.js",
   "scripts": {

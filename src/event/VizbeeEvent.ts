@@ -3,7 +3,7 @@
  * Contains an event name and associated data.
  * This class ensures immutability of its properties.
  */
-export class VizbeeEvent {
+export default class VizbeeEvent {
     /**
      * Creates a new VizbeeEvent instance.
      * 

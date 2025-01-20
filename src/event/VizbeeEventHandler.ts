@@ -1,10 +1,10 @@
-import { VizbeeEvent } from "./VizbeeEvent";
+import VizbeeEvent from "./VizbeeEvent";
 
 /**
  * Interface for handling Vizbee events.
  * Implementations will receive events through the onEvent method.
  */
-export interface VizbeeEventHandler {
+export default interface VizbeeEventHandler {
     /**
      * Called when a Vizbee event is received.
      * 
