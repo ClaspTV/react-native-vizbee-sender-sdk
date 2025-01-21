@@ -11,6 +11,10 @@ export { default as VizbeeGuidedSmartInstallCardConfiguration } from "./src/uiCo
 export { default as VizbeeMultiDeviceSmartInstallCardConfiguration } from "./src/uiConfig/VizbeeMultiDeviceSmartInstallCardConfiguration";
 export { VizbeeUICardType } from "./src/uiConfig/VizbeeUICardType";
 
+export { default as VizbeeEvent } from "./src/event/VizbeeEvent";
+export { default as VizbeeEventHandler } from "./src/event/VizbeeEventHandler";
+export { default as VizbeeEventManager } from "./src/event/VizbeeEventManager";
+
 export { default as VizbeeSignInDelegate } from "./src/VizbeeSignInDelegate";
 export { default as VizbeeSignInInfo } from "./src/VizbeeSignInInfo";
 export {

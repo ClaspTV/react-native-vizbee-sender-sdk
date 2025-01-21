@@ -70,7 +70,7 @@ RCT_EXPORT_MODULE(VizbeeNativeManager)
 }
 
 -(NSArray<NSString*>*) supportedEvents {
-    return @[@"VZB_SESSION_STATUS", @"VZB_ANALYTICS_EVENT", VZB_INVOKE_GET_SIGNIN_INFO, @"VZB_MEDIA_STATUS", @"VZB_VOLUME_STATUS"];
+    return @[@"VZB_SESSION_STATUS", @"VZB_ANALYTICS_EVENT", VZB_INVOKE_GET_SIGNIN_INFO, @"VZB_MEDIA_STATUS", @"VZB_VOLUME_STATUS", @"VZB_EVENT"];
 }
 
 // will be called when this module's first listener is added.
@@ -233,6 +233,98 @@ RCT_EXPORT_METHOD(disconnect) {
     RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::disconnect - invoking disconnect");
 
     [[Vizbee getSessionManager] disconnectSession];
+}
+
+//----------------
+#pragma mark - Event APIs
+//----------------
+
+RCT_EXPORT_METHOD(registerForEvent:(NSString *)eventName) {
+    if (nil == eventName) {
+        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::registerForEvent - ignored because eventName is nil");
+        return;
+    }
+
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::registerForEvent - invoking with name: %@", eventName);
+
+    VZBEventManager* eventManager = [self getEventManager];
+    if (nil == eventManager) {
+        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::registerForEvent - no event manager, event manager is nil");
+        return;
+    }
+    
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::registerForEvent - invoking registerEventWithName");
+    [eventManager registerForEvent:eventName eventHandler:self];
+}
+
+RCT_EXPORT_METHOD(unregisterForEvent:(NSString *)eventName) {
+    if (nil == eventName) {
+        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::unregisterForEvent - ignored because eventName is nil");
+        return;
+    }
+
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::unregisterForEvent - invoking with name: %@", eventName);
+    
+    VZBEventManager* eventManager = [self getEventManager];
+    if (nil == eventManager) {
+        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::unregisterForEvent - no event manager, event manager is nil");
+        return;
+    }
+    
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::unregisterForEvent - invoking unregisterEventWithName");
+    [eventManager unregisterForEvent:eventName eventHandler:self];
+}
+
+RCT_EXPORT_METHOD(sendEvent:(NSString *)eventName 
+                    data:(NSDictionary *)eventData) {
+
+    if (nil == eventName || [eventName length] == 0) {
+        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::sendEvent - ignored because eventName is nil");
+        return;
+    }
+    if (nil == eventData || [eventData count] == 0) {
+        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::sendEvent - ignored because eventData is nil");
+        return;
+    }
+
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::sendEvent - invoking with name: %@ data: %@", 
+               eventName, eventData);
+               
+    
+    VZBEventManager* eventManager = [self getEventManager];
+    if (nil == eventManager) {
+        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::unregisterForEvent - no event manager, event manager is nil");
+        return;
+    }
+    
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::sendEvent - invoking sendEventWithName");
+    [eventManager sendEventWithName:eventName andData:eventData];
+}
+
+-(void) onEvent:(VZBEvent *)event {
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::onEvent - invoking with name: %@ data: %@", 
+               event.name, event.data);
+    
+    NSMutableDictionary* eventMap = [NSMutableDictionary new];
+    [eventMap setValue:event.name forKey:@"eventName"];
+    [eventMap setValue:event.data forKey:@"eventData"];
+    
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::onEvent - Sending event %@", eventMap);
+    [self sendEvent:@"VZB_EVENT" withBody:eventMap];
+}
+
+-(VZBEventManager*) getEventManager {
+    VZBSessionManager* sessionManager = [Vizbee getSessionManager];
+    if (nil == sessionManager) {
+        return nil;
+    }
+    
+    VZBSession* currentSession = [sessionManager getCurrentSession];
+    if (nil == currentSession) {
+        return nil;
+    }
+    
+    return currentSession.eventManager;
 }
 
 //----------------

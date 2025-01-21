@@ -48,6 +48,9 @@ import tv.vizbee.api.analytics.VizbeeAnalyticsManager.VZBAnalyticsEventType;
 import tv.vizbee.api.session.SessionState;
 import tv.vizbee.api.session.SessionStateListener;
 import tv.vizbee.api.session.VideoTrackStatus;
+import tv.vizbee.api.session.VizbeeEvent;
+import tv.vizbee.api.session.VizbeeEventHandler;
+import tv.vizbee.api.session.VizbeeEventManager;
 import tv.vizbee.api.session.VizbeeSessionManager;
 import tv.vizbee.api.session.VizbeeScreen;
 import tv.vizbee.api.session.VizbeeSession;
@@ -58,7 +61,7 @@ import tv.vizbee.api.uiConfig.UIConfiguration;
 import tv.vizbee.api.uiConfig.cardConfig.CardConfiguration;
 import tv.vizbee.api.uiConfig.cardConfig.UICardType;
 
-public class VizbeeNativeManager extends ReactContextBaseJavaModule implements LifecycleEventListener {
+public class VizbeeNativeManager extends ReactContextBaseJavaModule implements LifecycleEventListener, VizbeeEventHandler {
 
     private static final String LOG_TAG = "VZBRNSDK_VizbeeNativeManager";
 
@@ -220,6 +223,104 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
         if (null != sessionManager) {
             sessionManager.disconnectSession();
         }
+    }
+
+    //----------------
+    // Event APIs
+    //----------------
+
+    @ReactMethod
+    public void registerForEvent(String eventName) {
+        Log.v(LOG_TAG, "registerForEvent with name: " + eventName);
+        if(null == eventName || eventName.isEmpty()) {
+            Log.w(LOG_TAG, "Received null/empty event name");
+            return;
+        }
+
+        VizbeeEventManager eventManager = getVizbeeEventManager();
+        if (null == eventManager) {
+            Log.i(LOG_TAG, "eventManager is null");
+            return;
+        }
+        eventManager.registerForEvent(eventName, this);
+    }
+
+    @ReactMethod
+    public void unregisterForEvent(String eventName) {
+        if(null == eventName || eventName.isEmpty()) {
+            Log.w(LOG_TAG, "Received null/empty event name");
+            return;
+        }
+
+        Log.v(LOG_TAG, "unregisterForEvent with name: " + eventName);
+        
+        VizbeeEventManager eventManager = getVizbeeEventManager();
+        if (null == eventManager) {
+            Log.i(LOG_TAG, "eventManager is null");
+            return;
+        }
+        eventManager.unregisterForEvent(eventName, this);
+    }
+
+    @ReactMethod
+    public void sendEvent(String eventName, ReadableMap eventData) {
+        if (null == eventName || eventName.isEmpty()) {
+            Log.w(LOG_TAG, "Received null/empty event name");
+            return;
+        }
+        if (null == eventData) {
+            Log.w(LOG_TAG, "Received null event data");
+            return;
+        }
+        
+        Log.v(LOG_TAG, "sendEvent with name: " + eventName);
+        
+        VizbeeEventManager eventManager = getVizbeeEventManager();
+        if (null == eventManager) {
+            Log.i(LOG_TAG, "eventManager is null");
+            return;
+        }
+
+        try {
+            JSONObject jsonData = RNJSONConverter.convertMapToJson(eventData);
+            eventManager.sendEventWithName(eventName, jsonData);
+        } catch (Exception e) {
+            Log.w(LOG_TAG, "Exception while converting eventData to JSON", e);
+        }
+    }
+
+    public void onEvent(VizbeeEvent event) {
+        if(null == event) {
+            Log.w(LOG_TAG, "Received null event");
+            return;
+        }
+
+        Log.v(LOG_TAG, "Received event: " + event.getName() + " with data: " + event.getData());
+
+        WritableMap eventMap = Arguments.createMap();
+        eventMap.putString("eventName", event.getName());
+        try {
+            eventMap.putMap("eventData", RNJSONConverter.convertJsonToMap(event.getData()));
+        } catch (JSONException e) {
+            Log.w(LOG_TAG, "Exception while converting event data to WritableMap", e);
+        }
+        this.sendEvent("VZB_EVENT", eventMap);
+    }
+
+    private VizbeeEventManager getVizbeeEventManager() {
+        VizbeeSessionManager sessionManager = VizbeeContext.getInstance().getSessionManager();
+        if (null == sessionManager) {
+            Log.i(LOG_TAG, "sessionManager is null");
+            return null;
+        }
+        
+        VizbeeSession currentSession = sessionManager.getCurrentSession();
+        if (null == currentSession) {
+            Log.i(LOG_TAG, "currentSession is null");
+            return null;
+        }
+
+        return currentSession.getVizbeeEventManager();
     }
 
     //----------------

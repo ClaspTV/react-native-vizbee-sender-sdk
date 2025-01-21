@@ -3,6 +3,7 @@ import VizbeeConstants from "./VizbeeConstants";
 import VizbeeSignInInfo from "./VizbeeSignInInfo";
 import VizbeeSignInDelegate from "./VizbeeSignInDelegate";
 import VizbeeUIConfiguration from "./uiConfig/VizbeeUIConfiguration";
+import logger, { LogLevel } from "./logger/VizbeeLogger";
 
 const VizbeeNativeManager = NativeModules.VizbeeNativeManager || {};
 const VizbeeNativeEmitter = new NativeEventEmitter(VizbeeNativeManager);
@@ -17,6 +18,19 @@ class VizbeeManager {
         this._registerSignInListeners();
 
         this.uiConfiguration = new VizbeeUIConfiguration();
+    }
+
+    //------------------
+    // Logging APIs
+    //------------------
+
+    enableLogging(enable) {
+        if (enable) {
+            logger.setLevel(LogLevel.Debug);
+            logger.enable();
+        } else {
+            logger.disable();
+        }
     }
 
     //------------------
