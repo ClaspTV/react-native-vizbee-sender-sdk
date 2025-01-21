@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 
+## [1.1.42] - 2025-01-21
+### Added
+    Support for sending and receiving messages.  
+
 ## [1.1.41] - 2025-01-02
 ### Updated
     Added minimum and maximum version for the SDK support. Also added condition to use the VizbeeCastBar component only in  old architecture of RN.  
