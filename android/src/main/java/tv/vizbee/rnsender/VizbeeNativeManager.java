@@ -36,6 +36,7 @@ import java.util.List;
 import org.json.JSONObject;
 import org.json.JSONException;
 
+import tv.vizbee.api.CastingState;
 import tv.vizbee.api.VideoTrackInfo;
 import tv.vizbee.api.VizbeeContext;
 import tv.vizbee.api.SmartHelpOptions;
@@ -47,6 +48,7 @@ import tv.vizbee.api.analytics.VizbeeAnalyticsManager;
 import tv.vizbee.api.analytics.VizbeeAnalyticsManager.VZBAnalyticsEventType;
 import tv.vizbee.api.session.SessionState;
 import tv.vizbee.api.session.SessionStateListener;
+import tv.vizbee.api.CastIconProxy;
 import tv.vizbee.api.session.VideoTrackStatus;
 import tv.vizbee.api.session.VizbeeEvent;
 import tv.vizbee.api.session.VizbeeEventHandler;
@@ -160,6 +162,16 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
         VizbeeRequest request = new VizbeeRequest(vizbeeVideo, vizbeeVideo.getGuid(), (long)(1000*vizbeeVideo.getStartPositionInSeconds()));
         request.setCallback(new RequestCallback() {
             @Override
+            public void doPlayOnPhone(@NonNull VizbeeStatus vizbeeStatus, @Nullable VideoStatus videoStatus) {
+                Log.i(LOG_TAG, "doPlayOnPhone with status = " + vizbeeStatus);
+                if (null != mDoPlayOnPhoneCallback) {
+                    String reasonForPlayOnPhone = getPlayOnPhoneReason(vizbeeStatus);
+                    mDoPlayOnPhoneCallback.invoke(reasonForPlayOnPhone);
+                    mDoPlayOnPhoneCallback = null;
+                }
+            }
+
+            @Override
             public void didPlayOnTV(@NonNull VizbeeScreen screen) {
                 Log.i(LOG_TAG, "Played on TV = " + screen.toString());
                 if (null != mDidPlayOnTVCallback) {
@@ -253,7 +265,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
         }
 
         Log.v(LOG_TAG, "unregisterForEvent with name: " + eventName);
-        
+
         VizbeeEventManager eventManager = getVizbeeEventManager();
         if (null == eventManager) {
             Log.i(LOG_TAG, "eventManager is null");
@@ -272,9 +284,9 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
             Log.w(LOG_TAG, "Received null event data");
             return;
         }
-        
+
         Log.v(LOG_TAG, "sendEvent with name: " + eventName);
-        
+
         VizbeeEventManager eventManager = getVizbeeEventManager();
         if (null == eventManager) {
             Log.i(LOG_TAG, "eventManager is null");
@@ -313,7 +325,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
             Log.i(LOG_TAG, "sessionManager is null");
             return null;
         }
-        
+
         VizbeeSession currentSession = sessionManager.getCurrentSession();
         if (null == currentSession) {
             Log.i(LOG_TAG, "currentSession is null");
@@ -463,11 +475,11 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
 
         // not getting the track type, setting default to type TEXT
         VideoTrackInfo trackInfo = new VideoTrackInfo.Builder(track.getInt("identifier"), VideoTrackInfo.TYPE_TEXT)
-            .setContentId(track.getString("contentIdentifier"))
-            .setContentType(track.getString("contentType"))
-            .setName(track.getString("name"))
-            .setLanguage(track.getString("languageCode"))
-            .build();
+                .setContentId(track.getString("contentIdentifier"))
+                .setContentType(track.getString("contentType"))
+                .setName(track.getString("name"))
+                .setLanguage(track.getString("languageCode"))
+                .build();
         List<VideoTrackInfo> tracks = new ArrayList();
         tracks.add(trackInfo);
 
@@ -533,15 +545,15 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
     private UICardType getCardType(String cardType) {
 
         if (cardType.equals("CAST_INTRODUCTION")) {
-           return UICardType.CAST_INTRODUCTION;
+            return UICardType.CAST_INTRODUCTION;
         } else if (cardType.equals("SMART_INSTALL")) {
             return UICardType.SMART_INSTALL;
-         } else if (cardType.equals("GUIDED_SMART_INSTALL")) {
+        } else if (cardType.equals("GUIDED_SMART_INSTALL")) {
             return UICardType.GUIDED_SMART_INSTALL;
-         } else if (cardType.equals("MULTI_DEVICE_SMART_INSTALL")) {
+        } else if (cardType.equals("MULTI_DEVICE_SMART_INSTALL")) {
             return UICardType.MULTI_DEVICE_SMART_INSTALL;
-         }
-    
+        }
+
         return null;
     }
 
@@ -568,6 +580,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
     public void onHostResume() {
         Log.v(LOG_TAG, "onHostResume");
         this.addSessionStateListener();
+        this.addCastIconStateListener();
         this.addAnalyticsListener();
     }
 
@@ -580,6 +593,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
     public void onHostDestroy() {
         Log.v(LOG_TAG, "onHostDestroy");
         this.removeSessionStateListener();
+        this.removeCastIconStateListener();
         this.removeAnalyticsListener();
     }
 
@@ -695,6 +709,65 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
         Log.v(LOG_TAG, "Sending signin info trigger ...");
         WritableMap signInInfoMap = Arguments.createMap();
         this.sendEvent(VizbeeConstants.VZB_INVOKE_GET_SIGNIN_INFO, signInInfoMap);
+    }
+
+    //----------------
+    // Cast icon state listener
+    //----------------
+
+    private CastIconProxy.CastIconStateListener castIconStateListener;
+    private void addCastIconStateListener() {
+
+        CastIconProxy castIconProxy = VizbeeContext.getInstance().getCastIconProxy();
+        if (null != castIconProxy) {
+            castIconStateListener = new CastIconProxy.CastIconStateListener() {
+                @Override
+                public void onStateChange(CastingState state) {
+                    notifyCastIconState(state);
+                }
+            };
+            castIconProxy.addStateChangeListener(castIconStateListener);
+
+            // force first update
+            this.notifyCastIconState(castIconProxy.getCastState());
+        }
+    }
+
+    private void removeCastIconStateListener() {
+
+        CastIconProxy castIconProxy = VizbeeContext.getInstance().getCastIconProxy();
+        if (null != castIconProxy && null != castIconStateListener) {
+            castIconProxy.removeStateChangeListener(castIconStateListener);
+        }
+        castIconStateListener = null;
+    }
+
+    private void notifyCastIconState(CastingState newState) {
+
+        String stateString = this.getCastIconStateString(newState);
+        WritableMap stateMap = Arguments.createMap();
+        stateMap.putString("castIconState", stateString);
+
+        Log.v(LOG_TAG, "notifyCastIconState - State: " + stateString);
+        this.sendEvent(VizbeeConstants.VZB_CASTICON_STATE, stateMap);
+    }
+
+    private String getCastIconStateString(CastingState state) {
+
+        switch (state) {
+            case UNAVAILABLE:
+                return "UNAVAILABLE";
+            case DISCONNECTED:
+                return "DISCONNECTED";
+            case CONNECTING:
+                return "CONNECTING";
+            case CONNECTED:
+                return "CONNECTED";
+            case DEACTIVATED:
+                return "DEACTIVATED";
+            default:
+                return "UNKNOWN";
+        }
     }
 
     //----------------
@@ -1038,7 +1111,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
 
     private void sendEvent(String eventName, @Nullable WritableMap params) {
         getReactApplicationContext()
-            .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-            .emit(eventName, params);
+                .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                .emit(eventName, params);
     }
 }

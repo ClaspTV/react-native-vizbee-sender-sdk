@@ -10,6 +10,8 @@
 @property (nonatomic, assign) BOOL hasListeners;
 @property (nonatomic, assign) VZBSessionState lastUpdatedState;
 
+@property(nonatomic, strong) VZBCastIconProxy* castIconProxy;
+
 @property(nonatomic, strong) VZBCastBarViewController* castBarController;
 
 @end
@@ -70,7 +72,7 @@ RCT_EXPORT_MODULE(VizbeeNativeManager)
 }
 
 -(NSArray<NSString*>*) supportedEvents {
-    return @[@"VZB_SESSION_STATUS", @"VZB_ANALYTICS_EVENT", VZB_INVOKE_GET_SIGNIN_INFO, @"VZB_MEDIA_STATUS", @"VZB_VOLUME_STATUS", @"VZB_EVENT"];
+    return @[@"VZB_SESSION_STATUS", VZB_CASTICON_STATE, @"VZB_ANALYTICS_EVENT", VZB_INVOKE_GET_SIGNIN_INFO, @"VZB_MEDIA_STATUS", @"VZB_VOLUME_STATUS", @"VZB_EVENT"];
 }
 
 // will be called when this module's first listener is added.
@@ -549,6 +551,8 @@ RCT_EXPORT_METHOD(addAnalyticsAttributes:(NSDictionary*) attributes) {
     RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::onApplicationDidBecomeActive - adding session state listener");
     [self addSessionStateListener];
     
+    [self addCastIconStateListener];
+
     // add analytics listener
     [self addAnalyticsListener];
 }
@@ -557,6 +561,8 @@ RCT_EXPORT_METHOD(addAnalyticsAttributes:(NSDictionary*) attributes) {
 
     RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::onApplicationWillResignActive - removing session state listener");
     [self removeSessionStateListener];
+
+    [self removeCastIconStateListener];
     
     // remove analytics listener
     [self removeAnalyticsListener];
@@ -664,6 +670,62 @@ RCT_EXPORT_METHOD(addAnalyticsAttributes:(NSDictionary*) attributes) {
     [map setValue:screen.screenInfo.friendlyName forKey:@"connectedDeviceFriendlyName"];
     [map setValue:screen.screenInfo.model forKey:@"connectedDeviceModel"];
     return map;
+}
+
+//----------------
+#pragma mark - Cast icon listener
+//----------------
+
+-(void) addCastIconStateListener {
+    if (nil == self.castIconProxy) {
+        self.castIconProxy = [Vizbee getCastIconProxy];
+    }
+
+    if (nil != self.castIconProxy) {
+        [self.castIconProxy addStateChangeListener:self];
+        
+        // force first update
+        [self notifyCastIconState:[self.castIconProxy getCastState]];
+    }
+}
+
+-(void) removeCastIconStateListener {
+    if (nil != self.castIconProxy) {
+        [self.castIconProxy removeStateChangeListener:self];
+    }
+}
+
+-(void) onStateChange:(VZBCastingState) state {
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::onCastIconStateChanged - Cast icon state changed to %lu", (unsigned long)state);
+
+    [self notifyCastIconState:state];
+}
+
+-(void) notifyCastIconState:(VZBCastingState) state {
+    NSString* stateString = [self getCastIconStateString:state];
+    NSMutableDictionary* stateMap = [NSMutableDictionary new];
+    [stateMap setValue:stateString forKey:@"castIconState"];
+
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::notifyCastIconState - Sending cast icon state %@", stateMap);
+    [self sendEvent:VZB_CASTICON_STATE withBody:stateMap];
+}
+
+-(NSString*) getCastIconStateString:(VZBCastingState) state {
+    switch (state) {
+        case VZBCastingStateUnavailable:
+        case VZBCastingStateScanning:
+            return @"UNAVAILABLE";
+        case VZBCastingStateDisconnected:
+            return @"DISCONNECTED";
+        case VZBCastingStateConnecting:
+            return @"CONNECTING";
+        case VZBCastingStateConnected:
+            return @"CONNECTED";
+        case VZBCastingStateDeactivated:
+            return @"DEACTIVATED";
+        default:
+            return @"UNKNOWN";
+    }
 }
 
 //----------------

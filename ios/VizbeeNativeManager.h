@@ -8,7 +8,8 @@
 #import <VizbeeKit/VizbeeKit.h>
 
 @interface VizbeeNativeManager : RCTEventEmitter <RCTBridgeModule, 
-                                                    VZBSessionStateDelegate, 
+                                                    VZBSessionStateDelegate,
+                                                    VZBCastIconStateListener, 
                                                     VZBAnalyticsDelegate, 
                                                     VZBVideoStatusUpdateDelegate, 
                                                     VZBVolumeStatusDelegate,
