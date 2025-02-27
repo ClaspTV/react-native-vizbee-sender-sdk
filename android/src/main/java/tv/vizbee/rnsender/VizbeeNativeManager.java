@@ -162,16 +162,6 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
         VizbeeRequest request = new VizbeeRequest(vizbeeVideo, vizbeeVideo.getGuid(), (long)(1000*vizbeeVideo.getStartPositionInSeconds()));
         request.setCallback(new RequestCallback() {
             @Override
-            public void doPlayOnPhone(@NonNull VizbeeStatus vizbeeStatus, @Nullable VideoStatus videoStatus) {
-                Log.i(LOG_TAG, "doPlayOnPhone with status = " + vizbeeStatus);
-                if (null != mDoPlayOnPhoneCallback) {
-                    String reasonForPlayOnPhone = getPlayOnPhoneReason(vizbeeStatus);
-                    mDoPlayOnPhoneCallback.invoke(reasonForPlayOnPhone);
-                    mDoPlayOnPhoneCallback = null;
-                }
-            }
-
-            @Override
             public void didPlayOnTV(@NonNull VizbeeScreen screen) {
                 Log.i(LOG_TAG, "Played on TV = " + screen.toString());
                 if (null != mDidPlayOnTVCallback) {
@@ -265,7 +255,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
         }
 
         Log.v(LOG_TAG, "unregisterForEvent with name: " + eventName);
-
+        
         VizbeeEventManager eventManager = getVizbeeEventManager();
         if (null == eventManager) {
             Log.i(LOG_TAG, "eventManager is null");
@@ -284,9 +274,9 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
             Log.w(LOG_TAG, "Received null event data");
             return;
         }
-
+        
         Log.v(LOG_TAG, "sendEvent with name: " + eventName);
-
+        
         VizbeeEventManager eventManager = getVizbeeEventManager();
         if (null == eventManager) {
             Log.i(LOG_TAG, "eventManager is null");
@@ -325,7 +315,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
             Log.i(LOG_TAG, "sessionManager is null");
             return null;
         }
-
+        
         VizbeeSession currentSession = sessionManager.getCurrentSession();
         if (null == currentSession) {
             Log.i(LOG_TAG, "currentSession is null");
@@ -475,11 +465,11 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
 
         // not getting the track type, setting default to type TEXT
         VideoTrackInfo trackInfo = new VideoTrackInfo.Builder(track.getInt("identifier"), VideoTrackInfo.TYPE_TEXT)
-                .setContentId(track.getString("contentIdentifier"))
-                .setContentType(track.getString("contentType"))
-                .setName(track.getString("name"))
-                .setLanguage(track.getString("languageCode"))
-                .build();
+            .setContentId(track.getString("contentIdentifier"))
+            .setContentType(track.getString("contentType"))
+            .setName(track.getString("name"))
+            .setLanguage(track.getString("languageCode"))
+            .build();
         List<VideoTrackInfo> tracks = new ArrayList();
         tracks.add(trackInfo);
 
@@ -545,15 +535,15 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
     private UICardType getCardType(String cardType) {
 
         if (cardType.equals("CAST_INTRODUCTION")) {
-            return UICardType.CAST_INTRODUCTION;
+           return UICardType.CAST_INTRODUCTION;
         } else if (cardType.equals("SMART_INSTALL")) {
             return UICardType.SMART_INSTALL;
-        } else if (cardType.equals("GUIDED_SMART_INSTALL")) {
+         } else if (cardType.equals("GUIDED_SMART_INSTALL")) {
             return UICardType.GUIDED_SMART_INSTALL;
-        } else if (cardType.equals("MULTI_DEVICE_SMART_INSTALL")) {
+         } else if (cardType.equals("MULTI_DEVICE_SMART_INSTALL")) {
             return UICardType.MULTI_DEVICE_SMART_INSTALL;
-        }
-
+         }
+    
         return null;
     }
 
@@ -1111,7 +1101,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
 
     private void sendEvent(String eventName, @Nullable WritableMap params) {
         getReactApplicationContext()
-                .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                .emit(eventName, params);
+            .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+            .emit(eventName, params);
     }
 }
