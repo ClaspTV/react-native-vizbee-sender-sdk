@@ -238,6 +238,24 @@ RCT_EXPORT_METHOD(disconnect) {
 }
 
 //----------------
+#pragma mark - Cast Icon State APIs
+//----------------
+
+RCT_REMAP_METHOD(getCastIconState, getCastIconStateWithResolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::getCastIconState - Invoking getCastIconState");
+  
+    if (nil == self.castIconProxy) {
+        self.castIconProxy = [Vizbee getCastIconProxy];
+    }
+    if (nil == self.castIconProxy) {
+          reject(@"No castIconProxy", @"castIconProxy is nil", nil);
+          return;
+    }
+
+    resolve([self getCastIconStateString:[self.castIconProxy getCastState]]);
+}
+
+//----------------
 #pragma mark - Event APIs
 //----------------
 

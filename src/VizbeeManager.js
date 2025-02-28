@@ -70,6 +70,14 @@ class VizbeeManager {
     }
 
     //------------------
+    // Cast Icon State APIs
+    //------------------
+
+    async getCastIconState() {
+        return VizbeeNativeManager.getCastIconState();
+    }
+
+    //------------------
     // Sign in APIs
     //------------------
 

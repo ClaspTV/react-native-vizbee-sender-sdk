@@ -228,6 +228,29 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
     }
 
     //----------------
+    // Cast Icon State APIs
+    //----------------
+
+    @ReactMethod
+    public void getCastIconState(final Promise promise) {
+
+        getReactApplicationContext().runOnUiQueueThread(new Runnable() {
+
+            @Override
+            public void run() {
+
+                CastIconProxy castIconProxy = VizbeeContext.getInstance().getCastIconProxy();
+                if (null == castIconProxy) {
+                    promise.resolve(null);
+                    return;
+                }
+
+                promise.resolve(VizbeeNativeManager.this.getCastIconStateString(castIconProxy.getCastState()));
+            }
+        });
+    }
+
+    //----------------
     // Event APIs
     //----------------
 
