@@ -1,4 +1,10 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useMemo,
+  useCallback,
+} from "react";
 import {
   requireNativeComponent,
   Platform,
@@ -17,21 +23,37 @@ const VizbeeCastBar = requireNativeComponent("VizbeeCastBarView");
  * Wrapper component for the Vizbee Cast Bar View.
  * This component manages the height and visibility of the cast bar view.
  *
- * @param {number} height - The height of the cast bar view.
- * @param {function} onVisibilityChange - Callback function triggered when the visibility of the cast bar changes.
- * @returns {JSX.Element|null} - React element representing the Vizbee Cast Bar Wrapper or null.
+ * @param {Object} props - Component props
+ * @param {number} props.height - The height of the cast bar view
+ * @param {boolean} props.isVisible - Whether the cast bar is visible
+ * @param {function} props.onVisibilityChange - Callback triggered when visibility changes
+ * @returns {JSX.Element|null} - React element representing the Vizbee Cast Bar or null
  */
-const VizbeeCastBarWrapper = ({ height = 64, onVisibilityChange }) => {
-  const [viewHeight, setViewHeight] = useState(0);
-  const ref = useRef(null);
+const VizbeeCastBarWrapper = ({
+  height = 64,
+  onVisibilityChange,
+  isVisible = true,
+  testID = "vizbee-cast-bar",
+}) => {
+  const castBarRef = useRef(null);
   const [screenWidth, setScreenWidth] = useState(
     Dimensions.get("window").width
   );
 
+  // Check if the new architecture is being used (for early error detection)
   useEffect(() => {
-    const handleOrientationChange = () => {
-      const { width } = Dimensions.get("window");
-      setScreenWidth(width);
+    if (global.__turboModuleProxy != null) {
+      console.error(
+        "VizbeeCastBar is not supported with New Architecture enabled. " +
+          "Please use the old architecture version."
+      );
+    }
+  }, []);
+
+  // Handle orientation changes
+  useEffect(() => {
+    const handleOrientationChange = ({ window }) => {
+      setScreenWidth(window.width);
     };
 
     const dimensionsSubscription = Dimensions.addEventListener(
@@ -39,75 +61,74 @@ const VizbeeCastBarWrapper = ({ height = 64, onVisibilityChange }) => {
       handleOrientationChange
     );
 
-    // Clean up the event listener on component unmount
     return () => {
       dimensionsSubscription?.remove();
     };
   }, []);
 
+  // Create Android fragment
   useEffect(() => {
-    // Create fragment for Android platform
-    if (Platform.OS === "android" && null != ref.current) {
-      const viewId = findNodeHandle(ref.current);
-      createFragment(viewId);
+    if (Platform.OS === "android" && castBarRef.current) {
+      const viewId = findNodeHandle(castBarRef.current);
+      if (viewId && UIManager.VizbeeCastBarView?.Commands?.create) {
+        UIManager.dispatchViewManagerCommand(
+          viewId,
+          UIManager.VizbeeCastBarView.Commands.create,
+          [viewId]
+        );
+      }
     }
   }, []);
 
-  // Function to create fragment for Android platform
-  const createFragment = (viewId) =>
-    UIManager.dispatchViewManagerCommand(
-      viewId,
-      UIManager.VizbeeCastBarView.Commands.create,
-      [viewId]
-    );
-
   // Event handler for visibility change
-  const onChange = (event) => {
-    setViewHeight(event.nativeEvent.shouldAppear ? height : 0);
-    onVisibilityChange && onVisibilityChange(event.nativeEvent.shouldAppear);
-  };
+  const handleVisibilityChange = useCallback(
+    (event) => {
+      const shouldAppear = event.nativeEvent.shouldAppear;
+      console.log("Cast bar visibility changed:", shouldAppear);
+      onVisibilityChange?.(shouldAppear);
+    },
+    [onVisibilityChange]
+  );
 
-  const isNewArch = () => {
-    // Check for TurboModules
-    const hasTurboModule = global.__turboModuleProxy != null;
+  // Platform-specific styles
+  const containerStyle = useMemo(
+    () => ({
+      height: isVisible ? height : 0,
+      width: screenWidth,
+      overflow: "hidden",
+    }),
+    [height, screenWidth, isVisible]
+  );
 
-    return hasTurboModule;
-  };
+  // Platform-specific cast bar properties
+  const castBarProps = useMemo(() => {
+    if (Platform.OS === "ios") {
+      return {
+        height: isVisible ? height : 64,
+        onVisibilityChange: handleVisibilityChange,
+        ref: castBarRef,
+      };
+    } else if (Platform.OS === "android") {
+      return {
+        style: {
+          height: PixelRatio.getPixelSizeForLayoutSize(isVisible ? height : 0),
+          width: PixelRatio.getPixelSizeForLayoutSize(screenWidth),
+        },
+        ref: castBarRef,
+        onVisibilityChange: handleVisibilityChange,
+      };
+    }
+    return {};
+  }, [height, screenWidth, isVisible, handleVisibilityChange]);
 
-  if (isNewArch()) {
-    throw new Error(
-      "VizbeeCastBar is not supported with New Architecture enabled. " +
-        "Please use the old architecture version."
-    );
+  // Don't render on unsupported platforms
+  if (Platform.OS !== "ios" && Platform.OS !== "android") {
+    return null;
   }
 
   return (
-    <View
-      style={{
-        height: viewHeight,
-        width: screenWidth,
-        overflow: "hidden",
-      }}
-    >
-      {/* Render the VizbeeMiniCastBar component */}
-      {Platform.OS === "ios" ? (
-        <VizbeeCastBar
-          height={viewHeight}
-          onVisibilityChange={onChange}
-          ref={ref}
-        />
-      ) : Platform.OS === "android" ? (
-        <VizbeeCastBar
-          style={{
-            height: PixelRatio.getPixelSizeForLayoutSize(height), // Converts dpi to px, provide desired height
-            width: PixelRatio.getPixelSizeForLayoutSize(screenWidth), // Converts dpi to px, provide desired width
-          }}
-          ref={ref}
-          onVisibilityChange={onChange}
-        />
-      ) : (
-        <></>
-      )}
+    <View style={containerStyle} testID={testID}>
+      <VizbeeCastBar {...castBarProps} />
     </View>
   );
 };
@@ -115,7 +136,9 @@ const VizbeeCastBarWrapper = ({ height = 64, onVisibilityChange }) => {
 // Prop types validation
 VizbeeCastBarWrapper.propTypes = {
   height: PropTypes.number,
+  isVisible: PropTypes.bool,
   onVisibilityChange: PropTypes.func,
+  testID: PropTypes.string,
 };
 
 export default VizbeeCastBarWrapper;

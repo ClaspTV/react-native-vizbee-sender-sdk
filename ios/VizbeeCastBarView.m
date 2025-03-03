@@ -19,7 +19,9 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        [self setup];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            [self setup];
+        });
     }
     return self;
 }
@@ -56,6 +58,9 @@
 // Deallocate any resources when the view is deallocated
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self.castBarController.view removeFromSuperview];
+    self.castBarController = nil;
+    self.heightConstraint = nil;
 }
 
 // Method to handle application becoming active
