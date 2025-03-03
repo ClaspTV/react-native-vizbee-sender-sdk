@@ -35,6 +35,7 @@ const VizbeeCastBarWrapper = ({
   isVisible = true,
   testID = "vizbee-cast-bar",
 }) => {
+  const [viewHeight, setViewHeight] = useState(0);
   const castBarRef = useRef(null);
   const [screenWidth, setScreenWidth] = useState(
     Dimensions.get("window").width
@@ -86,6 +87,7 @@ const VizbeeCastBarWrapper = ({
       const shouldAppear = event.nativeEvent.shouldAppear;
       console.log("Cast bar visibility changed:", shouldAppear);
       onVisibilityChange?.(shouldAppear);
+      setViewHeight(height);
     },
     [onVisibilityChange]
   );
@@ -93,11 +95,11 @@ const VizbeeCastBarWrapper = ({
   // Platform-specific styles
   const containerStyle = useMemo(
     () => ({
-      height: isVisible ? height : 0,
+      height: isVisible ? viewHeight : 0,
       width: screenWidth,
       overflow: "hidden",
     }),
-    [height, screenWidth, isVisible]
+    [viewHeight, screenWidth, isVisible]
   );
 
   // Platform-specific cast bar properties
