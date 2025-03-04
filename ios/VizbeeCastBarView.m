@@ -10,25 +10,21 @@
 
 @property (nonatomic, strong) VZBCastBarViewController *castBarController;
 @property (nonatomic, strong) NSLayoutConstraint *heightConstraint;
+@property (nonatomic, assign) BOOL setupDone;
 
 @end
 
 @implementation VizbeeCastBarView
 
-// Initialize the view and set up necessary components
-- (instancetype)init {
-    self = [super init];
-    if (self) {
-        [self setup];
-    }
-    return self;
+- (void)layoutSubviews{
+    [super layoutSubviews];
+    [self cleanup];
+    [self setup];
 }
+
 
 // Setup method to initialize and configure the view
 - (void)setup {
-    [self.castBarController.view removeFromSuperview];
-    self.castBarController = nil;
-    self.heightConstraint = nil;
     self.castBarController = [Vizbee createCastBarController];
     self.castBarController.delegate = self;
     [self addSubview:self.castBarController.view];
@@ -39,7 +35,7 @@
                                              selector:@selector(applicationDidBecomeActive:)
                                                  name:UIApplicationDidBecomeActiveNotification
                                                object:nil];
-
+    
     self.heightConstraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:64]; // Default height constraint
     [self.heightConstraint setActive:YES];
     
@@ -55,7 +51,14 @@
 
 // Deallocate any resources when the view is deallocated
 - (void)dealloc {
+    [self cleanup];
+}
+
+- (void)cleanup{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self.castBarController.view removeFromSuperview];
+    self.castBarController = nil;
+    self.heightConstraint = nil;
 }
 
 // Method to handle application becoming active

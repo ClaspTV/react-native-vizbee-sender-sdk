@@ -1,6 +1,5 @@
 package tv.vizbee.rnsender;
 
-import android.os.Handler;
 import android.util.Log;
 import android.view.Choreographer;
 import android.view.View;
@@ -10,19 +9,15 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 
 import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.common.MapBuilder;
-import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.uimanager.annotations.ReactPropGroup;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.ThemedReactContext;
-import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 
@@ -36,14 +31,13 @@ import tv.vizbee.api.CastBarVisibilityListener;
  * This manager handles the creation of a custom FrameLayout that holds a CastBarFragment.
  * It also provides methods for updating the layout and handling visibility changes.
  */
-public class VizbeeCastBarViewManager extends ViewGroupManager < FrameLayout > implements CastBarVisibilityListener {
+public class VizbeeCastBarViewManager extends ViewGroupManager<FrameLayout> implements CastBarVisibilityListener {
     private static final String REACT_CLASS = "VizbeeCastBarView";
-    private static final String LOG_TAG = "VZBRNSDK_VizbeeCastBarViewManager";
+    private static final String LOG_TAG = "VZBRNSDK_CastBarViewManager";
+    private static final String FRAGMENT_TAG = "cast_bar_fragment";
+    private static final int COMMAND_CREATE = 1;
 
-    private final int COMMAND_CREATE = 1;
-
-    private ReactApplicationContext reactContext;
-
+    private final ReactApplicationContext reactContext;
     private int propWidth;
     private int propHeight;
     private int reactNativeViewId;
@@ -64,7 +58,7 @@ public class VizbeeCastBarViewManager extends ViewGroupManager < FrameLayout > i
      */
     @NonNull
     @Override
-    public FrameLayout createViewInstance(ThemedReactContext reactContext) {
+    public FrameLayout createViewInstance(@NonNull ThemedReactContext reactContext) {
         return new FrameLayout(reactContext);
     }
 
@@ -73,37 +67,31 @@ public class VizbeeCastBarViewManager extends ViewGroupManager < FrameLayout > i
      */
     @Nullable
     @Override
-    public Map < String, Integer > getCommandsMap() {
+    public Map<String, Integer> getCommandsMap() {
         return MapBuilder.of("create", COMMAND_CREATE);
     }
 
     /**
-     * Handle "create" command (called from JS) and call createFragment method
+     * Handle commands (called from JS)
      */
     @Override
     public void receiveCommand(@NonNull FrameLayout root, int commandId, @Nullable ReadableArray args) {
         super.receiveCommand(root, commandId, args);
-        reactNativeViewId = args.getInt(0);
 
-        switch (commandId) {
-            case COMMAND_CREATE:
-                createFragment(root, reactNativeViewId);
-                break;
-            default:
-                {}
+        if (args != null && args.size() > 0) {
+            reactNativeViewId = args.getInt(0);
+        }
+
+        if (commandId == COMMAND_CREATE) {
+            createFragment(root, reactNativeViewId);
         }
     }
 
-    @ReactPropGroup(names = {
-        "width",
-        "height"
-    }, customType = "Style")
+    @ReactPropGroup(names = {"width", "height"}, customType = "Style")
     public void setStyle(FrameLayout view, int index, Integer value) {
         if (index == 0) {
             propWidth = value;
-        }
-
-        if (index == 1) {
+        } else if (index == 1) {
             propHeight = value;
         }
     }
@@ -112,29 +100,66 @@ public class VizbeeCastBarViewManager extends ViewGroupManager < FrameLayout > i
      * Replace your React Native view with a custom fragment
      */
     private void createFragment(FrameLayout root, int reactNativeViewId) {
-        ViewGroup parentView = (ViewGroup) root.findViewById(reactNativeViewId);
-        setupLayout(parentView);
+        try {
+            // Get the parent view
+            ViewGroup parentView = (ViewGroup) root.findViewById(reactNativeViewId);
+            if (parentView == null) {
+                Log.e(LOG_TAG, "Parent view not found");
+                return;
+            }
+            
+            setupLayout(parentView);
 
-        FragmentActivity activity = (FragmentActivity) reactContext.getCurrentActivity();
-        if (activity == null) {
-            Log.e(LOG_TAG, "activity - not found");
-            return;
+            // Get the activity
+            FragmentActivity activity = (FragmentActivity) reactContext.getCurrentActivity();
+            if (!isValidForTransaction(activity, root)) {
+                return;
+            }
+
+            // Create the fragment
+            castBarFragment = new CastBarFragment();
+            castBarFragment.setCallback(this);
+            
+            Log.v(LOG_TAG, "Executing fragment transaction");
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                .replace(reactNativeViewId, castBarFragment, FRAGMENT_TAG)
+                .commitNow();
+                
+        } catch (Exception e) {
+            // Don't rethrow, just log a warning
+            String message = (e != null) ? e.getMessage() : "unknown error";
+            Log.w(LOG_TAG, "Error attaching fragment: " + e.getMessage() + e);
         }
+    }
 
-        castBarFragment = new CastBarFragment();
-        castBarFragment.setCallback(this);
-        Log.v(LOG_TAG, "castBarFragment - replacing framelayout with castBarFragment");
-        activity.getSupportFragmentManager()
-            .beginTransaction()
-            .replace(reactNativeViewId, castBarFragment, String.valueOf(reactNativeViewId))
-            .commit();
+    /**
+     * Checks if the current state is valid for a fragment transaction
+     */
+    private boolean isValidForTransaction(FragmentActivity activity, View root) {
+        // Check if activity is valid
+        if (activity == null) {
+            Log.e(LOG_TAG, "Activity not found");
+            return false;
+        }
+        
+        if (activity.isFinishing() || activity.isDestroyed()) {
+            Log.i(LOG_TAG, "Activity is finishing or destroyed");
+            return false;
+        }
+        
+        // Check if fragment manager is valid
+        FragmentManager fragmentManager = activity.getSupportFragmentManager();
+        if (fragmentManager == null || fragmentManager.isDestroyed()) {
+            Log.i(LOG_TAG, "FragmentManager is null or destroyed");
+            return false;
+        }
+        
+        return true;
     }
     
     /**
-     * Sets up layout for the given ViewGroup by continuously posting frame callbacks.
-     * This ensures that the children are properly laid out.
-     *
-     * @param view The ViewGroup whose layout needs to be set up.
+     * Sets up layout for the given ViewGroup by posting frame callbacks.
      */
     private void setupLayout(ViewGroup view) {
         Choreographer.getInstance().postFrameCallback(new Choreographer.FrameCallback() {
@@ -149,27 +174,19 @@ public class VizbeeCastBarViewManager extends ViewGroupManager < FrameLayout > i
 
     /**
      * Manually lays out the children of the given View with propWidth and propHeight.
-     * propWidth and propHeight are coming from React Native props.
-     *
-     * @param view The View whose children need to be manually laid out.
      */
     private void manuallyLayoutChildren(View view) {
-        int width = propWidth;
-        int height = propHeight;
-
         view.measure(
-            View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY),
-            View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY));
+            View.MeasureSpec.makeMeasureSpec(propWidth, View.MeasureSpec.EXACTLY),
+            View.MeasureSpec.makeMeasureSpec(propHeight, View.MeasureSpec.EXACTLY));
 
-        view.layout(0, 0, width, height);
+        view.layout(0, 0, propWidth, propHeight);
     }
 
     /**
      * Notifies React Native about the visibility change of the CastBar.
-     *
-     * @param shouldAppear Indicates whether the CastBar should appear or disappear.
      */
-    private void onCastBarVisibilityChange(Boolean shouldAppear) {
+    private void onCastBarVisibilityChange(boolean shouldAppear) {
         WritableMap event = Arguments.createMap();
         event.putBoolean("shouldAppear", shouldAppear);
         reactContext
@@ -179,40 +196,32 @@ public class VizbeeCastBarViewManager extends ViewGroupManager < FrameLayout > i
 
     /**
      * Returns the map of exported custom bubbling event type constants for the CastBarView.
-     *
-     * @return The map containing the event type constants.
      */
-    public Map getExportedCustomBubblingEventTypeConstants() {
-        return MapBuilder.builder().put(
-            "onChange",
-            MapBuilder.of(
+    @Override
+    public Map<String, Object> getExportedCustomBubblingEventTypeConstants() {
+        return MapBuilder.<String, Object>builder()
+            .put("onChange", MapBuilder.of(
                 "phasedRegistrationNames",
                 MapBuilder.of("bubbled", "onVisibilityChange")
-            )
-        ).build();
+            ))
+            .build();
     }
 
     /**
      * Notifies the manager when the CastBar becomes visible.
-     * This method is part of the CastBarVisibilityListener interface.
-     * It logs the visibility change and invokes onCastBarVisibilityChange with true.
      */
     @Override
     public void onCastBarShown() {
-        // Method called when the CastBar becomes visible
-        Log.v(LOG_TAG, "castBar is visible");
+        Log.v(LOG_TAG, "CastBar is visible");
         onCastBarVisibilityChange(true);
     }
 
     /**
      * Notifies the manager when the CastBar becomes hidden.
-     * This method is part of the CastBarVisibilityListener interface.
-     * It logs the visibility change and invokes onCastBarVisibilityChange with false.
      */
     @Override
     public void onCastBarHidden() {
-        // Method called when the CastBar becomes hidden
-        Log.v(LOG_TAG, "castBar is hidden");
+        Log.v(LOG_TAG, "CastBar is hidden");
         onCastBarVisibilityChange(false);
     }
 }
