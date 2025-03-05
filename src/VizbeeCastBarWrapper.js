@@ -31,7 +31,7 @@ const VizbeeCastBarWrapper = ({
   onVisibilityChange,
   testID = "vizbee-cast-bar",
 }) => {
-  const [viewHeight, setViewHeight] = useState(isVisible ? height : 0);
+  const [viewHeight, setViewHeight] = useState(0);
   const [screenWidth, setScreenWidth] = useState(
     Dimensions.get("window").width
   );
@@ -71,12 +71,10 @@ const VizbeeCastBarWrapper = ({
         [viewId]
       );
     }
+    if (!isVisible) {
+      setViewHeight(0);
+    }
   }, [isVisible]);
-
-  // Update height when visibility changes
-  useEffect(() => {
-    setViewHeight(isVisible ? height : 0);
-  }, [isVisible, height]);
 
   // Event handler for native visibility change events
   const handleVisibilityChange = (event) => {
@@ -89,7 +87,7 @@ const VizbeeCastBarWrapper = ({
   };
 
   // Don't render anything if not visible
-  if (!isVisible && viewHeight === 0) {
+  if (!isVisible) {
     return null;
   }
 
