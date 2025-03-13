@@ -2,6 +2,8 @@ package tv.vizbee.rnsender;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Choreographer;
