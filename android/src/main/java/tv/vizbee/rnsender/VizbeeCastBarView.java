@@ -93,9 +93,13 @@ public class VizbeeCastBarView extends FrameLayout implements CastBarVisibilityL
             castBarFragment.setCallback(this);
             
             // It is not possible to add a fragment to a view with height zero of frame layout
-            // So, we have ro handle height in a javascript layer
+            // So, we have to handle height in a javascript layer
             Log.d(LOG_TAG, "Attaching CastBarFragment with ID: " + viewId);
             FragmentManager fragmentManager = activity.getSupportFragmentManager();
+            if(fragmentManager == null) {
+                Log.d(LOG_TAG, "Fragment manager is null");
+                return;
+            }
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.replace(viewId, castBarFragment, FRAGMENT_TAG);
             transaction.commit();
