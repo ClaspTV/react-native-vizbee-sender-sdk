@@ -1,13 +1,5 @@
-import React, { useState, useRef, useEffect, memo } from "react";
-import {
-  requireNativeComponent,
-  Platform,
-  View,
-  Dimensions,
-  PixelRatio,
-  findNodeHandle,
-  UIManager,
-} from "react-native";
+import React, { useState, useEffect, memo } from "react";
+import { requireNativeComponent, Platform, View } from "react-native";
 import PropTypes from "prop-types";
 
 // Require the native component
@@ -31,11 +23,7 @@ const VizbeeCastBarWrapper = ({
   onVisibilityChange,
   testID = "vizbee-cast-bar",
 }) => {
-  const [viewHeight, setViewHeight] = useState(isVisible ? height : 0);
-  const [screenWidth, setScreenWidth] = useState(
-    Dimensions.get("window").width
-  );
-  const castBarRef = useRef(null);
+  const [viewHeight, setViewHeight] = useState(0);
 
   // Check for new architecture support once
   useEffect(() => {
@@ -47,36 +35,11 @@ const VizbeeCastBarWrapper = ({
     }
   }, []);
 
-  // Handle screen dimension changes
   useEffect(() => {
-    const handleOrientationChange = ({ window }) => {
-      setScreenWidth(window.width);
-    };
-
-    const dimensionsSubscription = Dimensions.addEventListener(
-      "change",
-      handleOrientationChange
-    );
-
-    return () => dimensionsSubscription.remove();
-  }, []);
-
-  // Create fragment for Android platform
-  useEffect(() => {
-    if (Platform.OS === "android" && castBarRef.current && isVisible) {
-      const viewId = findNodeHandle(castBarRef.current);
-      UIManager.dispatchViewManagerCommand(
-        viewId,
-        UIManager.VizbeeCastBarView.Commands.create,
-        [viewId]
-      );
+    if (!isVisible) {
+      setViewHeight(0);
     }
   }, [isVisible]);
-
-  // Update height when visibility changes
-  useEffect(() => {
-    setViewHeight(isVisible ? height : 0);
-  }, [isVisible, height]);
 
   // Event handler for native visibility change events
   const handleVisibilityChange = (event) => {
@@ -89,35 +52,29 @@ const VizbeeCastBarWrapper = ({
   };
 
   // Don't render anything if not visible
-  if (!isVisible && viewHeight === 0) {
+  if (!isVisible) {
     return null;
   }
 
   // Platform-specific rendering
   return (
     <View
-      testID={`${testID}-container`}
       style={{
         height: viewHeight,
-        width: screenWidth,
+        backgroundColor: "transparent",
         overflow: "hidden",
       }}
     >
       {Platform.OS === "ios" ? (
         <VizbeeCastBar
           testID={`${testID}-ios`}
-          height={viewHeight}
+          height={height}
           onVisibilityChange={handleVisibilityChange}
-          ref={castBarRef}
         />
       ) : Platform.OS === "android" ? (
         <VizbeeCastBar
           testID={`${testID}-android`}
-          style={{
-            height: PixelRatio.getPixelSizeForLayoutSize(height),
-            width: PixelRatio.getPixelSizeForLayoutSize(screenWidth),
-          }}
-          ref={castBarRef}
+          height={height}
           onVisibilityChange={handleVisibilityChange}
         />
       ) : null}
