@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.1.44] - 2025-03-14
 ### Fixed
-    Andriod cast bar crash on hide/show.  
+    Andriod cast bar crash on hide/show and updated the native android sdk to 6.8.4.  
 
 ## [1.1.43] - 2025-01-21
 ### Added
