@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 
+## [1.1.46] - 2025-03-28
+### Updated
+    Session, Analytics and CastIcon proxy listeners only after initializing the SDK for iOS
+
 ## [1.1.45] - 2025-03-19
 ### Updated
     Android SDK has been updated to 6.8.5, which includes support for Edge-to-Edge.

@@ -37,26 +37,58 @@ RCT_EXPORT_MODULE(VizbeeNativeManager)
 }
 
 -(void) dealloc {
+    [self removeListeners];
     [self uninitNotifications];
 }
 
 -(void) initNotifications {
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(onApplicationWillResignActive:)
-                                               name:UIApplicationWillResignActiveNotification
-                                             object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onApplicationDidBecomeActive:)
-                                                 name:UIApplicationDidBecomeActiveNotification
-                                               object:nil];
-    // force first update
-    [self onApplicationDidBecomeActive:nil];
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::initNotifications - Registering for SDK initialization notification");
+    
+    // Adding listeners when the app becomes active and removing them when it resigns 
+    // causes issues if SDK initialization is delayed due to a feature flag or other reasons, 
+    // as SessionManager or AnalyticsManager may not be available. 
+    // The correct approach is to add listeners when the SDK is initialized.
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                selector:@selector(onVizbeeSDKInitialized:) 
+                                                    name:@"VizbeeSDKInitialized" 
+                                                object:nil];
+
+    // Call addListeners here because the SDK might have been initialized 
+    // before the module was created and we might have missed the notification
+    [self addListeners];
     
 }
 
 -(void) uninitNotifications {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)onVizbeeSDKInitialized:(NSNotification *)notification {
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::onVizbeeSDKInitialized - Received SDK initialization notification");
+    [self addListeners];
+}
+
+// ----------------------------
+# pragma mark - Listeners
+// ----------------------------
+
+-(void) addListeners {
+
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::addListeners - Adding listeners");
+
+    [self addSessionStateListener];
+    [self addCastIconStateListener];
+    [self addAnalyticsListener];
+}
+
+-(void) removeListeners {
+
+    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::removeListeners - Removing listeners");
+
+    [self removeSessionStateListener];
+    [self removeCastIconStateListener];
+    [self removeAnalyticsListener];
 }
 
 //----------------
@@ -561,30 +593,8 @@ RCT_EXPORT_METHOD(addAnalyticsAttributes:(NSDictionary*) attributes) {
 }
 
 //----------------
-#pragma mark - App & session lifecycle
+#pragma mark - session lifecycle
 //----------------
-
--(void) onApplicationDidBecomeActive:(NSNotification*)notification {
-    
-    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::onApplicationDidBecomeActive - adding session state listener");
-    [self addSessionStateListener];
-    
-    [self addCastIconStateListener];
-
-    // add analytics listener
-    [self addAnalyticsListener];
-}
-
--(void) onApplicationWillResignActive:(NSNotification*)notification {
-
-    RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::onApplicationWillResignActive - removing session state listener");
-    [self removeSessionStateListener];
-
-    [self removeCastIconStateListener];
-    
-    // remove analytics listener
-    [self removeAnalyticsListener];
-}
 
 -(void) onSessionStateChanged:(VZBSessionState)newState {
     
@@ -770,10 +780,10 @@ RCT_EXPORT_METHOD(addAnalyticsAttributes:(NSDictionary*) attributes) {
     VZBAnalyticsManager* analyticsManager = [Vizbee getAnalyticsManager];
     if (nil != analyticsManager) {
         
-        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::addAnalyticsListener - Removing analytics listener");
+        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::removeAnalyticsListener - Removing analytics listener");
         [analyticsManager removeAnalyticsDelegate:self];
     } else {
-        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::addAnalyticsListener - Failed to remove analytics listener, analyticsManager is nil");
+        RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::removeAnalyticsListener - Failed to remove analytics listener, analyticsManager is nil");
     }
 }
 

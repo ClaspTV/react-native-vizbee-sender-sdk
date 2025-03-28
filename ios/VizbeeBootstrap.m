@@ -6,6 +6,8 @@
 #import "VizbeeBootstrap.h"
 #import "VizbeeAppAdapter.h"
 
+#import <React/RCTLog.h>
+
 @implementation VizbeeBootstrap
 
 +(instancetype) getInstance {
@@ -35,6 +37,11 @@
     
     VizbeeAppAdapter* vizbeeAppAdapter = [[VizbeeAppAdapter alloc] init];
     [Vizbee startWithAppID:vizbeeAppId appAdapterDelegate:vizbeeAppAdapter andVizbeeOptions:options];
+
+    // Post notification that SDK is initialized
+    RCTLogInfo(@"[RNVZBSDK] VizbeeSDKInitialized");
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"VizbeeSDKInitialized" object:nil];
+    
 }
 
 @end
