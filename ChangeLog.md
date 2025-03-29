@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.1.46] - 2025-03-28
 ### Updated
-    Session, Analytics and CastIcon proxy listeners only after initializing the SDK for iOS
+    Updated Session, Analytics, and CastIcon proxy listeners to be registered only after SDK initialization for iOS.
 
 ## [1.1.45] - 2025-03-19
 ### Updated
