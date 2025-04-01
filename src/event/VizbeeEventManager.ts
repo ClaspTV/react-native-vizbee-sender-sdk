@@ -1,6 +1,7 @@
 import { NativeModules } from 'react-native';
 import VizbeeEventHandler from './VizbeeEventHandler';
 import VizbeeEvent from './VizbeeEvent';
+// @ts-ignore
 import VizbeeManager from '../VizbeeManager';
 import logger from '../logger/VizbeeLogger';
 
