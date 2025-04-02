@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 
+## [1.1.47] - 2025-04-02
+### Updated
+    Updated VizbeeLogger from ts to js to fix issue for pure js app.
+
 ## [1.1.46] - 2025-03-28
 ### Updated
     Updated Session, Analytics, and CastIcon proxy listeners to be registered only after SDK initialization for iOS.

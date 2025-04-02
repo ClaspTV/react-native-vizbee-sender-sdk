@@ -1,33 +1,30 @@
-// Define log levels as an enum for better type safety
-enum LogLevel {
-    Error = "error",
-    Warn = "warn",
-    Info = "info",
-    Debug = "debug"
-}
+// Define log levels as a constant object instead of TypeScript enum
+const LogLevel = {
+    Error: "error",
+    Warn: "warn",
+    Info: "info",
+    Debug: "debug"
+};
 
 class VizbeeLogger {
-    private currentLevel: LogLevel;
-    private enableLogging: boolean;
-
     constructor() {
         this.currentLevel = LogLevel.Info;
         this.enableLogging = false;
     }
 
-    public setLevel(level: LogLevel): void {
+    setLevel(level) {
         this.currentLevel = level;
     }
 
-    public enable(): void {
+    enable() {
         this.enableLogging = true;
     }
 
-    public disable(): void {
+    disable() {
         this.enableLogging = false;
     }
 
-    public error(message: string, ...optionalParams: any[]): void {
+    error(message, ...optionalParams) {
         if (this.canLog(LogLevel.Error)) {
             console.error(
                 this.addPrefixToMessage(message),
@@ -36,7 +33,7 @@ class VizbeeLogger {
         }
     }
 
-    public warn(message: string, ...optionalParams: any[]): void {
+    warn(message, ...optionalParams) {
         if (this.canLog(LogLevel.Warn)) {
             console.warn(
                 this.addPrefixToMessage(message),
@@ -45,7 +42,7 @@ class VizbeeLogger {
         }
     }
 
-    public info(message: string, ...optionalParams: any[]): void {
+    info(message, ...optionalParams) {
         if (this.canLog(LogLevel.Info)) {
             console.info(
                 this.addPrefixToMessage(message),
@@ -54,7 +51,7 @@ class VizbeeLogger {
         }
     }
 
-    public debug(message: string, ...optionalParams: any[]): void {
+    debug(message, ...optionalParams) {
         if (this.canLog(LogLevel.Debug)) {
             console.debug(
                 this.addPrefixToMessage(message),
@@ -63,7 +60,7 @@ class VizbeeLogger {
         }
     }
 
-    private canLog(level: LogLevel): boolean {
+    canLog(level) {
         if (!this.enableLogging) {
             return false;
         }
@@ -83,13 +80,15 @@ class VizbeeLogger {
         return true;
     }
 
-    private addPrefixToMessage(message: string): string {
+    addPrefixToMessage(message) {
         return `[${new Date().toISOString()}][VZBSENDERSDK] ${message}`;
     }
 }
 
-// Export the LogLevel enum to be used by consumers of the logger
-export { LogLevel };
+// Export the LogLevel object to be used by consumers of the logger
+exports.LogLevel = LogLevel;
 
 // Export a singleton instance of the logger
-export default new VizbeeLogger();
+module.exports = new VizbeeLogger();
+// Add LogLevel to the exports to maintain the same API
+module.exports.LogLevel = LogLevel;
