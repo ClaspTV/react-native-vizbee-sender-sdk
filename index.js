@@ -21,7 +21,9 @@ export {
   default as VizbeeSmartPromptOptions,
   VizbeeSmartPromptSubflow,
 } from "./src/VizbeeSmartPromptOptions";
-export { default as VizbeeSmartPlayOptions,  VizbeeSmartPlayCardVisibility} from "./src/VizbeeSmartPlayOptions";
+export { 
+  default as VizbeeSmartPlayOptions, 
+  VizbeeSmartPlayCardVisibility} from "./src/VizbeeSmartPlayOptions";
 export { default as VizbeeVideo } from "./src/VizbeeVideo";
 export {
   default as VizbeeVideoStatus,

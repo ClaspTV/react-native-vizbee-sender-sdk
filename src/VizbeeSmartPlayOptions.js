@@ -9,32 +9,32 @@
  * @enum {number}
  */
 export const VizbeeSmartPlayCardVisibility = {
-    SHOW_HIDE_BASED_ON_CONFIGURATION: 0,
-    FORCE_SHOW: 1,
-    FORCE_HIDE: 2
-  };
-  
+  SHOW_HIDE_BASED_ON_CONFIGURATION: 0,
+  FORCE_SHOW: 1,
+  FORCE_HIDE: 2
+};
+
+/**
+ * SmartPlayOptions configuration for controlling smartPlay behavior
+ */
+export default class VizbeeSmartPlayOptions {
   /**
-   * SmartPlayOptions configuration for controlling smartPlay behavior
+   * Create new SmartPlayOptions
+   * @param {Object} options - Configuration options
+   * @param {boolean} [options.isFromSmartNotification=false] - Whether this play request is coming from a smart notification
+   * @param {VizbeeSmartPlayCardVisibility} [options.smartPlayCardVisibility=SHOW_HIDE_BASED_ON_CONFIGURATION] - Controls visibility of the smart play card
    */
-  export default class VizbeeSmartPlayOptions {
+  constructor(options = {}) {
     /**
-     * Create new SmartPlayOptions
-     * @param {Object} options - Configuration options
-     * @param {boolean} [options.isFromSmartNotification=false] - Whether this play request is coming from a smart notification
-     * @param {VizbeeSmartPlayCardVisibility} [options.smartPlayCardVisibility=SHOW_HIDE_BASED_ON_CONFIGURATION] - Controls visibility of the smart play card
+     * Whether this play request is coming from a smart notification
+     * @type {boolean}
      */
-    constructor(options = {}) {
-      /**
-       * Whether this play request is coming from a smart notification
-       * @type {boolean}
-       */
-      this.isFromSmartNotification = options.isFromSmartNotification || false;
-      
-      /**
-       * Controls visibility of the smart play card
-       * @type {VizbeeSmartPlayCardVisibility}
-       */
-      this.smartPlayCardVisibility = options.smartPlayCardVisibility || VizbeeSmartPlayCardVisibility.SHOW_HIDE_BASED_ON_CONFIGURATION;
-    }
+    this.isFromSmartNotification = options.isFromSmartNotification || false;
+    
+    /**
+     * Controls visibility of the smart play card
+     * @type {VizbeeSmartPlayCardVisibility}
+     */
+    this.smartPlayCardVisibility = options.smartPlayCardVisibility || VizbeeSmartPlayCardVisibility.SHOW_HIDE_BASED_ON_CONFIGURATION;
   }
+}

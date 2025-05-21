@@ -37,6 +37,8 @@ import org.json.JSONObject;
 import org.json.JSONException;
 
 import tv.vizbee.api.CastingState;
+import tv.vizbee.api.SmartPlayCardVisibility;
+import tv.vizbee.api.SmartPlayOptions;
 import tv.vizbee.api.VideoTrackInfo;
 import tv.vizbee.api.VizbeeContext;
 import tv.vizbee.api.SmartHelpOptions;
@@ -190,6 +192,7 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
             SmartPlayOptions options = getSmartPlayOptions(smartPlayOptionsMap);
             
             // Call smartPlay with options
+            Log.v(LOG_TAG, "Invoking smartPlay with options: " + options);
             VizbeeContext.getInstance().smartPlay(activity, request, options);
         } else {
             // Call smartPlay without options
@@ -202,8 +205,21 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
         if (smartPlayOptionsMap.hasKey("isFromSmartNotification")) {
             options.isFromSmartNotification = smartPlayOptionsMap.getBoolean("isFromSmartNotification");
         }
+
         if (smartPlayOptionsMap.hasKey("smartPlayCardVisibility")) {
-            options.setSmartPlayCardVisibility = smartPlayOptionsMap.getInt("smartPlayCardVisibility");
+            int visibilityValue = smartPlayOptionsMap.getInt("smartPlayCardVisibility");
+            // Map the integer value to the enum
+            switch (visibilityValue) {
+                case 1:
+                    options.smartPlayCardVisibility = SmartPlayCardVisibility.SmartPlayCardVisibilityForceShow;
+                    break;
+                case 2:
+                    options.smartPlayCardVisibility = SmartPlayCardVisibility.SmartPlayCardVisibilityForceHide;
+                    break;
+                default:
+                    options.smartPlayCardVisibility = SmartPlayCardVisibility.SmartPlayCardVisibilityShowHideBasedOnConfiguration;
+                    break;
+            }
         }
         return options;
     }
