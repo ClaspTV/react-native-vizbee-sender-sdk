@@ -140,6 +140,75 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
     private Callback mDidPlayOnTVCallback;
     private Callback mDoPlayOnPhoneCallback;
     @ReactMethod
+    public void smartPlay(ReadableMap vizbeeVideoMap, 
+                        Callback didPlayOnTVCallback, 
+                        Callback doPlayOnPhoneCallback, 
+                        ReadableMap smartPlayOptionsMap) {
+
+        this.mDoPlayOnPhoneCallback = doPlayOnPhoneCallback;
+        this.mDidPlayOnTVCallback = didPlayOnTVCallback;
+
+        Log.v(LOG_TAG, "Invoking smartPlay with options: " + smartPlayOptionsMap);
+
+        Activity activity = this.reactContext.getCurrentActivity();
+        if (activity == null) {
+            Log.e(LOG_TAG, "SmartPlay - null activity");
+            if (null != this.mDoPlayOnPhoneCallback) {
+                mDoPlayOnPhoneCallback.invoke("FAILED_TO_GET_ACTIVITY");
+                mDoPlayOnPhoneCallback = null;
+            }
+            return;
+        }
+
+        VizbeeVideo vizbeeVideo = new VizbeeVideo(vizbeeVideoMap);
+        // IMPORTANT: Android expects position in milliseconds (while iOS expects in seconds!)
+        VizbeeRequest request = new VizbeeRequest(vizbeeVideo, vizbeeVideo.getGuid(), (long)(1000*vizbeeVideo.getStartPositionInSeconds()));
+        request.setCallback(new RequestCallback() {
+            @Override
+            public void didPlayOnTV(@NonNull VizbeeScreen screen) {
+                Log.i(LOG_TAG, "Played on TV = " + screen.toString());
+                if (null != mDidPlayOnTVCallback) {
+                    WritableMap connectedDevicemap = VizbeeNativeManager.this.getSessionConnectedDeviceMap();
+                    mDidPlayOnTVCallback.invoke(connectedDevicemap);
+                    mDidPlayOnTVCallback = null;
+                }
+            }
+            @Override
+            public void doPlayOnPhone(@NonNull VizbeeStatus status) {
+                Log.i(LOG_TAG,"Play on phone with status = " + status);
+                if (null != mDoPlayOnPhoneCallback) {
+                    String reasonForPlayOnPhone = getPlayOnPhoneReason(status);
+                    mDoPlayOnPhoneCallback.invoke(reasonForPlayOnPhone);
+                    mDoPlayOnPhoneCallback = null;
+                }
+            }
+        });
+
+        // Check if smartPlayOptions is provided
+        if (null != smartPlayOptionsMap) {
+            // Create SmartPlayOptions from the provided map
+            SmartPlayOptions options = getSmartPlayOptions(smartPlayOptionsMap);
+            
+            // Call smartPlay with options
+            VizbeeContext.getInstance().smartPlay(activity, request, options);
+        } else {
+            // Call smartPlay without options
+            VizbeeContext.getInstance().smartPlay(activity, request);
+        }
+    }
+
+    private SmartPlayOptions getSmartPlayOptions(ReadableMap smartPlayOptionsMap) {
+        SmartPlayOptions options = new SmartPlayOptions();
+        if (smartPlayOptionsMap.hasKey("isFromSmartNotification")) {
+            options.isFromSmartNotification = smartPlayOptionsMap.getBoolean("isFromSmartNotification");
+        }
+        if (smartPlayOptionsMap.hasKey("smartPlayCardVisibility")) {
+            options.setSmartPlayCardVisibility = smartPlayOptionsMap.getInt("smartPlayCardVisibility");
+        }
+        return options;
+    }
+
+    @ReactMethod
     public void smartPlay(ReadableMap vizbeeVideoMap, Callback didPlayOnTVCallback, Callback doPlayOnPhoneCallback){
 
         this.mDoPlayOnPhoneCallback = doPlayOnPhoneCallback;

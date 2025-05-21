@@ -186,6 +186,7 @@ RCT_EXPORT_METHOD(smartCast) {
 RCT_EXPORT_METHOD(smartPlay:(NSDictionary*) vizbeeVideoMap
         didPlayOnTVCallback:(RCTResponseSenderBlock) didPlayOnTVCallback
       doPlayOnPhoneCallback:(RCTResponseSenderBlock) doPlayOnPhoneCallback
+        smartPlayOptions:(NSDictionary*) smartPlayOptions
         ) {
     
     __block RCTResponseSenderBlock _didPlayOnTVCallback = didPlayOnTVCallback;
@@ -228,9 +229,30 @@ RCT_EXPORT_METHOD(smartPlay:(NSDictionary*) vizbeeVideoMap
                 }
         }];
         
-        // call smartplay api
-        [Vizbee smartPlay:request presentingViewController:vc];
+        // Create and initialize SmartPlayOptions from dictionary
+        if (nil != smartPlayOptions) {
+            RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::smartPlay - smartPlayOptions = %@", smartPlayOptions);
+
+            VZBSmartPlayOptions* options = [self getSmartPlayOptions:smartPlayOptions];
+            [Vizbee smartPlay:request withOptions:options presentingViewController:vc];
+        } else {
+            [Vizbee smartPlay:request presentingViewController:vc];
+        }
     }];
+}
+
+-(VZBSmartPlayOptions*) getSmartPlayOptions:(NSDictionary*) smartPlayOptions {
+    VZBSmartPlayOptions* options = [VZBSmartPlayOptions new];
+    if (smartPlayOptions && [smartPlayOptions isKindOfClass:[NSDictionary class]]) {
+        if (smartPlayOptions[@"isFromSmartNotification"]) {
+            options.isFromSmartNotification = [smartPlayOptions[@"isFromSmartNotification"] boolValue];
+        }
+        
+        if (smartPlayOptions[@"smartPlayCardVisibility"]) {
+            options.smartPlayCardVisibility = [smartPlayOptions[@"smartPlayCardVisibility"] intValue];
+        }
+    }
+    return options;
 }
 
 //----------------

@@ -49,6 +49,17 @@ class VizbeeManager {
         VizbeeNativeManager.smartCast();
     }
     
+    /**
+     * Intelligently determines whether to play on phone or offer TV options to user and play on TV
+     * @param {Object} vizbeeVideo - The video metadata object
+     * @param {Function} didPlayOnTVCallback - Callback when played on TV
+     * @param {Function} doPlayOnPhoneCallback - Callback to play on phone
+     * @param {SmartPlayOptions} [smartPlayOptions] - Optional configuration for smartPlay behavior
+     */
+    smartPlay(vizbeeVideo, didPlayOnTVCallback, doPlayOnPhoneCallback, smartPlayOptions = undefined) {
+        VizbeeNativeManager.smartPlay(vizbeeVideo, didPlayOnTVCallback, doPlayOnPhoneCallback, smartPlayOptions);
+    }
+
     smartPlay(vizbeeVideo, didPlayOnTVCallback, doPlayOnPhoneCallback) {
         VizbeeNativeManager.smartPlay(vizbeeVideo, didPlayOnTVCallback, doPlayOnPhoneCallback);
     }
