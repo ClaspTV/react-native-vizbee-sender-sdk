@@ -57,8 +57,7 @@ class VizbeeManager {
      * @param {SmartPlayOptions} [smartPlayOptions] - Optional configuration for smartPlay behavior
      */
     smartPlay(vizbeeVideo, didPlayOnTVCallback, doPlayOnPhoneCallback, smartPlayOptions = null) {
-        console.info("smartPlay called with options:", smartPlayOptions);
-        VizbeeNativeManager.smartPlay(vizbeeVideo, didPlayOnTVCallback, doPlayOnPhoneCallback, smartPlayOptions);
+        VizbeeNativeManager.smartPlay(vizbeeVideo, smartPlayOptions, didPlayOnTVCallback, doPlayOnPhoneCallback);
     }
 
     //------------------

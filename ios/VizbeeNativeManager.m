@@ -184,10 +184,9 @@ RCT_EXPORT_METHOD(smartCast) {
 }
 
 RCT_EXPORT_METHOD(smartPlay:(NSDictionary*) vizbeeVideoMap
-        didPlayOnTVCallback:(RCTResponseSenderBlock) didPlayOnTVCallback
-      doPlayOnPhoneCallback:(RCTResponseSenderBlock) doPlayOnPhoneCallback
-        smartPlayOptions:(NSDictionary*) smartPlayOptions
-        ) {
+                smartPlayOptions:(NSDictionary*) smartPlayOptionsMap
+                didPlayOnTVCallback:(RCTResponseSenderBlock) didPlayOnTVCallback
+                doPlayOnPhoneCallback:(RCTResponseSenderBlock) doPlayOnPhoneCallback) {
     
     __block RCTResponseSenderBlock _didPlayOnTVCallback = didPlayOnTVCallback;
     __block RCTResponseSenderBlock _doPlayOnPhoneCallback = doPlayOnPhoneCallback;
@@ -230,10 +229,9 @@ RCT_EXPORT_METHOD(smartPlay:(NSDictionary*) vizbeeVideoMap
         }];
         
         // Create and initialize SmartPlayOptions from dictionary
-        if (nil != smartPlayOptions) {
-            RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::smartPlay - smartPlayOptions = %@", smartPlayOptions);
-
-            VZBSmartPlayOptions* options = [self getSmartPlayOptions:smartPlayOptions];
+        if (nil != smartPlayOptionsMap) {
+            VZBSmartPlayOptions* options = [self getSmartPlayOptions:smartPlayOptionsMap];
+            RCTLogInfo(@"[RNVZBSDK] VizbeeNativeManager::smartPlay - smartPlayOptions = %@", options);
             [Vizbee smartPlay:request withOptions:options presentingViewController:vc];
         } else {
             [Vizbee smartPlay:request presentingViewController:vc];

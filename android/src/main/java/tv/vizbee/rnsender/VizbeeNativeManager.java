@@ -142,10 +142,10 @@ public class VizbeeNativeManager extends ReactContextBaseJavaModule implements L
     private Callback mDidPlayOnTVCallback;
     private Callback mDoPlayOnPhoneCallback;
     @ReactMethod
-    public void smartPlay(ReadableMap vizbeeVideoMap, 
+    public void smartPlay(ReadableMap vizbeeVideoMap,
+                        ReadableMap smartPlayOptionsMap,
                         Callback didPlayOnTVCallback, 
-                        Callback doPlayOnPhoneCallback, 
-                        ReadableMap smartPlayOptionsMap) {
+                        Callback doPlayOnPhoneCallback) {
 
         this.mDoPlayOnPhoneCallback = doPlayOnPhoneCallback;
         this.mDidPlayOnTVCallback = didPlayOnTVCallback;

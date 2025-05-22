@@ -20,21 +20,20 @@ export const VizbeeSmartPlayCardVisibility = {
 export default class VizbeeSmartPlayOptions {
   /**
    * Create new SmartPlayOptions
-   * @param {Object} options - Configuration options
-   * @param {boolean} [options.isFromSmartNotification=false] - Whether this play request is coming from a smart notification
-   * @param {VizbeeSmartPlayCardVisibility} [options.smartPlayCardVisibility=SHOW_HIDE_BASED_ON_CONFIGURATION] - Controls visibility of the smart play card
+   * @param {boolean} [isFromSmartNotification=false] - Whether this play request is coming from a smart notification
+   * @param {VizbeeSmartPlayCardVisibility} [smartPlayCardVisibility=SHOW_HIDE_BASED_ON_CONFIGURATION] - Controls visibility of the smart play card
    */
-  constructor(options = {}) {
+  constructor() {
     /**
      * Whether this play request is coming from a smart notification
      * @type {boolean}
      */
-    this.isFromSmartNotification = options.isFromSmartNotification || false;
+    this.isFromSmartNotification = false;
     
     /**
      * Controls visibility of the smart play card
      * @type {VizbeeSmartPlayCardVisibility}
      */
-    this.smartPlayCardVisibility = options.smartPlayCardVisibility || VizbeeSmartPlayCardVisibility.SHOW_HIDE_BASED_ON_CONFIGURATION;
+    this.smartPlayCardVisibility = VizbeeSmartPlayCardVisibility.SHOW_HIDE_BASED_ON_CONFIGURATION;
   }
 }
