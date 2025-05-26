@@ -14,6 +14,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 
+## [1.1.49] - 2025-05-26
+### Updated
+    SmartPlay API with the SmartPlayOptions
+    Android SDK has been updated to 6.9.0
+
 ## [1.1.48] - 2025-04-10
 ### Updated
     Android SDK has been updated to 6.8.8, which includes support for passing Options.
