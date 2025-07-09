@@ -37,6 +37,6 @@ repositories {
 
 dependencies {
     implementation 'com.facebook.react:react-native:+'
-    implementation 'tv.vizbee:android-sender-sdk:6.9.0'
+    implementation 'tv.vizbee:android-sender-sdk:6.9.1'
 }
   
