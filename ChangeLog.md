@@ -14,6 +14,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 
+## [1.1.50] - 2025-07-09
+### Updated
+    Android SDK has been updated to 6.9.1, which includes 16kb page support.
+    Updated React Native peerDependencies upper range to 0.80.1.
+
 ## [1.1.49] - 2025-05-26
 ### Updated
     SmartPlay API with the SmartPlayOptions
