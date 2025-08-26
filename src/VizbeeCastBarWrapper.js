@@ -25,16 +25,6 @@ const VizbeeCastBarWrapper = ({
 }) => {
   const [viewHeight, setViewHeight] = useState(0);
 
-  // Check for new architecture support once
-  useEffect(() => {
-    if (global.__turboModuleProxy != null) {
-      throw new Error(
-        "VizbeeCastBar is not supported with New Architecture enabled. " +
-          "Please use the old architecture version."
-      );
-    }
-  }, []);
-
   useEffect(() => {
     if (!isVisible) {
       setViewHeight(0);
@@ -43,7 +33,7 @@ const VizbeeCastBarWrapper = ({
 
   // Event handler for native visibility change events
   const handleVisibilityChange = (event) => {
-    const shouldAppear = event.nativeEvent.shouldAppear;
+    const shouldAppear = event?.nativeEvent?.shouldAppear ?? false;
     setViewHeight(shouldAppear ? height : 0);
 
     if (onVisibilityChange) {

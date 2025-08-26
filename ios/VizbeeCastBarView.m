@@ -18,17 +18,35 @@
 // Initialize the view and set up necessary components
 - (instancetype)init {
     self = [super init];
-    if (self) {
-        [self setup];
-    }
+
     return self;
+}
+
+// Layout the subviews and set up the cast bar controller
+- (void)layoutSubviews{
+    [super layoutSubviews];
+    [self setup];
 }
 
 // Setup method to initialize and configure the view
 - (void)setup {
+    // Remove existing observers and cast bar controller if they exist
+    if (self.castBarController) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+        [self.castBarController.view removeFromSuperview];
+        self.castBarController = nil;
+    }
+    if (self.heightConstraint) {
+        [self.heightConstraint setActive:NO];
+        self.heightConstraint = nil;
+    }
+    
+    // Create a new cast bar controller and set it up
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self.castBarController.view removeFromSuperview];
     self.castBarController = nil;
     self.heightConstraint = nil;
+
     self.castBarController = [Vizbee createCastBarController];
     self.castBarController.delegate = self;
     [self addSubview:self.castBarController.view];
