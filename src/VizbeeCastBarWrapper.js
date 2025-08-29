@@ -64,7 +64,7 @@ const VizbeeCastBarWrapper = ({
       ) : Platform.OS === "android" ? (
         <VizbeeCastBar
           testID={`${testID}-android`}
-          height={height}
+          height={viewHeight}
           onVisibilityChange={handleVisibilityChange}
         />
       ) : null}
