@@ -6,7 +6,6 @@ import {
   Platform,
   UIManager,
 } from "react-native";
-import { VizbeeCastButton } from "../../";
 
 const VizbeeCastButtonViewManager = NativeModules.VizbeeCastButtonView || {};
 
@@ -15,6 +14,7 @@ const VizbeeCastButtonViewManager = NativeModules.VizbeeCastButtonView || {};
 // Eg: <VizbeeCastButtonPressable style={{"height": 24, width: "24"}}/>
 
 const VizbeeCastButtonPressable = ({ style }) => {
+  const VizbeeCastButton = requireNativeComponent("VizbeeCastButtonView");
   const castButtonRef = useRef();
   const handlePress = () => {
     // Get the view tag using findNodeHandle
