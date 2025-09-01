@@ -178,6 +178,7 @@ public class VizbeeCastBarView extends FrameLayout implements CastBarVisibilityL
 
     /**
      * Notifies React Native about the visibility change of the CastBar
+     * Uses a universal approach that works with both architectures
      */
     private void onCastBarVisibilityChange(boolean shouldAppear) {
         if (reactContext == null) {
@@ -188,10 +189,9 @@ public class VizbeeCastBarView extends FrameLayout implements CastBarVisibilityL
         try {
             WritableMap event = Arguments.createMap();
             event.putBoolean("shouldAppear", shouldAppear);
-            Log.d(LOG_TAG, "Emitting visibility change event: shouldAppear=" + shouldAppear);
             reactContext
-                .getJSModule(RCTEventEmitter.class)
-                .receiveEvent(getId(), "onChange", event);
+              .getJSModule(RCTEventEmitter.class)
+              .receiveEvent(getId(), "topVisibilityChange", event);
         } catch (Exception e) {
             Log.e(LOG_TAG, "Error emitting visibility change: " + e.getMessage());
         }

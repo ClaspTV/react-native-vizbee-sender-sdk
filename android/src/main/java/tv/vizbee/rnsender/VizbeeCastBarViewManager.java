@@ -15,6 +15,7 @@ import java.util.Map;
 
 /**
  * A ViewGroupManager for managing VizbeeCastBarView in React Native.
+ * Supports React Native versions 0.60 - 0.81 with both old and new architecture.
  */
 public class VizbeeCastBarViewManager extends ViewGroupManager<VizbeeCastBarView> {
     private static final String REACT_CLASS = "VizbeeCastBarView";
@@ -24,8 +25,8 @@ public class VizbeeCastBarViewManager extends ViewGroupManager<VizbeeCastBarView
 
     public VizbeeCastBarViewManager(ReactApplicationContext context) {
         this.reactContext = context;
-        Log.d(LOG_TAG, "VizbeeCastBarViewManager initialized");
     }
+
 
     @NonNull
     @Override
@@ -52,20 +53,19 @@ public class VizbeeCastBarViewManager extends ViewGroupManager<VizbeeCastBarView
         view.setHeight(height);
     }
 
-    /**
-     * Returns the map of exported custom bubbling event type constants
+
+    /** 
+     * Direct event constants 
      */
+    @Nullable
     @Override
-    public Map<String, Object> getExportedCustomBubblingEventTypeConstants() {
-        Log.d(LOG_TAG, "Exporting event constants");
-        return MapBuilder.<String, Object>builder()
-            .put("onChange", MapBuilder.of(
-                "phasedRegistrationNames",
-                MapBuilder.of("bubbled", "onVisibilityChange")
-            ))
-            .build();
+    public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
+            Log.d(LOG_TAG, "Exporting direct event constants for new architecture");
+            return MapBuilder.<String, Object>builder()
+                .put("topVisibilityChange", MapBuilder.of("registrationName", "onVisibilityChange"))
+                .build();
     }
-    
+
     @Override
     public void onDropViewInstance(VizbeeCastBarView view) {
         Log.d(LOG_TAG, "Dropping view instance");
