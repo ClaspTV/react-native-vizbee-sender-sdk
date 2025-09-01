@@ -14,7 +14,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 
-## [1.1.50] - 2025-08-26
+## [1.1.52] - 2025-08-26
+### Added
+    Cast bar support for new architecture of React Native.
+
+## [1.1.51] - 2025-08-26
 ### Updated
     Android SDK has been updated to 6.9.2
 
