@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 
+## [1.1.50] - 2025-08-26
+### Updated
+    Android SDK has been updated to 6.9.2
+
 ## [1.1.50] - 2025-07-09
 ### Updated
     Android SDK has been updated to 6.9.1, which includes 16kb page support.
