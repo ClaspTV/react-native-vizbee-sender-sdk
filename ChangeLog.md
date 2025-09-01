@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 
-## [1.1.52] - 2025-08-26
+## [1.1.52] - 2025-09-01
 ### Added
     Cast bar support for new architecture of React Native.
 
