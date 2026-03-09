@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -18,15 +19,13 @@ import com.facebook.react.uimanager.events.RCTEventEmitter;
 import tv.vizbee.api.CastBarFragment;
 import tv.vizbee.api.CastBarVisibilityListener;
 
-import android.widget.FrameLayout;
-
 /**
  * A custom FrameLayout that manages its own lifecycle for the CastBarFragment.
  * This component handles attaching and detaching the fragment automatically.
  */
 public class VizbeeCastBarView extends FrameLayout implements CastBarVisibilityListener {
     private static final String LOG_TAG = "VZBRNSDK_VizbeeCastBarView";
-    private static final String FRAGMENT_TAG = "cast_bar_fragment";
+    private static final String FRAGMENT_TAG = "tv.vizbee.rnsender.cast_bar_fragment";
     private static final int ATTACHMENT_DELAY_MS = 500;
     private static final int ATTACHMENT_RETRY_DELAY_MS = 500;
     private static final int MAX_ATTACH_RETRIES = 10;
@@ -37,6 +36,7 @@ public class VizbeeCastBarView extends FrameLayout implements CastBarVisibilityL
     private boolean isFragmentAttached = false;
     private int attachRetryCount = 0;
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
+    private final Runnable attachRetryRunnable = this::attachFragmentIfNeeded;
 
     public VizbeeCastBarView(@NonNull ThemedReactContext reactContext) {
         super(reactContext);
@@ -52,15 +52,17 @@ public class VizbeeCastBarView extends FrameLayout implements CastBarVisibilityL
         super.onAttachedToWindow();
         Log.d(LOG_TAG, "onAttachedToWindow");
         attachRetryCount = 0;
+        // Cancel any previously scheduled attach attempt before posting a new one
+        mainHandler.removeCallbacks(attachRetryRunnable);
         // Delay to avoid rapid attach/detach calls
-        mainHandler.postDelayed(this::attachFragmentIfNeeded, ATTACHMENT_DELAY_MS);
+        mainHandler.postDelayed(attachRetryRunnable, ATTACHMENT_DELAY_MS);
     }
 
     @Override
     protected void onDetachedFromWindow() {
         Log.d(LOG_TAG, "onDetachedFromWindow");
         // Cancel any pending attach retries
-        mainHandler.removeCallbacksAndMessages(null);
+        mainHandler.removeCallbacks(attachRetryRunnable);
         // Remove the fragment so it won't be restored after activity recreation
         detachFragment();
         super.onDetachedFromWindow();
@@ -127,8 +129,9 @@ public class VizbeeCastBarView extends FrameLayout implements CastBarVisibilityL
             // Remove any stale fragment that may have been restored from saved state
             // with the same tag but pointing at a now-invalid view ID.
             Fragment stale = fm.findFragmentByTag(FRAGMENT_TAG);
-            if (stale != null) {
-                Log.d(LOG_TAG, "Removing stale fragment from previous instance");
+            if (stale instanceof CastBarFragment && stale.getId() != viewId) {
+                Log.d(LOG_TAG, "Removing stale CastBarFragment (container " + stale.getId()
+                        + " != current " + viewId + ")");
                 fm.beginTransaction()
                     .remove(stale)
                     .commitNowAllowingStateLoss();
@@ -159,6 +162,7 @@ public class VizbeeCastBarView extends FrameLayout implements CastBarVisibilityL
 
     /**
      * Schedules a retry of attachFragmentIfNeeded with bounded retry count.
+     * Ensures only one pending retry is queued at a time.
      */
     private void scheduleRetry() {
         if (attachRetryCount >= MAX_ATTACH_RETRIES) {
@@ -167,7 +171,8 @@ public class VizbeeCastBarView extends FrameLayout implements CastBarVisibilityL
         }
         attachRetryCount++;
         Log.d(LOG_TAG, "Scheduling attach retry " + attachRetryCount + "/" + MAX_ATTACH_RETRIES);
-        mainHandler.postDelayed(this::attachFragmentIfNeeded, ATTACHMENT_RETRY_DELAY_MS);
+        mainHandler.removeCallbacks(attachRetryRunnable);
+        mainHandler.postDelayed(attachRetryRunnable, ATTACHMENT_RETRY_DELAY_MS);
     }
 
     /**
@@ -203,12 +208,30 @@ public class VizbeeCastBarView extends FrameLayout implements CastBarVisibilityL
                 .commitNowAllowingStateLoss();
 
             Log.d(LOG_TAG, "CastBarFragment removed successfully");
+            isFragmentAttached = false;
+            castBarFragment = null;
+
         } catch (Exception e) {
             Log.e(LOG_TAG, "Error removing fragment: " + e.getMessage());
+            // Removal failed — try tag-based fallback
+            try {
+                FragmentActivity activity = (FragmentActivity) reactContext.getCurrentActivity();
+                if (activity != null) {
+                    FragmentManager fm = activity.getSupportFragmentManager();
+                    Fragment f = fm.findFragmentByTag(FRAGMENT_TAG);
+                    if (f != null) {
+                        fm.beginTransaction()
+                            .remove(f)
+                            .commitAllowingStateLoss();
+                        Log.d(LOG_TAG, "Removed fragment via tag-based fallback");
+                    }
+                }
+            } catch (Exception fallbackEx) {
+                Log.e(LOG_TAG, "Tag-based fallback also failed: " + fallbackEx.getMessage());
+            }
+            isFragmentAttached = false;
+            castBarFragment = null;
         }
-
-        isFragmentAttached = false;
-        castBarFragment = null;
     }
 
     @Override
