@@ -1,24 +1,17 @@
 package tv.vizbee.rnsender;
 
-import android.content.Context;
-import android.content.res.Configuration;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Choreographer;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
@@ -32,16 +25,18 @@ import tv.vizbee.api.CastBarVisibilityListener;
  */
 public class VizbeeCastBarView extends FrameLayout implements CastBarVisibilityListener {
     private static final String LOG_TAG = "VZBRNSDK_VizbeeCastBarView";
-    private static final String FRAGMENT_TAG = "cast_bar_fragment";
-    private static final int ATTACHMENT_DELAY_MS = 500; // 500ms delay
+    private static final String FRAGMENT_TAG = "tv.vizbee.rnsender.cast_bar_fragment";
+    private static final int ATTACHMENT_DELAY_MS = 500;
+    private static final int ATTACHMENT_RETRY_DELAY_MS = 500;
+    private static final int MAX_ATTACH_RETRIES = 10;
 
     private final ThemedReactContext reactContext;
     private CastBarFragment castBarFragment;
-    private int width;
-    private int height; // Default height of 64
-    private Choreographer.FrameCallback frameCallback;
+    private int height;
     private boolean isFragmentAttached = false;
+    private int attachRetryCount = 0;
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
+    private final Runnable attachRetryRunnable = this::attachFragmentIfNeeded;
 
     public VizbeeCastBarView(@NonNull ThemedReactContext reactContext) {
         super(reactContext);
@@ -56,60 +51,186 @@ public class VizbeeCastBarView extends FrameLayout implements CastBarVisibilityL
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         Log.d(LOG_TAG, "onAttachedToWindow");
-        // To avoid rapid attach/detach calls, we delay the fragment attachment
-        mainHandler.postDelayed(this::attachFragmentIfNeeded, ATTACHMENT_DELAY_MS);
+        attachRetryCount = 0;
+        // Cancel any previously scheduled attach attempt before posting a new one
+        mainHandler.removeCallbacks(attachRetryRunnable);
+        // Delay to avoid rapid attach/detach calls
+        mainHandler.postDelayed(attachRetryRunnable, ATTACHMENT_DELAY_MS);
     }
 
     @Override
     protected void onDetachedFromWindow() {
         Log.d(LOG_TAG, "onDetachedFromWindow");
+        // Cancel any pending attach retries
+        mainHandler.removeCallbacks(attachRetryRunnable);
+        // Remove the fragment so it won't be restored after activity recreation
+        detachFragment();
         super.onDetachedFromWindow();
     }
 
     /**
-     * Attaches the CastBarFragment if it hasn't been attached yet and conditions are met
+     * Attaches the CastBarFragment if it hasn't been attached yet and all conditions are met.
+     * Will retry automatically if the view is not yet findable from the activity.
      */
     private void attachFragmentIfNeeded() {
         if (isFragmentAttached) {
-            Log.d(LOG_TAG, "Fragment already attached, skipping attachment");
+            Log.d(LOG_TAG, "Fragment already attached, skipping");
             return;
         }
-        
+
+        // Ensure the view is truly attached to the window
+        if (!isAttachedToWindow() || getWindowToken() == null) {
+            Log.d(LOG_TAG, "View not attached to window yet, skipping");
+            return;
+        }
+
+        // Ensure the view has a valid ID
+        int viewId = getId();
+        if (viewId <= 0 || viewId == View.NO_ID) {
+            Log.d(LOG_TAG, "Invalid view ID, skipping");
+            return;
+        }
+
         try {
             FragmentActivity activity = (FragmentActivity) reactContext.getCurrentActivity();
-            
-            if (!isValidForTransaction(activity)) {
+            if (!isValidForTransaction(activity)) return;
+
+            FragmentManager fm = activity.getSupportFragmentManager();
+
+            // Guard: never touch FragmentManager while a transaction is already executing.
+            // isStateSaved() returns true after onSaveInstanceState — committing would throw.
+            // executePendingTransactions() flushes any async commits so we don't collide.
+            if (fm.isStateSaved()) {
+                Log.w(LOG_TAG, "FragmentManager state already saved, will retry");
+                scheduleRetry();
                 return;
             }
 
-            int viewId = getId();
-            if (viewId <= 0 || getWindowToken() == null) {
-                Log.d(LOG_TAG, "Invalid view ID or window token");
+            // Flush any pending async transactions to avoid conflicts
+            try {
+                fm.executePendingTransactions();
+            } catch (IllegalStateException e) {
+                Log.w(LOG_TAG, "executePendingTransactions failed, will retry: " + e.getMessage());
+                scheduleRetry();
                 return;
             }
 
-            // Create the fragment
+            // Critical check: verify the activity can actually find this view.
+            // This mirrors what FragmentStateManager.createView() does internally,
+            // so if this returns null the fragment transaction would crash with
+            // "No view found for id" IllegalArgumentException.
+            View containerInActivity = activity.findViewById(viewId);
+            if (containerInActivity == null) {
+                Log.w(LOG_TAG, "View ID " + viewId + " not findable from activity yet, will retry");
+                scheduleRetry();
+                return;
+            }
+
+            // Remove any stale fragment that may have been restored from saved state
+            // with the same tag but pointing at a now-invalid view ID.
+            Fragment stale = fm.findFragmentByTag(FRAGMENT_TAG);
+            if (stale instanceof CastBarFragment && stale.getId() != viewId) {
+                Log.d(LOG_TAG, "Removing stale CastBarFragment (container " + stale.getId()
+                        + " != current " + viewId + ")");
+                fm.beginTransaction()
+                    .remove(stale)
+                    .commitNowAllowingStateLoss();
+            }
+
             castBarFragment = new CastBarFragment();
             castBarFragment.setCallback(this);
-            
-            // It is not possible to add a fragment to a view with height zero of frame layout
-            // So, we have to handle height in a javascript layer
+
             Log.d(LOG_TAG, "Attaching CastBarFragment with ID: " + viewId);
-            FragmentManager fragmentManager = activity.getSupportFragmentManager();
-            if(fragmentManager == null) {
-                Log.d(LOG_TAG, "Fragment manager is null");
-                return;
-            }
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.replace(viewId, castBarFragment, FRAGMENT_TAG);
-            transaction.commit();
-            
+            fm.beginTransaction()
+                .replace(viewId, castBarFragment, FRAGMENT_TAG)
+                .commitNowAllowingStateLoss();
+
+            // Only mark as attached after a successful commit
+            isFragmentAttached = true;
+            attachRetryCount = 0;
+            requestLayout();
+
+        } catch (IllegalStateException e) {
+            // Catch-all for "Can not perform this action" variants
+            Log.e(LOG_TAG, "IllegalStateException attaching fragment, will retry: " + e.getMessage());
+            scheduleRetry();
         } catch (Exception e) {
             String message = (e != null) ? e.getMessage() : "unknown error";
             Log.e(LOG_TAG, "Error attaching fragment: " + message, e);
-        } finally {
-            isFragmentAttached = true;
-            requestLayout();
+        }
+    }
+
+    /**
+     * Schedules a retry of attachFragmentIfNeeded with bounded retry count.
+     * Ensures only one pending retry is queued at a time.
+     */
+    private void scheduleRetry() {
+        if (attachRetryCount >= MAX_ATTACH_RETRIES) {
+            Log.e(LOG_TAG, "Max attach retries (" + MAX_ATTACH_RETRIES + ") exceeded, giving up");
+            return;
+        }
+        attachRetryCount++;
+        Log.d(LOG_TAG, "Scheduling attach retry " + attachRetryCount + "/" + MAX_ATTACH_RETRIES);
+        mainHandler.removeCallbacks(attachRetryRunnable);
+        mainHandler.postDelayed(attachRetryRunnable, ATTACHMENT_RETRY_DELAY_MS);
+    }
+
+    /**
+     * Safely removes the CastBarFragment from the FragmentManager.
+     */
+    private void detachFragment() {
+        if (!isFragmentAttached || castBarFragment == null) {
+            return;
+        }
+
+        try {
+            FragmentActivity activity = (FragmentActivity) reactContext.getCurrentActivity();
+            if (!isValidForTransaction(activity)) {
+                // Activity is gone — fragment will be destroyed with it, just clean up refs.
+                isFragmentAttached = false;
+                castBarFragment = null;
+                return;
+            }
+
+            FragmentManager fm = activity.getSupportFragmentManager();
+
+            // If state is already saved, we can still use commitNowAllowingStateLoss.
+            // But if the FM is destroyed, skip entirely.
+            if (fm.isDestroyed()) {
+                Log.d(LOG_TAG, "FragmentManager destroyed, skipping detach");
+                isFragmentAttached = false;
+                castBarFragment = null;
+                return;
+            }
+
+            fm.beginTransaction()
+                .remove(castBarFragment)
+                .commitNowAllowingStateLoss();
+
+            Log.d(LOG_TAG, "CastBarFragment removed successfully");
+            isFragmentAttached = false;
+            castBarFragment = null;
+
+        } catch (Exception e) {
+            Log.e(LOG_TAG, "Error removing fragment: " + e.getMessage());
+            // Removal failed — try tag-based fallback
+            try {
+                FragmentActivity activity = (FragmentActivity) reactContext.getCurrentActivity();
+                if (activity != null) {
+                    FragmentManager fm = activity.getSupportFragmentManager();
+                    Fragment f = fm.findFragmentByTag(FRAGMENT_TAG);
+                    if (f != null) {
+                        fm.beginTransaction()
+                            .remove(f)
+                            .commitAllowingStateLoss();
+                        Log.d(LOG_TAG, "Removed fragment via tag-based fallback");
+                    }
+                }
+            } catch (Exception fallbackEx) {
+                Log.e(LOG_TAG, "Tag-based fallback also failed: " + fallbackEx.getMessage());
+            }
+            isFragmentAttached = false;
+            castBarFragment = null;
         }
     }
 
@@ -117,8 +238,7 @@ public class VizbeeCastBarView extends FrameLayout implements CastBarVisibilityL
     public void requestLayout() {
         super.requestLayout();
         Log.d(LOG_TAG, "VizbeeCastBarView - requestLayout");
-        
-        // Only post the measureAndLayout runnable if the fragment is attached
+
         if (isFragmentAttached && castBarFragment != null) {
             post(measureAndLayout);
         } else {
@@ -129,7 +249,6 @@ public class VizbeeCastBarView extends FrameLayout implements CastBarVisibilityL
     private final Runnable measureAndLayout = new Runnable() {
         @Override
         public void run() {
-            // Double-check the fragment is still attached when this runs
             if (isFragmentAttached && castBarFragment != null) {
                 measure(
                     MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
@@ -142,32 +261,30 @@ public class VizbeeCastBarView extends FrameLayout implements CastBarVisibilityL
     };
 
     /**
-     * Checks if the current state is valid for a fragment transaction
+     * Checks if the current state is valid for a fragment transaction.
      */
     private boolean isValidForTransaction(FragmentActivity activity) {
-        // Check if activity is valid
         if (activity == null) {
             Log.e(LOG_TAG, "Activity not found");
             return false;
         }
-        
+
         if (activity.isFinishing() || activity.isDestroyed()) {
             Log.d(LOG_TAG, "Activity is finishing or destroyed");
             return false;
         }
-        
-        // Check if fragment manager is valid
-        FragmentManager fragmentManager = activity.getSupportFragmentManager();
-        if (fragmentManager == null || fragmentManager.isDestroyed()) {
+
+        FragmentManager fm = activity.getSupportFragmentManager();
+        if (fm == null || fm.isDestroyed()) {
             Log.d(LOG_TAG, "FragmentManager is null or destroyed");
             return false;
         }
-        
+
         return true;
     }
 
     /**
-     * Set the height for this layout
+     * Sets the height for this layout (value in dp, converted to px internally).
      */
     public void setHeight(int height) {
         float density = getResources().getDisplayMetrics().density;
@@ -177,29 +294,27 @@ public class VizbeeCastBarView extends FrameLayout implements CastBarVisibilityL
     }
 
     /**
-     * Notifies React Native about the visibility change of the CastBar
-     * Uses a universal approach that works with both architectures
+     * Notifies React Native about the visibility change of the CastBar.
      */
     private void onCastBarVisibilityChange(boolean shouldAppear) {
         if (reactContext == null) {
             Log.d(LOG_TAG, "Cannot emit visibility change - React context is null");
             return;
         }
-        
+
         try {
             WritableMap event = Arguments.createMap();
             event.putBoolean("shouldAppear", shouldAppear);
             reactContext
-              .getJSModule(RCTEventEmitter.class)
-              .receiveEvent(getId(), "topVisibilityChange", event);
+                .getJSModule(RCTEventEmitter.class)
+                .receiveEvent(getId(), "topVisibilityChange", event);
         } catch (Exception e) {
             Log.e(LOG_TAG, "Error emitting visibility change: " + e.getMessage());
         }
     }
 
-    /**
-     * CastBarVisibilityListener implementation
-     */
+    // --- CastBarVisibilityListener ---
+
     @Override
     public void onCastBarShown() {
         Log.d(LOG_TAG, "CastBar is visible");

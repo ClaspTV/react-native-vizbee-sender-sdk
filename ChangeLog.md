@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 
+## [1.1.53] - 2026-03-10
+### Fixed
+    Cast bar crash on hide/show for new architecture of React Native.
+
 ## [1.1.52] - 2025-09-01
 ### Added
     Cast bar support for new architecture of React Native.
