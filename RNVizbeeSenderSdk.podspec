@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
   s.source_files  = "ios/**/*.{h,m}"
 
   s.dependency "React"
-  s.dependency 'VizbeeKit', '6.8.98'
+  s.dependency 'VizbeeKit', '6.8.99'
 
 end
 

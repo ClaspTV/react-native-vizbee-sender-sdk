@@ -14,6 +14,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 
+## [1.1.53-20260919] - 2026-09-19
+### Updated
+    Android sender SDK to 6.9.12-20260917 and VizbeeKit to 6.8.99.
+    The Android build adds vzb_titleTextViewStyle to the guided app install
+    card, so its title can be styled independently of the other overlay cards.
+
 ## [1.1.53] - 2026-03-10
 ### Fixed
     Cast bar crash on hide/show for new architecture of React Native.
