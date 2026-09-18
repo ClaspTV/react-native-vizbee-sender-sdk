@@ -10,6 +10,9 @@
 /** Globally Unique ID of the content */
 @property (nonatomic, copy) NSString* guid;
 
+/** Deep link string */
+@property (nonatomic, copy) NSString* deepLink;
+
 //----------------------------------
 #pragma mark - Metadata
 //----------------------------------

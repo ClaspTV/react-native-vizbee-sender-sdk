@@ -41,6 +41,9 @@
         /** Globally Unique ID of the content */
         _guid = (NSString*) [vizbeeVideo objectForKey:@"guid"];
 
+        /** Deep link string */
+        _deepLink = (NSString*) [vizbeeVideo objectForKey:@"deepLink"];
+
         /** Title of the video */
         _title = (NSString*) [vizbeeVideo objectForKey:@"title"];
 
@@ -76,6 +79,7 @@
     
     NSDictionary* result = @{
         @"guid" : self.guid,
+        @"deepLink" : self.deepLink,
         @"title" : self.title,
         @"subtitle" : self.subtitle,
         @"imageUrl" : self.imageUrl,

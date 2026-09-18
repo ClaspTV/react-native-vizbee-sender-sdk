@@ -3,6 +3,7 @@ export default class VizbeeVideo {
     constructor() {
 
         this.guid = null;
+        this.deepLink = null;
 
         // metadata
         this.title = "";

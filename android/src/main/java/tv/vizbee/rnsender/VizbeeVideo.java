@@ -24,6 +24,7 @@ public class VizbeeVideo {
     public static final String LOG_TAG = VizbeeVideo.class.getName();
 
     private String guid;
+    private String deepLink;
 
     // metadata
     private String title;
@@ -41,6 +42,10 @@ public class VizbeeVideo {
 
     public java.lang.String getGuid() {
         return guid;
+    }
+
+    public java.lang.String getDeepLink() {
+        return deepLink;
     }
 
     public java.lang.String getTitle() {
@@ -78,6 +83,7 @@ public class VizbeeVideo {
     public VizbeeVideo(ReadableMap vizbeeVideo) {
 
         guid = vizbeeVideo.hasKey("guid") ? vizbeeVideo.getString("guid") : "";
+        deepLink = vizbeeVideo.hasKey("deepLink") ? vizbeeVideo.getString("deepLink") : "";
         
         title = vizbeeVideo.hasKey("title") ? vizbeeVideo.getString("title") : "";
         subtitle = vizbeeVideo.hasKey("subtitle") ? vizbeeVideo.getString("subtitle") : "";
@@ -98,7 +104,8 @@ public class VizbeeVideo {
         WritableMap resultMap = Arguments.createMap();
         
         resultMap.putString("guid", guid);
-
+        resultMap.putString("deepLink", deepLink);
+        
         resultMap.putString("title", title);
         resultMap.putString("subtitle", subtitle);
         resultMap.putString("imageUrl", imageUrl);

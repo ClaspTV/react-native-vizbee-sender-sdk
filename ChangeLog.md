@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 
+## [1.1.53.1-dazn] - 2026-06-10
+### Fixed
+    Added deeplink param and also updated Android SDK to dazn specific version.
+
 ## [1.1.53] - 2026-03-10
 ### Fixed
     Cast bar crash on hide/show for new architecture of React Native.
