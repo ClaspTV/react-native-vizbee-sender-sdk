@@ -14,6 +14,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 
+## [1.1.54] - 2026-10-14
+### Removed
+    Removed the legacy buildscript block from android/build.gradle that referenced the shut-down JCenter repository.
+    The Android Gradle Plugin classpath is inherited from the host application, so this module does not need its own repository declaration.
+
 ## [1.1.53] - 2026-03-10
 ### Fixed
     Cast bar crash on hide/show for new architecture of React Native.
