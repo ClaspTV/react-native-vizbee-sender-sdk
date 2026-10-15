@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Updated
     Raised compileSdk to 34, required by React Native 0.87.1 and current AndroidX dependencies.
     Widened the React Native peer range to '>=0.60.0 <=0.87.1'.
+    Android SDK has been updated to 6.9.14.
     Corrected the documented React Native support range in README, package.json and VizbeeCastBarViewManager
     (<VizbeeCastBar> works on the new architecture; verified on RN 0.87.1).
 
