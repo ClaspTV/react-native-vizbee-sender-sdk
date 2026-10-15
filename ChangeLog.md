@@ -19,6 +19,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     Removed the legacy buildscript block from android/build.gradle that referenced the shut-down JCenter repository.
     The Android Gradle Plugin classpath is inherited from the host application, so this module does not need its own repository declaration.
 
+### Updated
+    Raised compileSdk to 34, required by React Native 0.87.1 and current AndroidX dependencies.
+    Widened the React Native peer range to '>=0.60.0 <=0.87.1'.
+    Corrected the documented React Native support range in README, package.json and VizbeeCastBarViewManager.
+### Known issue
+    On the new architecture <VizbeeCastBar> renders, but its visibility-change event does not reach JS:
+    VizbeeCastBarView dispatches via getJSModule(RCTEventEmitter), which React Native rejects in bridgeless mode.
+    Verified on RN 0.87.1. Use of UIManagerHelper.getEventDispatcher is required to fix it.
+
 ## [1.1.53] - 2026-03-10
 ### Fixed
     Cast bar crash on hide/show for new architecture of React Native.
