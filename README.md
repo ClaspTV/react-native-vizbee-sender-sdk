@@ -6,7 +6,7 @@
 
 Vizbee enables streaming apps to deliver great cross-device experiences. This repository provides the React Native SDK for enabling Vizbee's cross-device experiences. You need a [Vizbee account](https://console.vizbee.tv) in order to use this SDK.
 
-**Important Note:** The `<VizbeeCastBar>` component is not supported in React Native's new architecture.
+**Supported React Native versions:** `>=0.60.0 <=0.87.1`, with both the legacy and the new architecture.
 
 ## Build setup
 

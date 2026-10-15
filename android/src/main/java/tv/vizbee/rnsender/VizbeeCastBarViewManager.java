@@ -15,7 +15,7 @@ import java.util.Map;
 
 /**
  * A ViewGroupManager for managing VizbeeCastBarView in React Native.
- * Supports React Native versions 0.60 - 0.81 with both old and new architecture.
+ * Supports React Native versions 0.60 - 0.87 with both old and new architecture.
  */
 public class VizbeeCastBarViewManager extends ViewGroupManager<VizbeeCastBarView> {
     private static final String REACT_CLASS = "VizbeeCastBarView";
