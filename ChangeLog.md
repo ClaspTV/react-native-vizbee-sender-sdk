@@ -22,11 +22,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Updated
     Raised compileSdk to 34, required by React Native 0.87.1 and current AndroidX dependencies.
     Widened the React Native peer range to '>=0.60.0 <=0.87.1'.
-    Corrected the documented React Native support range in README, package.json and VizbeeCastBarViewManager.
-### Known issue
-    On the new architecture <VizbeeCastBar> renders, but its visibility-change event does not reach JS:
-    VizbeeCastBarView dispatches via getJSModule(RCTEventEmitter), which React Native rejects in bridgeless mode.
-    Verified on RN 0.87.1. Use of UIManagerHelper.getEventDispatcher is required to fix it.
+    Corrected the documented React Native support range in README, package.json and VizbeeCastBarViewManager
+    (<VizbeeCastBar> works on the new architecture; verified on RN 0.87.1).
 
 ## [1.1.53] - 2026-03-10
 ### Fixed

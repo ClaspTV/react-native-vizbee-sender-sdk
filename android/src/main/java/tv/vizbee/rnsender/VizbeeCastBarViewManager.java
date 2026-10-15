@@ -15,9 +15,7 @@ import java.util.Map;
 
 /**
  * A ViewGroupManager for managing VizbeeCastBarView in React Native.
- * Supports React Native versions 0.60 - 0.87.
- * NOTE: on the new architecture the visibility-change event does not reach JS;
- * VizbeeCastBarView still uses getJSModule(RCTEventEmitter), which bridgeless rejects.
+ * Supports React Native versions 0.60 - 0.87 with both old and new architecture.
  */
 public class VizbeeCastBarViewManager extends ViewGroupManager<VizbeeCastBarView> {
     private static final String REACT_CLASS = "VizbeeCastBarView";
